@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_live_room_before"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="15dp">
+
+    <Button
+        android:id="@+id/btn_start_push"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/tuipusher_button_bg"
+        android:text="@string/tuipusher_start_push"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_camera"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/tuipusher_switch_camera"
+        android:layout_marginRight="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_beauty"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

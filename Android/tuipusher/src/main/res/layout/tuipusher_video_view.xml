@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_horizontal25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_horizontal75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/txc_push_video_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/tl_pk_video_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gl_horizontal75"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_vertical"
+        app:layout_constraintTop_toTopOf="@+id/gl_horizontal25">
+
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txc_pk_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_link_video_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gl_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/txc_link_video_view"
+            android:layout_width="90dp"
+            android:layout_height="160dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="15dp" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/tuipusher_close" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_pk_layer"
+        android:layout_width="44dp"
+        android:layout_height="26dp"
+        android:background="@drawable/tuipusher_icon_pk_layer"
+        app:layout_constraintBottom_toTopOf="@+id/gl_horizontal75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

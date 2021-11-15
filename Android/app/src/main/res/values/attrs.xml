@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppRoundCornerImageView">
+        <attr name="radius" format="dimension" />
+        <attr format="color" name="cover_color" />
+        <attr name="left_top_radius" format="dimension" />
+        <attr name="right_top_radius" format="dimension" />
+        <attr name="right_bottom_radius" format="dimension" />
+        <attr name="left_bottom_radius" format="dimension" />
+        <attr name="shape">
+            <enum name="circle" value="0" />
+            <enum name="fillet" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

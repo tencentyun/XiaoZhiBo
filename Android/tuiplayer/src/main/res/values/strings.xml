@@ -1,0 +1,16 @@
+<resources>
+    <string name="tuiplayer_tips_start_camera_audio">Please turn on the camera and microphone permissions first</string>
+    <string name="tuiplayer_create_room_limit">The cloud communication account you are currently using has not activated the audio and video chat room function, and the number of chat rooms created exceeds the limit, please go to the Tencent Cloud official website to open [IM audio and video chat rooms]：https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuiplayer_create_or_join_group_limit">The number of groups that a single user can create and join exceeds the limit, please purchase relevant packages, more details:https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuiplayer_group_member_limit">The number of group members exceeds the limit, please refer to it, please purchase the relevant packages, more details:https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuiplayer_link_request_timeout">The mic request timed out</string>
+    <string name="tuiplayer_push_cmd_send_fail">Failed to send the signaling of successful push</string>
+    <string name="tuiplayer_linking_please_wait">Connecting wheat, please try again later</string>
+    <string name="tuiplayer_link_request_send_fail">Failed to send MIC request signaling</string>
+    <string name="tuiplayer_link_cancel_cmd_send_fail">Failed to send the MIC cancel signaling</string>
+    <string name="tuiplayer_ancor_reject_link">The host rejects the request</string>
+    <string name="tuiplayer_stop_link_cmd_send_success">Stop mic-link signaling sent successfully</string>
+    <string name="tuiplayer_stop_link_cmd_send_fail">Failed to stop sending MIC signaling, error code:</string>
+    <string name="tuiplayer_url_empty">The URL cannot be empty</string>
+    <string name="tuiplayer_stop_link">The anchor stops connecting the microphone</string>
+</resources>

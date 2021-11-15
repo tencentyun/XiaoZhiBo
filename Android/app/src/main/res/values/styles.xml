@@ -1,0 +1,37 @@
+<resources>
+    <!-- Application theme. -->
+    <style name="AppTheme">
+        <!--<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/colorAccent</item>-->
+        <!--<item name="android:windowBackground">@color/colorActivityBackground</item>-->
+    </style>
+
+    <style name="AppThemeMain" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/app_color_white</item>
+    </style>
+
+    <style name="AppDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="TRTCLiveRoomDialogFragment" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@color/app_dialog_bg</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="ShowLiveMoreDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+</resources>

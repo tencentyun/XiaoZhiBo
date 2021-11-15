@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/app_color_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_marginTop="54dp"
+        android:background="@color/app_color_white"
+        android:layout_width="match_parent"
+        android:layout_height="42dp">
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_name"
+            android:layout_centerVertical="true"
+            android:textColor="@color/app_color_black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/app_ic_head" />
+
+        <TextView
+            android:id="@+id/tv_login_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/app_login_out"
+            android:layout_centerInParent="true"
+            android:textColor="@color/app_color_black"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:background="@color/app_color_main_bg"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>

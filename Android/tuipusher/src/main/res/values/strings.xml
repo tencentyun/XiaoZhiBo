@@ -1,0 +1,18 @@
+<resources>
+    <string name="tuipusher_tips_start_camera_audio">Please turn on the camera and microphone permissions first</string>
+    <string name="tuipusher_create_room_limit">The cloud communication account you are currently using has not activated the audio and video chat room function, and the number of chat rooms created exceeds the limit, please go to the Tencent Cloud official website to open [IM audio and video chat rooms]：https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuipusher_create_or_join_group_limit">The number of groups that a single user can create and join exceeds the limit, please purchase relevant packages, more details:https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuipusher_group_member_limit">The number of group members exceeds the limit, please refer to it, please purchase the relevant packages, more details:https://cloud.tencent.com/document/product/269/11673</string>
+    <string name="tuipusher_audio_quality">Audio Quality</string>
+    <string name="tuipusher_audio_quality_default">Standard</string>
+    <string name="tuipusher_audio_quality_music">Music</string>
+    <string name="tuipusher_start_push">Start</string>
+    <string name="tuipusher_please_login">please sign in</string>
+    <string name="tuipusher_url_error">Illegal URL</string>
+    <string name="tuipusher_pushing_toast">Already in push state</string>
+    <string name="tuipusher_start_pk_fail">Failed to start PK</string>
+    <string name="tuipusher_start_link_fail">Failed to start Link</string>
+    <string name="tuipusher_stop_pk_error">Disconnect PK exception</string>
+    <string name="tuipusher_user_no_agree_push">User does not agree to start streaming</string>
+    <string name="tuipusher_audience_stop_link">The audience stopped connecting the microphone</string>
+</resources>

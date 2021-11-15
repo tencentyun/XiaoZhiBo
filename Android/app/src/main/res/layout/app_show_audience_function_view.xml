@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/app_close_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/app_pusher_info_background"
+        android:minWidth="120dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_anchor_head"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/app_bg_cover" />
+
+        <TextView
+            android:id="@+id/tv_anchor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/iv_anchor_head"
+            android:maxLines="1"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_room_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_anchor_name"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/iv_anchor_head"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tencent.liteav.demo"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <application
+        android:name=".app.DemoApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+
+        <activity
+            android:name=".app.SplashActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="liteav" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.tencent.liteav.demo"
+                    android:scheme="liteav" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".app.MainActivity"
+            android:theme="@style/AppThemeMain"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.tencent.liteav.action.portal" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name=".aboutme.AboutActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
+        <activity
+            android:name=".discover.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppThemeMain">
+
+            <intent-filter>
+                <action android:name="com.tencent.liteav.action.webview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".aboutme.LogOffActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
+        <activity
+            android:name=".scene.showlive.ShowLiveEntranceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
+        <activity
+            android:name=".scene.showlive.ShowLiveAnchorActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeMain"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".scene.showlive.ShowLiveAudienceActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeMain"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+
+        <activity
+            android:name=".scene.shoppinglive.ShoppingLiveEntranceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
+        <activity
+            android:name=".scene.shoppinglive.ShoppingLiveAnchorActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeMain"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+
+        <activity
+            android:name=".scene.shoppinglive.ShoppingLiveAudienceActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeMain"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+    </application>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+</manifest>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_live_room_before"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="15dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/gl_vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_barrage"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"></RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_link"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent">
+
+            <ImageView
+                android:id="@+id/iv_link"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/tuiplayer_link_on_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_gift"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"></RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_barrage_show"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_container"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_gift_show"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_container"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

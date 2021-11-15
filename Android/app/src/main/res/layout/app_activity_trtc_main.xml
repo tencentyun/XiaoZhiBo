@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <FrameLayout
+        android:id="@+id/contentPanel"
+        android:layout_above="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_color_white"
+        android:elevation="10dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_tab_main"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:id="@+id/img_main"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/app_tab_main_list" />
+
+            <TextView
+                android:id="@+id/tv_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/app_main_page"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_tab_find"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:id="@+id/img_find"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/app_circle_border"
+                android:src="@drawable/app_find_normal" />
+
+            <TextView
+                android:id="@+id/tv_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/app_find"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_tab_me"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:id="@+id/img_me"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/app_tab_user_center" />
+
+            <TextView
+                android:id="@+id/tv_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/app_my"
+                android:textSize="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

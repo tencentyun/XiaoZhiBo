@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as Integer
+    buildToolsVersion BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        versionName VERSION_NAME
+        versionCode VERSION_CODE as Integer
+        minSdkVersion MIN_SDK_VERSION as Integer
+        targetSdkVersion TARGET_SDK_VERSION as Integer
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "de.hdodenhof:circleimageview:3.1.0"
+    api rootProject.ext.liteavSdk
+    api project(':tuicore')
+}
