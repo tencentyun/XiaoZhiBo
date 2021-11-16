@@ -1,0 +1,37 @@
+/* 
+  ShowLiveLocalized.strings
+  XiaoZhiBoApp
+
+  Created by adams on 2021/5/10.
+  
+*/
+
+"Scene.ShowLive.List.title" = "Scene.ShowLive.List.title";
+"Scene.ShowLive.List.getlistfailed" = "Failed to get the list.";
+"Scene.ShowLive.List.getroomlistfailed" = "Failed to get the room list";
+"Scene.ShowLive.List.pullrefresh" = "Pull down to refresh";
+"Scene.ShowLive.List.refreshing" = "Refreshing";
+"Scene.ShowLive.List.createroom" = "Create Room";
+"Scene.ShowLive.List.createshowliveroom" = "Create Show Live Room";
+"Scene.ShowLive.List.nocontentnow~" = "No content now";
+"Scene.ShowLive.List.nocontentnow" = "No content now";
+"Scene.ShowLive.List.xxissinging" = "xxx watching.";
+"Scene.ShowLive.List.invalidappid" = "Incorrect app ID";
+"Scene.ShowLive.List.nocontentnow~" = "No content now";
+"Scene.ShowLive.List.getroomlistfailed" = "Failed to get the room list";
+
+"Scene.ShowLive.Create.roomsubject" = "Subject";
+"Scene.ShowLive.Create.enterroomsubject" = "Enter a room subject (max. 60 characters)";
+"Scene.ShowLive.Create.join" = "Join";
+"Scene.ShowLive.Create.xxxsroom" = "xxx's room";
+
+"Scene.ShowLive.Anchor.switchcamera" = "Switch Camera";
+"Scene.ShowLive.Anchor.tools" = "Tools";
+"Scene.ShowLive.Anchor.pktitle" = "Invite PK";
+"Scene.ShowLive.Anchor.invite" = "Invite";
+"Scene.ShowLive.Anchor.pkInvite" = "Invite";
+"Scene.ShowLive.Anchor.invitepk" = "Invite to Compete";
+"Scene.ShowLive.Anchor.loading" = "Loading...";
+"Scene.ShowLive.Anchor.noanchor" = "No anchor at the moment";
+"Scene.ShowLive.Anchor.cancel" = "Cancel";
+"Scene.ShowLive.Authorization" = "Please turn on the camera and microphone permissions first";
