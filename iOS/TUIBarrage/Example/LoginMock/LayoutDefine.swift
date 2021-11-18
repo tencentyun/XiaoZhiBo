@@ -2,7 +2,7 @@
 //  LayoutDefine.swift
 //  TXLiteAVDemo
 //
-//  Created by gg on 2021/3/15.
+//  Created by wesley on 2021/3/15.
 //  Copyright © 2021 Tencent. All rights reserved.
 //
 

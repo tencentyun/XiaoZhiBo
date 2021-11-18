@@ -21,8 +21,8 @@ class AppUtils: NSObject {
     @objc public static let shared = AppUtils()
     private override init() {}
     
-    @objc var appDelegate: AppDelegate {
-        return UIApplication.shared.delegate as! AppDelegate
+    @objc var appDelegate: TUIAppDelegate {
+        return UIApplication.shared.delegate as! TUIAppDelegate
     }
 
     @objc var curUserId: String {
@@ -44,4 +44,5 @@ class AppUtils: NSObject {
         // 提醒用户不要用Demo App来做违法的事情
         // 外发代码不需要提示
     }
+    
 }

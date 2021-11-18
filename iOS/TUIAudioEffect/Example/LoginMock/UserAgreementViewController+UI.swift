@@ -9,7 +9,6 @@
 import Foundation
 import SnapKit
 import WebKit
-import TXAppBasic
 
 extension UserAgreementViewController {
     func setupUI() {

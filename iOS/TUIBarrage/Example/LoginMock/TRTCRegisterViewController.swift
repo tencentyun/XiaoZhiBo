@@ -2,13 +2,12 @@
 //  TRTCRegisterViewController.swift
 //  TXLiteAVDemo
 //
-//  Created by gg on 2021/4/8.
+//  Created by wesley on 2021/4/8.
 //  Copyright © 2021 Tencent. All rights reserved.
 //
 
 import Foundation
 import Toast_Swift
-import TXAppBasic
 import SnapKit
 import UIKit
 import ImSDK_Plus

@@ -1318,7 +1318,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../SDK",
 					"$(PROJECT_DIR)/AppSource/APP/Bugly",
-					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1404,7 +1403,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../SDK",
 					"$(PROJECT_DIR)/AppSource/APP/Bugly",
-					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

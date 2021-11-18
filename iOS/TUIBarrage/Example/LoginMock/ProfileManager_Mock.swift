@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+//import Alamofire
 import ImSDK_Plus
 
 @objc class LoginResultModel: NSObject, Codable {

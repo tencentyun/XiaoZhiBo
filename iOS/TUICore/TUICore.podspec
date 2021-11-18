@@ -13,8 +13,8 @@ Pod::Spec.new do |spec|
   spec.authors      = 'tencent video cloud'
   spec.summary      = 'TUICore'
   spec.dependency 'TXIMSDK_Plus_iOS'
-  spec.dependency 'ReactiveObjC','3.1.1'
-  spec.dependency 'SDWebImage','5.9.0'
+  spec.dependency 'ReactiveObjC'
+  spec.dependency 'SDWebImage'
   
   spec.requires_arc = true
 

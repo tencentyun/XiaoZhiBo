@@ -16,7 +16,7 @@
 {
     // Override point for customization after application launch.
     // 注册License信息
-    [AppUtils registerLicense];
+    [self registerLicense];
     // 视图初始化
     self.window.backgroundColor = [UIColor whiteColor];
     [self showLoginViewController];

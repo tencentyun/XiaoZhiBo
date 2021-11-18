@@ -10,6 +10,7 @@ import Foundation
 import Toast_Swift
 import WebKit
 import ImSDK_Plus
+import TUICore
 
 class TRTCLoginViewController: UIViewController {
     
@@ -22,6 +23,9 @@ class TRTCLoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        TUILogin.initWithSdkAppID(Int32(SDKAPPID))
+        
         navigationController?.navigationBar.barTintColor = .white
         ToastManager.shared.position = .center
         view.addSubview(loading)
@@ -75,12 +79,11 @@ class TRTCLoginViewController: UIViewController {
     func loginIM(complete: @escaping (_ success: Bool)->Void) {
         guard let userID = ProfileManager.shared.curUserID() else { return }
         let userSig = ProfileManager.shared.curUserSig()
-        V2TIMManager.sharedInstance()
-        if V2TIMManager.sharedInstance()?.getLoginUser() != userID {
-            ProfileManager.shared.IMLogin(userSig: userSig) {
+        if TUILogin.getUserID() != userID {
+            TUILogin.login(userID, userSig: userSig) {
                 debugPrint("IM login success.")
                 complete(true)
-            } failed: { [weak self] (error) in
+            } fail: { [weak self] code, msg in
                 guard let `self` = self else { return }
                 self.view.makeToast(LoginLocalize(key: "App.PortalViewController.loginimfailed"))
                 complete(false)

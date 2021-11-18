@@ -8,7 +8,6 @@
 
 import Foundation
 import Toast_Swift
-import TXAppBasic
 import SnapKit
 import UIKit
 import ImSDK_Plus
@@ -22,7 +21,7 @@ class TRTCRegisterViewController: UIViewController {
         super.viewDidLoad()
         
         ToastManager.shared.position = .center
-        title = .titleText
+        
         view.addSubview(loading)
         loading.snp.makeConstraints { (make) in
             make.width.height.equalTo(40)
@@ -65,7 +64,6 @@ class TRTCRegisterViewController: UIViewController {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let titleText = LoginLocalize(key:"Demo.TRTC.Login.regist")
     static let registSuccessText = LoginLocalize(key:"Demo.TRTC.Login.registsuccess")
 }
 

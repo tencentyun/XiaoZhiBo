@@ -11,6 +11,14 @@ import Kingfisher
 
 class TRTCRegisterRootView: UIView {
     
+    lazy var titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = UIColor(hex: "333333")
+        label.text = .titleText
+        return label
+    }()
+    
     lazy var headImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
@@ -43,9 +51,9 @@ class TRTCRegisterRootView: UIView {
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle(.registText, for: .normal)
         btn.adjustsImageWhenHighlighted = false
-        btn.setBackgroundImage(UIColor(hex: "006EFF")?.trans2Image(), for: .normal)
+        btn.setBackgroundImage(UIColor(hex: "006EFF").trans2Image(), for: .normal)
         btn.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 18)
-        btn.layer.shadowColor = UIColor(hex: "006EFF")?.cgColor ?? UIColor.blue.cgColor
+        btn.layer.shadowColor = UIColor(hex: "006EFF").cgColor
         btn.layer.shadowOffset = CGSize(width: 0, height: 6)
         btn.layer.shadowRadius = 16
         btn.layer.shadowOpacity = 0.4
@@ -59,7 +67,7 @@ class TRTCRegisterRootView: UIView {
         textField.backgroundColor = .white
         textField.font = UIFont(name: "PingFangSC-Regular", size: 16)
         textField.textColor = UIColor(hex: "333333")
-        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.font : UIFont(name: "PingFangSC-Regular", size: 16) ?? UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor(hex: "BBBBBB") ?? .gray])
+        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.font : UIFont(name: "PingFangSC-Regular", size: 16) ?? UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor(hex: "BBBBBB") ])
         textField.delegate = self
         return textField
     }
@@ -139,6 +147,7 @@ class TRTCRegisterRootView: UIView {
     }
     
     func constructViewHierarchy() {
+        addSubview(titleLabel)
         addSubview(headImageView)
         addSubview(textField)
         addSubview(textFieldSpacingLine)
@@ -146,9 +155,13 @@ class TRTCRegisterRootView: UIView {
         addSubview(registBtn)
     }
     func activateConstraints() {
+        titleLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(kDeviceSafeTopHeight+10)
+        }
         headImageView.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(kDeviceSafeTopHeight + 70)
+            make.top.equalTo(titleLabel.snp_bottom).offset(40)
             make.size.equalTo(CGSize(width: 100, height: 100))
         }
         textField.snp.makeConstraints { (make) in
@@ -248,6 +261,7 @@ extension TRTCRegisterRootView : UITextFieldDelegate {
 
 /// MARK: - internationalization string
 fileprivate extension String {
+    static let titleText = LoginLocalize(key:"Demo.TRTC.Login.regist")
     static let nicknamePlaceholderText = LoginLocalize(key:"Demo.TRTC.Login.enterusername")
     static let descText = LoginLocalize(key:"Demo.TRTC.Login.limit20count")
     static let registText = LoginLocalize(key:"Demo.TRTC.Login.regist")

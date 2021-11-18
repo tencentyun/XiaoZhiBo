@@ -12,21 +12,21 @@ PODS:
   - SnapKit (5.0.1)
   - SSZipArchive (2.4.2)
   - Toast-Swift (5.0.1)
-  - TUIAudioEffect/Professional (1.0.0):
+  - TUIAudioEffect/Enterprise (1.0.0):
     - Masonry
     - TUICore
-    - TXLiteAVSDK_Professional
+    - TXLiteAVSDK_Enterprise
   - TUIBarrage (1.0.0):
     - Masonry
     - MJExtension
     - SDWebImage
     - TUICore
     - TXIMSDK_Plus_iOS
-  - TUIBeauty/Professional (1.0.0):
+  - TUIBeauty/Enterprise (1.0.0):
     - Masonry
     - SSZipArchive
     - TUICore
-    - TXLiteAVSDK_Professional
+    - TXLiteAVSDK_Enterprise
   - TUICore (1.0.0):
     - ReactiveObjC (= 3.1.1)
     - SDWebImage (= 5.9.0)
@@ -38,17 +38,17 @@ PODS:
     - SDWebImage
     - TUICore
     - TXIMSDK_Plus_iOS
-  - TUIPlayer/Professional (1.0.0):
+  - TUIPlayer/Enterprise (1.0.0):
     - Masonry
     - TUICore
-    - TXLiteAVSDK_Professional
-  - TUIPusher/Professional (1.0.0):
+    - TXLiteAVSDK_Enterprise
+  - TUIPusher/Enterprise (1.0.0):
     - Masonry
     - TUICore
-    - TXLiteAVSDK_Professional
+    - TXLiteAVSDK_Enterprise
   - TXCopyrightedMedia (1.0.2)
   - TXIMSDK_Plus_iOS (5.7.1435)
-  - TXLiteAVSDK_Professional (9.3.10763)
+  - TXLiteAVSDK_Enterprise (8.5.10017)
 
 DEPENDENCIES:
   - Alamofire
@@ -56,15 +56,15 @@ DEPENDENCIES:
   - MJRefresh
   - SnapKit
   - Toast-Swift
-  - TUIAudioEffect/Professional (from `../TUIAudioEffect/`)
+  - TUIAudioEffect/Enterprise (from `../TUIAudioEffect/`)
   - TUIBarrage (from `../TUIBarrage/`)
-  - TUIBeauty/Professional (from `../TUIBeauty/`)
+  - TUIBeauty/Enterprise (from `../TUIBeauty/`)
   - TUICore (from `../TUICore/`)
   - TUIGift (from `../TUIGift/`)
-  - TUIPlayer/Professional (from `../TUIPlayer/`)
-  - TUIPusher/Professional (from `../TUIPusher/`)
+  - TUIPlayer/Enterprise (from `../TUIPlayer/`)
+  - TUIPusher/Enterprise (from `../TUIPusher/`)
   - TXCopyrightedMedia (from `https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec`)
-  - TXLiteAVSDK_Professional
+  - TXLiteAVSDK_Enterprise (from `../../SDK/`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -80,7 +80,6 @@ SPEC REPOS:
     - SSZipArchive
     - Toast-Swift
     - TXIMSDK_Plus_iOS
-    - TXLiteAVSDK_Professional
 
 EXTERNAL SOURCES:
   TUIAudioEffect:
@@ -99,6 +98,8 @@ EXTERNAL SOURCES:
     :path: "../TUIPusher/"
   TXCopyrightedMedia:
     :podspec: https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec
+  TXLiteAVSDK_Enterprise:
+    :path: "../../SDK/"
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
@@ -121,8 +122,8 @@ SPEC CHECKSUMS:
   TUIPusher: 3687ab16a21502a56e8d6b6888e20a4957fdd227
   TXCopyrightedMedia: b8bb83beb43413ac0cb11d7e1efdd015ed976a8a
   TXIMSDK_Plus_iOS: 4b7c1097ea9899f7bf95fa90e2cb4471389f93dd
-  TXLiteAVSDK_Professional: ffce98ab1e0e202e9795712318220d77739f11d0
+  TXLiteAVSDK_Enterprise: 2b5f4c5d6a2d5c7471b9aa6f29e0f19e713eae38
 
-PODFILE CHECKSUM: 56d617e8712387fcd452c1cfe38946947bca014c
+PODFILE CHECKSUM: 8e5891d1ce9ba0b5c8494ebde8f1dcdc7b9877b2
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.10.1

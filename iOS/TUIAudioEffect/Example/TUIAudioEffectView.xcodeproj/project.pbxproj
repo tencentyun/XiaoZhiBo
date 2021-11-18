@@ -7,67 +7,67 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		049450A6270447FD00F22F1A /* GenerateTestUserSig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450A5270447FD00F22F1A /* GenerateTestUserSig.swift */; };
-		049450B8270448D100F22F1A /* TRTCRegisterRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450AA270448D100F22F1A /* TRTCRegisterRootView.swift */; };
-		049450B9270448D100F22F1A /* TRTCLoginRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450AB270448D100F22F1A /* TRTCLoginRootView.swift */; };
-		049450BA270448D100F22F1A /* UserAgreementViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450AC270448D100F22F1A /* UserAgreementViewController+UI.swift */; };
-		049450BB270448D100F22F1A /* LoginLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 049450AE270448D100F22F1A /* LoginLocalized.strings */; };
-		049450BC270448D100F22F1A /* LoginLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B1270448D100F22F1A /* LoginLocalized.swift */; };
-		049450BD270448D100F22F1A /* TRTCLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B2270448D100F22F1A /* TRTCLoginViewController.swift */; };
-		049450BE270448D100F22F1A /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B3270448D100F22F1A /* ProfileManager_Mock.swift */; };
-		049450BF270448D100F22F1A /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B4270448D100F22F1A /* AppUtils.swift */; };
-		049450C0270448D100F22F1A /* TRTCRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B5270448D100F22F1A /* TRTCRegisterViewController.swift */; };
-		049450C1270448D100F22F1A /* UserAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B6270448D100F22F1A /* UserAgreementViewController.swift */; };
-		049450C2270448D100F22F1A /* LayoutDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049450B7270448D100F22F1A /* LayoutDefine.swift */; };
-		049450C5270457CC00F22F1A /* TUIAudioEffectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049450C4270457CC00F22F1A /* TUIAudioEffectViewController.m */; };
+		04C6F1112742881100691C0D /* GenerateTestUserSig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F1102742881100691C0D /* GenerateTestUserSig.swift */; };
+		04C6F14127428A8F00691C0D /* TUIAudioEffectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F13127428A8F00691C0D /* TUIAudioEffectViewController.m */; };
+		04C6F14327428A8F00691C0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04C6F13527428A8F00691C0D /* LaunchScreen.storyboard */; };
+		04C6F14427428A8F00691C0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04C6F13727428A8F00691C0D /* Main.storyboard */; };
+		04C6F14527428A8F00691C0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F13B27428A8F00691C0D /* main.m */; };
+		04C6F14627428A8F00691C0D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04C6F13D27428A8F00691C0D /* Images.xcassets */; };
+		04C6F14727428A8F00691C0D /* TUIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F13E27428A8F00691C0D /* TUIAppDelegate.m */; };
+		04C6F14827428A8F00691C0D /* TUIAudioEffectView-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04C6F13F27428A8F00691C0D /* TUIAudioEffectView-Info.plist */; };
+		04C6F15827428B3500691C0D /* TRTCRegisterRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F14A27428B3400691C0D /* TRTCRegisterRootView.swift */; };
+		04C6F15927428B3500691C0D /* TRTCLoginRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F14B27428B3400691C0D /* TRTCLoginRootView.swift */; };
+		04C6F15A27428B3500691C0D /* UserAgreementViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F14C27428B3400691C0D /* UserAgreementViewController+UI.swift */; };
+		04C6F15B27428B3500691C0D /* LoginLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04C6F14E27428B3400691C0D /* LoginLocalized.strings */; };
+		04C6F15C27428B3500691C0D /* LoginLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15127428B3400691C0D /* LoginLocalized.swift */; };
+		04C6F15D27428B3500691C0D /* TRTCLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15227428B3400691C0D /* TRTCLoginViewController.swift */; };
+		04C6F15E27428B3500691C0D /* ProfileManager_Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15327428B3400691C0D /* ProfileManager_Mock.swift */; };
+		04C6F15F27428B3500691C0D /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15427428B3400691C0D /* AppUtils.swift */; };
+		04C6F16027428B3500691C0D /* TRTCRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15527428B3400691C0D /* TRTCRegisterViewController.swift */; };
+		04C6F16127428B3500691C0D /* UserAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15627428B3400691C0D /* UserAgreementViewController.swift */; };
+		04C6F16227428B3500691C0D /* LayoutDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F15727428B3400691C0D /* LayoutDefine.swift */; };
+		04C6F16427428C0A00691C0D /* TUIAppDelegate+Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6F16327428C0A00691C0D /* TUIAppDelegate+Register.swift */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
-		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* TUIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* TUIAppDelegate.m */; };
-		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		A8F557D94D2C45FAA4BED231 /* Pods_TUIAudioEffectView_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BCF81FE80F3F2CDD1B8603E /* Pods_TUIAudioEffectView_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		03920153D23D43A03E3F45FF /* Pods-TUIAudioEffectView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIAudioEffectView_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TUIAudioEffectView_Tests/Pods-TUIAudioEffectView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		042F365F27038512009535B1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		049450A4270447FD00F22F1A /* TUIAudioEffectView_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TUIAudioEffectView_Example-Bridging-Header.h"; sourceTree = "<group>"; };
-		049450A5270447FD00F22F1A /* GenerateTestUserSig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateTestUserSig.swift; sourceTree = "<group>"; };
-		049450AA270448D100F22F1A /* TRTCRegisterRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCRegisterRootView.swift; sourceTree = "<group>"; };
-		049450AB270448D100F22F1A /* TRTCLoginRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLoginRootView.swift; sourceTree = "<group>"; };
-		049450AC270448D100F22F1A /* UserAgreementViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserAgreementViewController+UI.swift"; sourceTree = "<group>"; };
-		049450AF270448D100F22F1A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoginLocalized.strings"; sourceTree = "<group>"; };
-		049450B0270448D100F22F1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoginLocalized.strings; sourceTree = "<group>"; };
-		049450B1270448D100F22F1A /* LoginLocalized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLocalized.swift; sourceTree = "<group>"; };
-		049450B2270448D100F22F1A /* TRTCLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLoginViewController.swift; sourceTree = "<group>"; };
-		049450B3270448D100F22F1A /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
-		049450B4270448D100F22F1A /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
-		049450B5270448D100F22F1A /* TRTCRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCRegisterViewController.swift; sourceTree = "<group>"; };
-		049450B6270448D100F22F1A /* UserAgreementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAgreementViewController.swift; sourceTree = "<group>"; };
-		049450B7270448D100F22F1A /* LayoutDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutDefine.swift; sourceTree = "<group>"; };
-		049450C3270457CC00F22F1A /* TUIAudioEffectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIAudioEffectViewController.h; sourceTree = "<group>"; };
-		049450C4270457CC00F22F1A /* TUIAudioEffectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIAudioEffectViewController.m; sourceTree = "<group>"; };
+		04C6F1102742881100691C0D /* GenerateTestUserSig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateTestUserSig.swift; sourceTree = "<group>"; };
+		04C6F13127428A8F00691C0D /* TUIAudioEffectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIAudioEffectViewController.m; sourceTree = "<group>"; };
+		04C6F13427428A8F00691C0D /* TUIAudioEffectView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TUIAudioEffectView-Prefix.pch"; sourceTree = "<group>"; };
+		04C6F13627428A8F00691C0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		04C6F13827428A8F00691C0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		04C6F13927428A8F00691C0D /* TUIAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIAppDelegate.h; sourceTree = "<group>"; };
+		04C6F13A27428A8F00691C0D /* TUIAudioEffectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIAudioEffectViewController.h; sourceTree = "<group>"; };
+		04C6F13B27428A8F00691C0D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04C6F13C27428A8F00691C0D /* TUIAudioEffectView_Example-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TUIAudioEffectView_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		04C6F13D27428A8F00691C0D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		04C6F13E27428A8F00691C0D /* TUIAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIAppDelegate.m; sourceTree = "<group>"; };
+		04C6F13F27428A8F00691C0D /* TUIAudioEffectView-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TUIAudioEffectView-Info.plist"; sourceTree = "<group>"; };
+		04C6F14A27428B3400691C0D /* TRTCRegisterRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCRegisterRootView.swift; sourceTree = "<group>"; };
+		04C6F14B27428B3400691C0D /* TRTCLoginRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLoginRootView.swift; sourceTree = "<group>"; };
+		04C6F14C27428B3400691C0D /* UserAgreementViewController+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserAgreementViewController+UI.swift"; sourceTree = "<group>"; };
+		04C6F14F27428B3400691C0D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoginLocalized.strings"; sourceTree = "<group>"; };
+		04C6F15027428B3400691C0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoginLocalized.strings; sourceTree = "<group>"; };
+		04C6F15127428B3400691C0D /* LoginLocalized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLocalized.swift; sourceTree = "<group>"; };
+		04C6F15227428B3400691C0D /* TRTCLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCLoginViewController.swift; sourceTree = "<group>"; };
+		04C6F15327428B3400691C0D /* ProfileManager_Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileManager_Mock.swift; sourceTree = "<group>"; };
+		04C6F15427428B3400691C0D /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		04C6F15527428B3400691C0D /* TRTCRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRTCRegisterViewController.swift; sourceTree = "<group>"; };
+		04C6F15627428B3400691C0D /* UserAgreementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAgreementViewController.swift; sourceTree = "<group>"; };
+		04C6F15727428B3400691C0D /* LayoutDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutDefine.swift; sourceTree = "<group>"; };
+		04C6F16327428C0A00691C0D /* TUIAppDelegate+Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TUIAppDelegate+Register.swift"; sourceTree = "<group>"; };
 		3A59E29AC82209A189A660B2 /* Pods_TUIAudioEffectView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUIAudioEffectView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BCF81FE80F3F2CDD1B8603E /* Pods_TUIAudioEffectView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUIAudioEffectView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* TUIAudioEffectView_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUIAudioEffectView_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F595195388D20070C39A /* TUIAudioEffectView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TUIAudioEffectView-Info.plist"; sourceTree = "<group>"; };
-		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6003F59B195388D20070C39A /* TUIAudioEffectView-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TUIAudioEffectView-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* TUIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* TUIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		769D187886C77024A126FBAF /* Pods-TUIAudioEffectView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIAudioEffectView_Tests.release.xcconfig"; path = "Target Support Files/Pods-TUIAudioEffectView_Tests/Pods-TUIAudioEffectView_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B698D70D6C1AFE3B7606EFE7 /* Pods-TUIAudioEffectView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIAudioEffectView_Example.release.xcconfig"; path = "Target Support Files/Pods-TUIAudioEffectView_Example/Pods-TUIAudioEffectView_Example.release.xcconfig"; sourceTree = "<group>"; };
 		D6E21E1B6F1DB84B7251C980 /* Pods-TUIAudioEffectView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIAudioEffectView_Example.debug.xcconfig"; path = "Target Support Files/Pods-TUIAudioEffectView_Example/Pods-TUIAudioEffectView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,28 +87,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		049450A9270448D100F22F1A /* LoginMock */ = {
+		04C6F10F2742881100691C0D /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				049450AD270448D100F22F1A /* AppLocalized */,
-				049450AA270448D100F22F1A /* TRTCRegisterRootView.swift */,
-				049450AB270448D100F22F1A /* TRTCLoginRootView.swift */,
-				049450AC270448D100F22F1A /* UserAgreementViewController+UI.swift */,
-				049450B2270448D100F22F1A /* TRTCLoginViewController.swift */,
-				049450B3270448D100F22F1A /* ProfileManager_Mock.swift */,
-				049450B4270448D100F22F1A /* AppUtils.swift */,
-				049450B5270448D100F22F1A /* TRTCRegisterViewController.swift */,
-				049450B6270448D100F22F1A /* UserAgreementViewController.swift */,
-				049450B7270448D100F22F1A /* LayoutDefine.swift */,
+				04C6F1102742881100691C0D /* GenerateTestUserSig.swift */,
 			);
-			path = LoginMock;
+			path = Debug;
 			sourceTree = "<group>";
 		};
-		049450AD270448D100F22F1A /* AppLocalized */ = {
+		04C6F12E27428A8F00691C0D /* App */ = {
 			isa = PBXGroup;
 			children = (
-				049450AE270448D100F22F1A /* LoginLocalized.strings */,
-				049450B1270448D100F22F1A /* LoginLocalized.swift */,
+				04C6F14927428B3400691C0D /* LoginMock */,
+				04C6F13927428A8F00691C0D /* TUIAppDelegate.h */,
+				04C6F13E27428A8F00691C0D /* TUIAppDelegate.m */,
+				04C6F16327428C0A00691C0D /* TUIAppDelegate+Register.swift */,
+				04C6F13A27428A8F00691C0D /* TUIAudioEffectViewController.h */,
+				04C6F13127428A8F00691C0D /* TUIAudioEffectViewController.m */,
+				04C6F13527428A8F00691C0D /* LaunchScreen.storyboard */,
+				04C6F13727428A8F00691C0D /* Main.storyboard */,
+				04C6F13B27428A8F00691C0D /* main.m */,
+				04C6F13427428A8F00691C0D /* TUIAudioEffectView-Prefix.pch */,
+				04C6F13C27428A8F00691C0D /* TUIAudioEffectView_Example-Bridging-Header.h */,
+				04C6F13D27428A8F00691C0D /* Images.xcassets */,
+				04C6F13F27428A8F00691C0D /* TUIAudioEffectView-Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		04C6F14927428B3400691C0D /* LoginMock */ = {
+			isa = PBXGroup;
+			children = (
+				04C6F14D27428B3400691C0D /* AppLocalized */,
+				04C6F14A27428B3400691C0D /* TRTCRegisterRootView.swift */,
+				04C6F14B27428B3400691C0D /* TRTCLoginRootView.swift */,
+				04C6F14C27428B3400691C0D /* UserAgreementViewController+UI.swift */,
+				04C6F15227428B3400691C0D /* TRTCLoginViewController.swift */,
+				04C6F15327428B3400691C0D /* ProfileManager_Mock.swift */,
+				04C6F15427428B3400691C0D /* AppUtils.swift */,
+				04C6F15527428B3400691C0D /* TRTCRegisterViewController.swift */,
+				04C6F15627428B3400691C0D /* UserAgreementViewController.swift */,
+				04C6F15727428B3400691C0D /* LayoutDefine.swift */,
+			);
+			path = LoginMock;
+			sourceTree = SOURCE_ROOT;
+		};
+		04C6F14D27428B3400691C0D /* AppLocalized */ = {
+			isa = PBXGroup;
+			children = (
+				04C6F14E27428B3400691C0D /* LoginLocalized.strings */,
+				04C6F15127428B3400691C0D /* LoginLocalized.swift */,
 			);
 			path = AppLocalized;
 			sourceTree = "<group>";
@@ -116,7 +144,8 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				6003F593195388D20070C39A /* Example for TUIAudioEffectView */,
+				04C6F12E27428A8F00691C0D /* App */,
+				04C6F10F2742881100691C0D /* Debug */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				91C21EDBF52A92C3D2D762C3 /* Pods */,
@@ -142,36 +171,6 @@
 				3A59E29AC82209A189A660B2 /* Pods_TUIAudioEffectView_Tests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6003F593195388D20070C39A /* Example for TUIAudioEffectView */ = {
-			isa = PBXGroup;
-			children = (
-				049450A9270448D100F22F1A /* LoginMock */,
-				049450A5270447FD00F22F1A /* GenerateTestUserSig.swift */,
-				6003F59C195388D20070C39A /* TUIAppDelegate.h */,
-				6003F59D195388D20070C39A /* TUIAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				049450C3270457CC00F22F1A /* TUIAudioEffectViewController.h */,
-				049450C4270457CC00F22F1A /* TUIAudioEffectViewController.m */,
-				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
-				6003F5A8195388D20070C39A /* Images.xcassets */,
-				6003F594195388D20070C39A /* Supporting Files */,
-				049450A4270447FD00F22F1A /* TUIAudioEffectView_Example-Bridging-Header.h */,
-			);
-			name = "Example for TUIAudioEffectView";
-			path = TUIAudioEffectView;
-			sourceTree = "<group>";
-		};
-		6003F594195388D20070C39A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6003F595195388D20070C39A /* TUIAudioEffectView-Info.plist */,
-				6003F596195388D20070C39A /* InfoPlist.strings */,
-				6003F599195388D20070C39A /* main.m */,
-				6003F59B195388D20070C39A /* TUIAudioEffectView-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		91C21EDBF52A92C3D2D762C3 /* Pods */ = {
@@ -249,11 +248,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
-				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
-				049450BB270448D100F22F1A /* LoginLocalized.strings in Resources */,
-				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				04C6F14427428A8F00691C0D /* Main.storyboard in Resources */,
+				04C6F14327428A8F00691C0D /* LaunchScreen.storyboard in Resources */,
+				04C6F14627428A8F00691C0D /* Images.xcassets in Resources */,
+				04C6F15B27428B3500691C0D /* LoginLocalized.strings in Resources */,
+				04C6F14827428A8F00691C0D /* TUIAudioEffectView-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,50 +340,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				049450B9270448D100F22F1A /* TRTCLoginRootView.swift in Sources */,
-				049450BC270448D100F22F1A /* LoginLocalized.swift in Sources */,
-				049450B8270448D100F22F1A /* TRTCRegisterRootView.swift in Sources */,
-				049450BF270448D100F22F1A /* AppUtils.swift in Sources */,
-				049450BD270448D100F22F1A /* TRTCLoginViewController.swift in Sources */,
-				049450BE270448D100F22F1A /* ProfileManager_Mock.swift in Sources */,
-				6003F59E195388D20070C39A /* TUIAppDelegate.m in Sources */,
-				049450A6270447FD00F22F1A /* GenerateTestUserSig.swift in Sources */,
-				6003F59A195388D20070C39A /* main.m in Sources */,
-				049450C1270448D100F22F1A /* UserAgreementViewController.swift in Sources */,
-				049450BA270448D100F22F1A /* UserAgreementViewController+UI.swift in Sources */,
-				049450C0270448D100F22F1A /* TRTCRegisterViewController.swift in Sources */,
-				049450C5270457CC00F22F1A /* TUIAudioEffectViewController.m in Sources */,
-				049450C2270448D100F22F1A /* LayoutDefine.swift in Sources */,
+				04C6F1112742881100691C0D /* GenerateTestUserSig.swift in Sources */,
+				04C6F15F27428B3500691C0D /* AppUtils.swift in Sources */,
+				04C6F15927428B3500691C0D /* TRTCLoginRootView.swift in Sources */,
+				04C6F14727428A8F00691C0D /* TUIAppDelegate.m in Sources */,
+				04C6F16027428B3500691C0D /* TRTCRegisterViewController.swift in Sources */,
+				04C6F14527428A8F00691C0D /* main.m in Sources */,
+				04C6F16127428B3500691C0D /* UserAgreementViewController.swift in Sources */,
+				04C6F15A27428B3500691C0D /* UserAgreementViewController+UI.swift in Sources */,
+				04C6F14127428A8F00691C0D /* TUIAudioEffectViewController.m in Sources */,
+				04C6F15827428B3500691C0D /* TRTCRegisterRootView.swift in Sources */,
+				04C6F16227428B3500691C0D /* LayoutDefine.swift in Sources */,
+				04C6F15E27428B3500691C0D /* ProfileManager_Mock.swift in Sources */,
+				04C6F15C27428B3500691C0D /* LoginLocalized.swift in Sources */,
+				04C6F16427428C0A00691C0D /* TUIAppDelegate+Register.swift in Sources */,
+				04C6F15D27428B3500691C0D /* TRTCLoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		049450AE270448D100F22F1A /* LoginLocalized.strings */ = {
+		04C6F13527428A8F00691C0D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				049450AF270448D100F22F1A /* zh-Hans */,
-				049450B0270448D100F22F1A /* en */,
-			);
-			name = LoginLocalized.strings;
-			sourceTree = "<group>";
-		};
-		6003F596195388D20070C39A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6003F597195388D20070C39A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				71719F9E1E33DC2100824A3D /* Base */,
-				042F365F27038512009535B1 /* zh-Hans */,
+				04C6F13627428A8F00691C0D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		04C6F13727428A8F00691C0D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04C6F13827428A8F00691C0D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		04C6F14E27428B3400691C0D /* LoginLocalized.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04C6F14F27428B3400691C0D /* zh-Hans */,
+				04C6F15027428B3400691C0D /* en */,
+			);
+			name = LoginLocalized.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -505,15 +504,15 @@
 				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TUIAudioEffectView/TUIAudioEffectView-Prefix.pch";
-				INFOPLIST_FILE = "TUIAudioEffectView/TUIAudioEffectView-Info.plist";
+				GCC_PREFIX_HEADER = "App/TUIAudioEffectView-Prefix.pch";
+				INFOPLIST_FILE = "App/TUIAudioEffectView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.audioeffect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
-				SWIFT_OBJC_BRIDGING_HEADER = "TUIAudioEffectView/TUIAudioEffectView_Example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/TUIAudioEffectView_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -528,14 +527,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TUIAudioEffectView/TUIAudioEffectView-Prefix.pch";
-				INFOPLIST_FILE = "TUIAudioEffectView/TUIAudioEffectView-Info.plist";
+				GCC_PREFIX_HEADER = "App/TUIAudioEffectView-Prefix.pch";
+				INFOPLIST_FILE = "App/TUIAudioEffectView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.audioeffect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TUIAudioEffectView/TUIAudioEffectView_Example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/TUIAudioEffectView_Example-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};

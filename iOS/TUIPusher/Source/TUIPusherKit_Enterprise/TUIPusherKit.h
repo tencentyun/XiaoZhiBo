@@ -8,6 +8,6 @@
 #ifndef TUIPusherKit_h
 #define TUIPusherKit_h
 
-@import TXLiteAVSDK_Live;
+@import TXLiteAVSDK_Enterprise;
 
 #endif /* TUIPusherKit_h */

@@ -62,14 +62,14 @@ let LICENSEURLKEY = ""
  *
  * 腾讯云域名管理页面：https://console.cloud.tencent.com/live/domainmanage
  */
-let PUSH_DOMAIN: String = ""
+let PUSH_DOMAIN = ""
 
 /**
  * 配置的拉流地址
  *
  * 腾讯云域名管理页面：https://console.cloud.tencent.com/live/domainmanage
  */
-let PLAY_DOMAIN: String = ""
+let PLAY_DOMAIN = ""
 
 /**
  * 如果开通鉴权配置的鉴权Key
@@ -77,7 +77,7 @@ let PLAY_DOMAIN: String = ""
  * 注意：该方案仅适用于调试Demo，正式上线前请安全地址生成逻辑迁移到您的后台服务器上，以避免信息泄漏
  * 详细可参考 https://console.cloud.tencent.com/live/domainmanage 页面 - 推流配置-》 鉴权配置
  */
-let LIVE_URL_KEY: String = ""
+let LIVE_URL_KEY = ""
 
 class GenerateTestUserSig {
     

@@ -2,7 +2,7 @@
 //  TRTCLoginViewController.swift
 //  TXLiteAVDemo
 //
-//  Created by gg on 2021/4/7.
+//  Created by wesley on 2021/4/7.
 //  Copyright © 2021 Tencent. All rights reserved.
 //
 
