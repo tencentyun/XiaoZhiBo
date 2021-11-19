@@ -18,9 +18,9 @@
 
 ### 准备工作
 
-- 腾讯云服务的开启：点击这里[https://cloud.tencent.com/document/product/454/38625]
+- 腾讯云服务的开启：点击[这里](https://cloud.tencent.com/document/product/454/38625)
 
-- 后台程序的运行：点击这里[https://cloud.tencent.com/document/product/454/38625]
+- 后台程序的运行：点击[这里](https://cloud.tencent.com/document/product/454/38625)
 
 ## 运行示例
 

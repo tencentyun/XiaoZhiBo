@@ -407,7 +407,6 @@ public class ProfileManager {
                 if (res.errorCode == 0 && res.data != null) {
                     final UserInfo userInfo = res.data;
                     mUserInfo = userInfo;
-                    Log.d(TAG, "internalLogin UserModel: " + mUserInfo.toString());
                     setToken(userInfo.token);
                     setUserId(userInfo.userId);
                     setApaasUserId(userInfo.apaasUserId);
@@ -704,14 +703,21 @@ public class ProfileManager {
                     IMManager.sharedInstance().getUserInfo(userModel.userId, new IMManager.UserCallback() {
                         @Override
                         public void onCallback(int code, String msg, IMUserInfo userInfo) {
+
                             if (code == 0) {
                                 if (userInfo == null) {
                                     callback.onFailed(ERROR_CODE_UNKNOWN, "user info get is null");
                                     return;
                                 }
-                                userModel.userName = userInfo.userName;
-                                userModel.userAvatar = userInfo.userAvatar;
-                                callback.onSuccess(userModel);
+                                // 如果第一次没有设置用户名，跳转注册用户名
+                                if (TextUtils.isEmpty(userInfo.userName)) {
+                                    callback.onFailed(ERROR_CODE_NEED_REGISTER,
+                                            mContext.getString(R.string.login_not_register));
+                                } else {
+                                    userModel.userName = userInfo.userName;
+                                    userModel.userAvatar = userInfo.userAvatar;
+                                    callback.onSuccess(userModel);
+                                }
                             } else {
                                 callback.onFailed(code, msg);
                             }

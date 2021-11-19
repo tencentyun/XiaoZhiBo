@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -77,6 +78,8 @@ public class TUIAudioEffectView extends Dialog {
     private boolean mIsPause   = false;
     private boolean mIsPlayEnd = false;
 
+    private boolean mRefreshedScrollView = false; // 是否刷新过ScrollView
+
     private IAudioEffectPresenter mPresenter;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -95,6 +98,17 @@ public class TUIAudioEffectView extends Dialog {
         super.onCreate(savedInstanceState);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, getMaxHeight());
         getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!mRefreshedScrollView) {
+            mRefreshedScrollView = true;
+            // 小米11手机上，需要主动设置初始位置。
+            final ScrollView scrollView = findViewById(R.id.sv_content);
+            scrollView.scrollTo(0, 0);
+        }
     }
 
     private int getMaxHeight() {

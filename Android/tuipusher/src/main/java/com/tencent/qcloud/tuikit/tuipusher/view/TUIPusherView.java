@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.liteav.basic.log.TXCLog;
+import com.tencent.qcloud.tuicore.TUIConfig;
 import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuipusher.R;
@@ -69,6 +70,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     public TUIPusherView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
+        TUIConfig.setSceneOptimizParams("TUIPusher");
     }
 
     private void initView() {

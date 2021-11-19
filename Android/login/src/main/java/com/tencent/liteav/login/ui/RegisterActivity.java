@@ -1,5 +1,7 @@
 package com.tencent.liteav.login.ui;
 
+import static com.tencent.liteav.login.model.ProfileManager.ERROR_CODE_NEED_REGISTER;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -21,29 +23,16 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
-import com.tencent.liteav.login.ui.view.LoginStatusLayout;
 import com.tencent.rtmp.TXLiveBase;
 
 
 public class RegisterActivity extends BaseActivity {
     private static final String TAG = RegisterActivity.class.getName();
 
-    private static final int STATUS_WITHOUT_LOGIN = 0;   // 未登录
-    private static final int STATUS_LOGGING_IN    = 1;   // 正在登录
-    private static final int STATUS_LOGIN_SUCCESS = 2;   // 登录成功
-    private static final int STATUS_LOGIN_FAIL    = 3;   // 登录失败
-
-    private EditText          mEditUserName;
-    private EditText          mEditPassword;
-    private Button            mButtonLogin;
-    private LoginStatusLayout mLayoutLoginStatus;        // 登录状态的提示栏
-    private Handler           mMainHandler;
-    private Runnable          mResetLoginStatusRunnable = new Runnable() {
-        @Override
-        public void run() {
-            handleLoginStatus(STATUS_WITHOUT_LOGIN);
-        }
-    };
+    private EditText mEditUserName;
+    private EditText mEditPassword;
+    private Button   mButtonLogin;
+    private Handler  mMainHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +50,6 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void initView() {
-        mLayoutLoginStatus = findViewById(R.id.cl_login_status);
         TextView tvVersion = findViewById(R.id.tv_version);
         tvVersion.setText(getString(R.string.login_app_version, TXLiveBase.getSDKVersionStr(), getAppVersion(this)));
 
@@ -135,13 +123,12 @@ public class RegisterActivity extends BaseActivity {
             ToastUtils.showLong(R.string.login_tips_input_correct_info);
             return;
         }
-        handleLoginStatus(STATUS_LOGGING_IN);
 
         final ProfileManager profileManager = ProfileManager.getInstance();
         profileManager.register(username, password, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                handleLoginStatus(STATUS_LOGIN_SUCCESS);
+                ToastUtils.showShort(R.string.login_toast_register_success_and_logging_in);
                 Intent starter = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(starter);
                 finish();
@@ -149,24 +136,16 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onFailed(int code, String msg) {
-                handleLoginStatus(STATUS_LOGIN_FAIL);
-                ToastUtils.showLong(msg);
+                if (code == ERROR_CODE_NEED_REGISTER) {
+                    ToastUtils.showShort(R.string.login_toast_register_success_and_logging_in);
+                    Intent starter = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(starter);
+                    finish();
+                } else {
+                    ToastUtils.showLong(msg);
+                }
             }
         });
-    }
-
-    public void handleLoginStatus(int loginStatus) {
-        mLayoutLoginStatus.setLoginStatus(loginStatus);
-        if (STATUS_LOGGING_IN == loginStatus) {
-            mMainHandler.removeCallbacks(mResetLoginStatusRunnable);
-            mMainHandler.postDelayed(mResetLoginStatusRunnable, 6000);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mMainHandler.removeCallbacks(mResetLoginStatusRunnable);
     }
 
     private void initStatusBar() {

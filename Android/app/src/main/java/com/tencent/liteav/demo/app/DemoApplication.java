@@ -1,7 +1,6 @@
 package com.tencent.liteav.demo.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -23,15 +22,11 @@ public class DemoApplication extends MultiDexApplication {
     private static String          TAG = "DemoApplication";
     private static DemoApplication instance;
 
-    private Context mAppContext;
-    private boolean mIsInitBugly = false;
 
     @Override
     public void onCreate() {
 
         super.onCreate();
-
-        mAppContext = this.getApplicationContext();
         instance = this;
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -104,9 +99,4 @@ public class DemoApplication extends MultiDexApplication {
             e.printStackTrace();
         }
     }
-
-    public boolean isInitBugly() {
-        return mIsInitBugly;
-    }
-
 }

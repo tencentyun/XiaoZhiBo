@@ -72,18 +72,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
         initTabView();
         mAlertDialog = new ConfirmDialogFragment();
-        DemoApplication application = (DemoApplication) getApplication();
-        if (application.isInitBugly()) {
-            // Bugly oa 暂不支持apk升级，后续实现。
-            //    Beta.checkUpgrade();
-        } else {
-            /**
-             * 1、由于安全合规问题，需要用户点击同意按钮后，才能初始化 bugly oa；
-             * 2、bugly oa 在蓝盾 release 构建下才打开（通过脚本去掉注释），平时开发不需要打开 bugly oa；
-             * 3、如果此处代码有变动，包括各式，注意脚本也做相应修改；
-             */
-            //application.initBuglyOA();
-        }
         initTXLiveBase();
     }
 

@@ -12,6 +12,7 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.log.TXCLog;
+import com.tencent.qcloud.tuicore.TUIConfig;
 import com.tencent.qcloud.tuikit.tuiplayer.R;
 import com.tencent.qcloud.tuikit.tuiplayer.model.utils.LinkURLUtils;
 import com.tencent.qcloud.tuikit.tuiplayer.presenter.ITUIPlayerContract;
@@ -52,6 +53,7 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
         super(context, attrs);
         initView();
         initPresenter();
+        TUIConfig.setSceneOptimizParams("TUIPlayer");
     }
 
     private void initView() {

@@ -41,4 +41,5 @@
     <string name="login_app_version">MLVB v%s(%s)</string>
     <string name="login_welcome_user_name_tips">欢迎新同学\n第一次登录需要设置昵称哦</string>
     <string name="login_btn_register">注册</string>
+    <string name="login_not_register">未注册用户</string>
 </resources>
