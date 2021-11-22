@@ -13,7 +13,6 @@
 └─ tuigift              //礼物组件
 └─ tuiplayer            //拉流组件
 └─ tuipusher            //推流组件
-└─ tuicore              //TUI组件管理模块
 ```
 
 ### 准备工作
