@@ -32,12 +32,12 @@ public class GenerateGlobalConfig {
      *
      * 小直播后台提供有登录、房间列表等服务，更多细节见文档：https://cloud.tencent.com/document/product/454/38625
      */
-    public static final String SERVERLESSURL = PLACEHOLDER;
+    public static final String SERVERLESSURL = "PLACEHOLDER";
 
     /**
      * 配置的播放域名
      *
      * 腾讯云域名管理页面：https://console.cloud.tencent.com/live/domainmanage
      */
-    public static final String PLAY_DOMAIN = PLACEHOLDER;
+    public static final String PLAY_DOMAIN = "PLACEHOLDER";
 }

@@ -38,7 +38,7 @@
     <string name="login_protocol_title">欢迎使用腾讯云视立方小直播</string>
     <string name="login_protocol_tip_start">欢迎您使用腾讯云视立方小直播，我们将通过</string>
     <string name="login_protocol_tip_end">帮助您了解我们收集、使用、存储个人信息的情况，此外您还可以了解到您所享有的相关权利和实现途径，如您同意请点击下方按钮开始接受我们的服务</string>
-    <string name="login_app_version">MLVB v%s(%s)</string>
+    <string name="login_app_version">MLVB v%s</string>
     <string name="login_welcome_user_name_tips">欢迎新同学\n第一次登录需要设置昵称哦</string>
     <string name="login_btn_register">注册</string>
     <string name="login_not_register">未注册用户</string>

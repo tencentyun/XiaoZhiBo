@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity {
         initButtonLogin();
 
         TextView tvVersion = findViewById(R.id.tv_version);
-        tvVersion.setText(getString(R.string.login_app_version, TXLiveBase.getSDKVersionStr(), getAppVersion(this)));
+        tvVersion.setText(getString(R.string.login_app_version, getAppVersion(this)));
     }
 
     private void initEditUsername() {

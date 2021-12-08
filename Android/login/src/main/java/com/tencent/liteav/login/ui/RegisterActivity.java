@@ -51,7 +51,7 @@ public class RegisterActivity extends BaseActivity {
 
     private void initView() {
         TextView tvVersion = findViewById(R.id.tv_version);
-        tvVersion.setText(getString(R.string.login_app_version, TXLiveBase.getSDKVersionStr(), getAppVersion(this)));
+        tvVersion.setText(getString(R.string.login_app_version, getAppVersion(this)));
 
         initEditUsername();
         initEditPassword();

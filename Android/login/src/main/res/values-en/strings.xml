@@ -38,7 +38,7 @@
     <string name="login_protocol_title">Welcome to Tencent Real-Time Communication</string>
     <string name="login_protocol_tip_start">Welcome to Tencent Real-Time Communication. We will help you understand our collection, use, and storage of personal information through the</string>
     <string name="login_protocol_tip_end">.</string>
-    <string name="login_app_version">MLVB v%s(%s)</string>
+    <string name="login_app_version">MLVB v%s</string>
     <string name="login_welcome_user_name_tips">Welcome new classmates\nYou need to set a nickname when logging in for the first time</string>
     <string name="login_btn_register">Register</string>
     <string name="login_not_register">New User</string>

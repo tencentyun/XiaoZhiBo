@@ -15,7 +15,7 @@ import com.tencent.qcloud.tuikit.tuiplayer.model.listener.ITUIPlayerStreamListen
 import com.tencent.qcloud.tuikit.tuiplayer.model.service.ITUIPlayerStreamService;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
-import static com.tencent.live2.V2TXLiveDef.V2TXLiveStatusChangeReason.V2TXLiveStatusChangeReasonLocalStopped;
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_DISCONNECTED;
 import static com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView.PlayStatus.START_PLAY;
 import static com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView.PlayStatus.STOP_PLAY;
 
@@ -133,27 +133,18 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
     class TUILivePlayerObserver extends V2TXLivePlayerObserver {
         public void onError(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
             TXCLog.d(TAG, "TUILivePlayerObserver onError code:" + code + ", msg:" + msg);
+            if (code == V2TXLIVE_ERROR_DISCONNECTED) {
+                mListener.onNotifyPlayStatus(STOP_PLAY);
+            }
         }
 
         public void onWarning(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
             TXCLog.d(TAG, "TUILivePlayerObserver onWarning code:" + code + ", msg:" + msg);
         }
 
-        public void onVideoPlayStatusUpdate(V2TXLivePlayer player, V2TXLiveDef.V2TXLivePlayStatus status, V2TXLiveDef.V2TXLiveStatusChangeReason reason, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePlayerObserver onVideoPlayStatusUpdate status:" + status + ", reason:" + reason);
-            if (mListener != null) {
-                switch (status) {
-                    case V2TXLivePlayStatusStopped:
-                        if(reason != V2TXLiveStatusChangeReasonLocalStopped){
-                            mListener.onNotifyPlayStatus(STOP_PLAY);
-                        }
-                        break;
-                    case V2TXLivePlayStatusPlaying:
-                        mListener.onNotifyPlayStatus(START_PLAY);
-                        break;
-                }
-            }
-
+        @Override
+        public void onVideoPlaying(V2TXLivePlayer player, boolean firstPlay, Bundle extraInfo) {
+            mListener.onNotifyPlayStatus(START_PLAY);
         }
     }
 
