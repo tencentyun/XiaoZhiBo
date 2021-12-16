@@ -58,7 +58,7 @@
     V2TXLiveCode res = [self.pusher startMicrophone];
     res += [self.pusher startPush:url];
     
-    LOGD("【Pusher】start push: %d url:%@", res, url);
+    LOGD("【Pusher】start push: %d url:%s", res, url.UTF8String);
     
     [self.pusher setMixTranscodingConfig:nil];
     return res == V2TXLIVE_OK;

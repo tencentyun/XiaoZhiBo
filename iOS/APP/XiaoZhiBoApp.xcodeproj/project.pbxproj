@@ -684,7 +684,7 @@
 				47BDEBE92701A239008A7C4B /* LaunchScreen.storyboard */,
 				47BDEBEB2701A239008A7C4B /* LaunchScreen_en.storyboard */,
 				47BDEBED2701A239008A7C4B /* Main.storyboard */,
-				47BDEBEF2701A239008A7C4B /* TRTCInfoPlist */,
+				47BDEBEF2701A239008A7C4B /* MLVBInfoPlist */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -753,12 +753,12 @@
 			path = BeautyResource;
 			sourceTree = "<group>";
 		};
-		47BDEBEF2701A239008A7C4B /* TRTCInfoPlist */ = {
+		47BDEBEF2701A239008A7C4B /* MLVBInfoPlist */ = {
 			isa = PBXGroup;
 			children = (
 				47BDEBF02701A239008A7C4B /* InfoPlist.strings */,
 			);
-			path = TRTCInfoPlist;
+			path = MLVBInfoPlist;
 			sourceTree = "<group>";
 		};
 		47BDEBF32701A239008A7C4B /* Services */ = {

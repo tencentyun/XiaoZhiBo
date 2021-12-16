@@ -78,15 +78,13 @@ class MainViewController: UIViewController {
     var logFilesArray: [String] = []
     lazy var mainMenuItems: [MainMenuItemModel] = {
         return [
-            MainMenuItemModel.init(imageName: "main_home_showlive", title: MainLocalize("Demo.TRTC.Portal.Main.showLiveTitle"), content: MainLocalize("Demo.TRTC.Portal.Main.showLiveDesc"), selectHandle: { [weak self] in
+            MainMenuItemModel(imageName: "main_home_showlive",
+                              title: MainLocalize("Demo.TRTC.Portal.Main.showLiveTitle"),
+                              content: MainLocalize("Demo.TRTC.Portal.Main.showLiveDesc"),
+                              selectHandle: { [weak self] in
                 guard let `self` = self else { return }
                 self.gotoShowLiveViewController()
-            }),
-            MainMenuItemModel.init(imageName: "main_home_shoplive", title: MainLocalize("Demo.TRTC.Portal.Main.shopLiveTitle"), content: MainLocalize("Demo.TRTC.Portal.Main.shopLiveDesc"), selectHandle: { [weak self] in
-                guard let `self` = self else { return }
-                self.gotoShopLiveViewController()
-            }),
-        ]
+            })]
     }()
     
     override func viewDidLoad() {

@@ -48,6 +48,6 @@
 "Demo.TRTC.Portal.private" = "隐私条例";
 "Demo.TRTC.Portal.agreement" = "用户协议";
 "Demo.TRTC.LoginMock.adduserinformationforfirstlogin" = "首次登录请补充用户信息";
-"Demo.TRTC.Portal.privatealertdescription" = "欢迎您使用腾讯云实时音视频（TRTC），我们将通过xxx和yyy帮助您了解我们收集、使用、存储个人信息的情况，此外您还可以了解到您所享有的相关权利和实现途径，如您同意请点击下方按钮开始接受我们的服务；";
+"Demo.TRTC.Portal.privatealertdescription" = "欢迎您使用小直播(腾讯云视立方小直播)，我们将通过xxx和yyy帮助您了解我们收集、使用、存储个人信息的情况，此外您还可以了解到您所享有的相关权利和实现途径，如您同意请点击下方按钮开始接受我们的服务；";
 "Demo.TRTC.Home.useroverduemessage" = "登录状态失效，请重新登录";
 "Demo.TRTC.http.syserror"= "系统错误";

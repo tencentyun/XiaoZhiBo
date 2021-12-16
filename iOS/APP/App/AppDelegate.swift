@@ -10,6 +10,11 @@ import TUIPusher
 import TUICore
 import Toast_Swift
 
+/// 用户协议
+let WEBURL_Agreement:String = "https://web.sdk.qcloud.com/document/Tencent-MLVB-User-Agreement.html"
+/// 隐私协议
+let WEBURL_Privacy:String = "https://web.sdk.qcloud.com/document/Tencent-MLVB-Privacy-Protection-Guidelines.html"
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let kXiaoZhiBoAppId = "0"
@@ -108,12 +113,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func compareVersion(appStoreVersion: String) -> Bool {
-        if let infoDic = Bundle.main.infoDictionary {
-            let currentVersion = infoDic["CFBundleShortVersionString"] as! String
-            print("====== current version is \(currentVersion) ======")
-            return appStoreVersion.compare(currentVersion, options: .numeric, range: nil, locale: nil) == .orderedDescending
-        }
-        return false
+        let currentVersion = AppUtils.appVersion
+        print("====== current version is \(currentVersion) ======")
+        return appStoreVersion.compare(currentVersion, options: .numeric, range: nil, locale: nil) == .orderedDescending
     }
     
     func showUpdateAlertController(appID: String) {

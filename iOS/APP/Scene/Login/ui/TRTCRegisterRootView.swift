@@ -80,9 +80,9 @@ class TRTCRegisterRootView: UIView {
         tip.textAlignment = .center
         tip.font = UIFont.systemFont(ofSize: 14)
         tip.textColor = UIColor("BBBBBB").withAlphaComponent(0.8)
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0.1.1"
-        let sdvVersionStr = TRTCCloud.getSDKVersion() ?? "1.0.0"
-        tip.text = "TRTC v\(sdvVersionStr)(\(version))"
+        let version = AppUtils.appVersionWithBuild
+        let sdkVersionStr = TRTCCloud.getSDKVersion() ?? "1.0.0"
+        tip.text = "TRTC v\(sdkVersionStr)(\(version))"
         tip.adjustsFontSizeToFitWidth = true
         return tip
     }()

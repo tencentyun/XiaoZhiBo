@@ -64,11 +64,9 @@ class MineAboutViewController: UIViewController {
             let sdk = MineAboutModel(title: .sdkVersionText, value: sdkVersion)
             res.append(sdk)
         }
-        
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            let storeVersion = MineAboutModel(title: .storeVersionText, value: version)
-            res.append(storeVersion)
-        }
+        let version = AppUtils.appVersionWithBuild
+        let storeVersion = MineAboutModel(title: .storeVersionText, value: version)
+        res.append(storeVersion)
         
         let resign = MineAboutModel(title: .resignText, type: .resign)
         res.append(resign)

@@ -279,14 +279,14 @@ extension MineRootView : UITableViewDelegate {
             rootVC?.navigationController?.pushViewController(vc, animated: true)
             
         case .privacy:
-            guard let url = URL(string: "https://web.sdk.qcloud.com/document/Tencent-MLVB-Privacy-Protection-Guidelines.html") else {
+            guard let url = URL(string: WEBURL_Privacy) else {
                 return
             }
             let vc = TRTCWebViewController(url: url, title: model.title)
             vc.hidesBottomBarWhenPushed = true
             rootVC?.navigationController?.pushViewController(vc, animated: true)
         case .agreement:
-            guard let url = URL(string: "https://web.sdk.qcloud.com/document/Tencent-MLVB-User-Agreement.html") else {
+            guard let url = URL(string: WEBURL_Agreement) else {
                 return
             }
             let vc = TRTCWebViewController(url: url, title: model.title)

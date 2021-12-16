@@ -9,12 +9,12 @@ import Foundation
 
 /**
  * 腾讯云直播license管理页面(https://console.cloud.tencent.com/live/license)
- * 当前应用的License LicenseUrlå
+ * 当前应用的License LicenseUrl
  *
  * License Management View (https://console.cloud.tencent.com/live/license)
  * License URL of your application
  */
-let LICENSEURL = "PLACEHOLDER"
+let LICENSEURL = ""
 
 /**
  * 腾讯云直播license管理页面(https://console.cloud.tencent.com/live/license)
@@ -23,18 +23,18 @@ let LICENSEURL = "PLACEHOLDER"
  * License Management View (https://console.cloud.tencent.com/live/license)
  * License key of your application
  */
-let LICENSEURLKEY = "PLACEHOLDER"
+let LICENSEURLKEY = ""
 
 /**
- * 配置的后台服务域名，类似：https://service-3vscss6c-xxxxxxxxxxx.gz.apigw.tencentcs.com、"
+ * 配置的后台服务域名，类似：https://service-3vscss6c-xxxxxxxxxxx.gz.apigw.tencentcs.com"
  *
  * 小直播后台提供有登录、房间列表等服务，更多细节见文档：https://cloud.tencent.com/document/product/454/38625
  */
-let SERVERLESSURL = "PLACEHOLDER"
+let SERVERLESSURL = ""
 
 /**
  * 配置的拉流地址
  *
  * 腾讯云域名管理页面：https://console.cloud.tencent.com/live/domainmanage
  */
-let PLAY_DOMAIN: String = "PLACEHOLDER"
+let PLAY_DOMAIN = ""

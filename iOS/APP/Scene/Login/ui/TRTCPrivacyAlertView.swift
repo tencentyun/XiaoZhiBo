@@ -207,14 +207,14 @@ extension TRTCPrivacyAlertView: UITextViewDelegate {
         return true
     }
     func showPrivacy() {
-        guard let url = URL(string: "https://web.sdk.qcloud.com/document/Tencent-RTC-Privacy-Protection-Guidelines.html") else {
+        guard let url = URL(string: WEBURL_Privacy) else {
             return
         }
         let vc = TRTCWebViewController(url: url, title: .privacyTitleText)
         superVC.navigationController?.pushViewController(vc, animated: true)
     }
     func showProtocol() {
-        guard let url = URL(string: "https://web.sdk.qcloud.com/document/Tencent-RTC-User-Agreement.html") else {
+        guard let url = URL(string: WEBURL_Agreement) else {
             return
         }
         let vc = TRTCWebViewController(url: url, title: .protocolTitleText)

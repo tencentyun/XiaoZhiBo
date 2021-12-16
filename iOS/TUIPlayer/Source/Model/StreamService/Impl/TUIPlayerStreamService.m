@@ -85,18 +85,14 @@
 }
 
 #pragma mark - V2TXLivePlayerObserver
-- (void)onVideoPlayStatusUpdate:(id<V2TXLivePlayer>)player status:(V2TXLivePlayStatus)status reason:(V2TXLiveStatusChangeReason)reason extraInfo:(NSDictionary *)extraInfo {
-    switch (status) {
-        case V2TXLivePlayStatusStopped:
-            if (reason != V2TXLiveStatusChangeReasonLocalStopped) {
-                if ([self.delegate respondsToSelector:@selector(onRemoteStopPush)]) {
-                    [self.delegate onRemoteStopPush];
-                }
-            }
-            break;
-            
-        default:
-            break;
+- (void)onError:(id<V2TXLivePlayer>)player
+           code:(V2TXLiveCode)code
+        message:(NSString *)msg
+      extraInfo:(NSDictionary *)extraInfo {
+    if (code == V2TXLIVE_ERROR_DISCONNECTED) {
+        if ([self.delegate respondsToSelector:@selector(onRemoteStopPush)]) {
+            [self.delegate onRemoteStopPush];
+        }
     }
 }
 
@@ -106,6 +102,7 @@
         self.linkMicStatus(NO);
         self.linkMicStatus = nil;
     }
+
 }
 
 - (void)onCaptureFirstVideoFrame {

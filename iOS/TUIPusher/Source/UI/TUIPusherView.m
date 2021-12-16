@@ -95,8 +95,8 @@ typedef enum : NSUInteger {
 
 - (void)switchCamera:(BOOL)isFrontCamera {
     if (hasSwitchedCamera) {
-        if (self.presenter.isFrontCamera != isFrontCamera) {
-            isFrontCamera = self.presenter.isFrontCamera;
+        if (self.presenter.isFrontCamera == isFrontCamera) {
+            isFrontCamera = !isFrontCamera;
             LOGD("【Pusher】fix front camera: %d", isFrontCamera);
         }
     }
@@ -249,11 +249,13 @@ typedef enum : NSUInteger {
     }
     if ([self.delegate respondsToSelector:@selector(onClickStartPushButton:url:responseCallback:)]) {
         @weakify(self)
+        self.startBtn.userInteractionEnabled = NO;
         [self.delegate onClickStartPushButton:self url:self.presenter.pushUrl responseCallback:^(BOOL isAgree) {
+            @strongify(self)
             if (isAgree) {
-                @strongify(self)
                 [self startAction];
             }
+            self.startBtn.userInteractionEnabled = YES;
         }];
     }
     else {

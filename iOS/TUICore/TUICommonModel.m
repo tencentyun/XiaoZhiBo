@@ -10,6 +10,7 @@
 #import "UIView+TUILayout.h"
 #import "NSString+TUIUtil.h"
 #import "TUITool.h"
+#import "TUIDarkModel.h"
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -1094,6 +1095,17 @@ NSString *kTopConversationListChangedNotification = @"kTopConversationListChange
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationBar.backgroundColor = self.tintColor;
+    self.navigationBar.barTintColor = self.tintColor;
+    self.navigationBar.shadowImage = [UIImage new];
+    self.navigationBar.tintColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+}
+
+- (UIColor *)tintColor
+{
+    UIColor *lightColor = [UIColor colorWithRed:235/255.0 green:240/255.0 blue:246/255.0 alpha:1/1.0];
+    UIColor *darkColor = [UIColor blackColor];
+    return [UIColor d_colorWithColorLight:lightColor dark:darkColor];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
