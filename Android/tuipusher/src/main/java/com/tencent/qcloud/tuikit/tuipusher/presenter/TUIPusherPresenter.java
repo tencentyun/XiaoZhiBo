@@ -1,6 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.presenter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -74,6 +75,16 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
     @Override
     public void startPreview(boolean isFront, TXCloudVideoView view) {
         mStreamService.startCameraPreview(isFront, view);
+    }
+
+    @Override
+    public void startVirtualCamera(Bitmap bitmap) {
+        mStreamService.startVirtualCamera(bitmap);
+    }
+
+    @Override
+    public void stopVirtualCamera() {
+        mStreamService.stopVirtualCamera();
     }
 
     @Override
@@ -243,7 +254,7 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         TXCLog.d(TAG, "onRequestPK");
         if (!TextUtils.isEmpty(mPKInvteId) && CMD_PK_REQ.equals(bean.getData().getData().getCmd())) {
             //已经收到了未处理的PK请求，抛弃新的请求
-            mSignallingService.responsePK(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(),15);
+            mSignallingService.responsePK(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
             return;
         }
         mPKInvteId = bean.getInviteID();
@@ -269,7 +280,7 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
     public void onRequestJoinAnchor(InvitationReqBean bean) {
         TXCLog.d(TAG, "onRequestJoinAnchor");
         if (!TextUtils.isEmpty(mLinkInviteId) && CMD_JOIN_ANCHOR_REQ.equals(bean.getData().getData().getCmd())) {    //已经收到了未处理的连麦请求，抛弃新的请求
-            mSignallingService.responseLink(bean.getInviteID(), mStreamId, false,  TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
+            mSignallingService.responseLink(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
             return;
         }
         mLinkInviteId = bean.getInviteID();
