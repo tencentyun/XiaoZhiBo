@@ -1,6 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.model.service.impl;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -55,6 +56,16 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         mV2TXLivePusher.startMicrophone();
         mIsPreview = true;
         return 0;
+    }
+
+    @Override
+    public void startVirtualCamera(Bitmap bitmap) {
+        mV2TXLivePusher.startVirtualCamera(bitmap);
+    }
+
+    @Override
+    public void stopVirtualCamera() {
+        mV2TXLivePusher.stopVirtualCamera();
     }
 
     @Override
@@ -173,7 +184,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         }
     }
 
-    public V2TXLivePusher getV2TXLivePusher(){
+    public V2TXLivePusher getV2TXLivePusher() {
         return mV2TXLivePusher;
     }
 

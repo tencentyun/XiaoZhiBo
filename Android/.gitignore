@@ -1,3 +1,5 @@
+tui*/
+
 *.iml
 *.gradle/
 /local.properties
