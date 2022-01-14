@@ -64,7 +64,7 @@ public class ShoppingLiveAudienceActivity extends AppCompatActivity {
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     String playUrl = URLUtils.generatePlayUrl(mRoomId + "", URLUtils.PlayType.WEBRTC);
-                    mTUIPlayerView.start(playUrl);
+                    mTUIPlayerView.startPlay(playUrl);
                 } else {
                     ToastUtils.showShort("加入群组失败");
                     finish();

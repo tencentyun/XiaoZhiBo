@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 拉流相关逻辑封装，主要包含功能有
  * 
- * - 开始拉流{@link TUIPlayerView#start(String)}
+ * - 开始拉流{@link TUIPlayerView#startPlay(String)}
  * - 停止拉流{@link TUIPlayerView#stopPlay()}
  * - 设置拉流状态监听{@link TUIPlayerView#setTUIPlayerViewListener(TUIPlayerViewListener)}
  * - 禁用连麦功能{@link TUIPlayerView#disableLinkMic(boolean)}
@@ -262,7 +262,7 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
      *
      * @param url 流地址
      */
-    public void start(String url) {
+    public void startPlay(String url) {
         TXCLog.d(TAG, "start url:" + url);
         if (!LinkURLUtils.checkPlayURL(url)) {
             ToastUtils.showShort(R.string.tuiplayer_url_empty);

@@ -1,5 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.model.service;
 
+import android.graphics.Bitmap;
+
 import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.live2.V2TXLiveDef;
@@ -26,6 +28,19 @@ public interface ITUIPusherStreamService {
      * @return
      */
     int startCameraPreview(boolean isFront, TXCloudVideoView videoView);
+
+    /**
+     * 开启图片推流
+     *
+     * @param bitmap 推流图片
+     * @return
+     */
+    void startVirtualCamera(Bitmap bitmap);
+
+    /**
+     * 关闭图片推流
+     */
+    void stopVirtualCamera();
 
     /**
      * 开始推流
