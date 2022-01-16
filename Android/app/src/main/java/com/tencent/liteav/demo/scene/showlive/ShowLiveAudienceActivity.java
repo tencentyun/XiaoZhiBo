@@ -27,7 +27,7 @@ import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 
 /**
  * 秀场直播 - 观众页面
- *
+ * <p>
  * 拉流逻辑主要依赖TUIPlayer组建中的{@link TUIPlayerView} 实现
  */
 public class ShowLiveAudienceActivity extends AppCompatActivity {
@@ -87,7 +87,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     String playUrl = URLUtils.generatePlayUrl(mAnchorId, URLUtils.PlayType.WEBRTC);
-                    mTUIPlayerView.start(playUrl);
+                    mTUIPlayerView.startPlay(playUrl);
                 } else {
                     ToastUtils.showShort(getString(R.string.app_join_group_fail));
                     finish();

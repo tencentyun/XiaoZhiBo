@@ -1,5 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.presenter;
 
+import android.graphics.Bitmap;
+
 import com.tencent.qcloud.tuikit.tuipusher.model.listener.ITUIPusherSignallingListener;
 import com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -18,6 +20,18 @@ public interface ITUIPusherContract {
          * @param view    承载视频画面的控件
          */
         void startPreview(boolean isFront, TXCloudVideoView view);
+
+        /**
+         * 开启图片推流
+         *
+         * @param bitmap 推流图片
+         */
+        void startVirtualCamera(Bitmap bitmap);
+
+        /**
+         * 关闭图片推流
+         */
+        void stopVirtualCamera();
 
         /**
          * 开始推流
