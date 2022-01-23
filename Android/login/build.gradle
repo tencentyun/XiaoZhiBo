@@ -23,7 +23,6 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':debug')
     api project(':basic')
-    api rootProject.ext.imSdk
     api rootProject.ext.liteavSdk
     implementation project(path: ':tuicore')
 }
