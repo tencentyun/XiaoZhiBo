@@ -31,4 +31,5 @@ task clean(type: Delete) {
 }
 
 ext {
+    liteavSdk = "com.tencent.liteav:LiteAVSDK_Enterprise:latest.release"
 }
