@@ -7,6 +7,8 @@ import android.os.StrictMode;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.tencent.liteav.demo.scene.showlive.ShowLiveAudienceActivity;
+import com.tencent.liteav.demo.scene.showlive.floatwindow.IFloatWindowCallback;
 import com.tencent.liteav.login.model.ProfileManager;
 
 import java.lang.reflect.Constructor;
@@ -15,13 +17,15 @@ import java.lang.reflect.Method;
 
 /**
  * 应用Application
- *
- * 用于但不仅限于对第三方库做初始化操作、Actiivty的生命周期的管理等等
+ * <p>
+ * 用于但不仅限于对第三方库做初始化操作、Activity的生命周期的管理等等
+ * </p>
  */
 public class DemoApplication extends MultiDexApplication {
     private static String          TAG = "DemoApplication";
     private static DemoApplication instance;
 
+    private IFloatWindowCallback mCallback;
 
     @Override
     public void onCreate() {
@@ -50,12 +54,19 @@ public class DemoApplication extends MultiDexApplication {
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                if (activity instanceof ShowLiveAudienceActivity) {
+                    if (mCallback != null)
+                        mCallback.onAppBackground(false);
+                }
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                if (activity instanceof ShowLiveAudienceActivity) {
+                    if (mCallback != null) {
+                        mCallback.onAppBackground(true);
+                    }
+                }
             }
 
             @Override
@@ -97,6 +108,13 @@ public class DemoApplication extends MultiDexApplication {
             mHiddenApiWarningShown.setBoolean(activityThread, true);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setCallback(IFloatWindowCallback callback) {
+        mCallback = callback;
+        if (mCallback != null) {
+            boolean is = mCallback instanceof IFloatWindowCallback;
         }
     }
 }

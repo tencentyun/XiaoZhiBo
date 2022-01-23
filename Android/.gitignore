@@ -1,3 +1,5 @@
+tui*/
+
 *.iml
 *.gradle/
 /local.properties
@@ -7,3 +9,5 @@ build/
 /captures
 .externalNativeBuild
 .cxx
+*.codecc/
+/build.yml

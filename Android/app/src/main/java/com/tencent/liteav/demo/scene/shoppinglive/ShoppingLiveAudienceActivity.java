@@ -18,6 +18,8 @@ import com.tencent.liteav.demo.utils.URLUtils;
 import com.tencent.qcloud.tuikit.tuiplayer.view.listener.TUIPlayerViewListener;
 import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 
+import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TYPE_MLVB_SHOPPING_LIVE;
+
 public class ShoppingLiveAudienceActivity extends AppCompatActivity {
     private static final String TAG = ShoppingLiveAudienceActivity.class.getSimpleName();
 
@@ -59,18 +61,19 @@ public class ShoppingLiveAudienceActivity extends AppCompatActivity {
             }
         });
 
-        RoomService.getInstance(ShoppingLiveAudienceActivity.this).enterRoom(mRoomId, new CommonCallback() {
-            @Override
-            public void onCallback(int code, String msg) {
-                if (code == 0) {
-                    String playUrl = URLUtils.generatePlayUrl(mRoomId + "", URLUtils.PlayType.WEBRTC);
-                    mTUIPlayerView.start(playUrl);
-                } else {
-                    ToastUtils.showShort("加入群组失败");
-                    finish();
-                }
-            }
-        });
+        RoomService.getInstance(ShoppingLiveAudienceActivity.this).enterRoom(mRoomId,
+                TYPE_MLVB_SHOPPING_LIVE, new CommonCallback() {
+                    @Override
+                    public void onCallback(int code, String msg) {
+                        if (code == 0) {
+                            String playUrl = URLUtils.generatePlayUrl(mRoomId + "", URLUtils.PlayType.WEBRTC);
+                            mTUIPlayerView.startPlay(playUrl);
+                        } else {
+                            ToastUtils.showShort("加入群组失败");
+                            finish();
+                        }
+                    }
+                });
 
     }
 

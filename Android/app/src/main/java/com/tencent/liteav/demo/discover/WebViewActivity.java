@@ -23,15 +23,17 @@ public class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_activity_webview);
         initStatusBar();
-        String url = getIntent().getStringExtra("url");
-        String title = getIntent().getStringExtra("title");
         WebView webView = findViewById(R.id.web_view);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        final WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
         TextView tvTitle = findViewById(R.id.tv_title);
+        String url = getIntent().getStringExtra("url");
+        String title = getIntent().getStringExtra("title");
         if (!TextUtils.isEmpty(url)) {
             webView.loadUrl(url);
         }

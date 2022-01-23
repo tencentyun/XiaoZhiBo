@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
+import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
 
@@ -67,6 +68,9 @@ public class LogOffActivity extends AppCompatActivity {
         mAlertDialog.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
             @Override
             public void onClick() {
+                if (FloatWindow.mIsShowing) {
+                    FloatWindow.getInstance().destroy();
+                }
                 mAlertDialog.dismiss();
                 logoff();
             }

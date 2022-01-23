@@ -130,21 +130,22 @@ public class ShoppingLiveRoomListFragment extends Fragment implements SwipeRefre
     private void getRoomList() {
         mLayoutSwipeRefresh.setRefreshing(true);
         // 从后台获取房间列表
-        HttpRoomManager.getInstance().getRoomList(TYPE_MLVB_SHOPPING_LIVE, new RoomInfoCallback() {
+        HttpRoomManager.getInstance().getRoomList(TYPE_MLVB_SHOPPING_LIVE, HttpRoomManager.RoomOrderType.CREATE_UTC,
+                new RoomInfoCallback() {
 
-            @Override
-            public void onCallback(int code, String msg, List<RoomInfo> list) {
-                if (code == 0) {
-                    mRoomInfoList.clear();
-                    mRoomInfoList.addAll(list);
-                    mRoomListViewAdapter.notifyDataSetChanged();
-                } else {
-                    ToastUtils.showLong(getString(R.string.app_toast_obtain_list_failed, msg));
-                }
-                mLayoutSwipeRefresh.setRefreshing(false);
-                refreshView();
-            }
-        });
+                    @Override
+                    public void onCallback(int code, String msg, List<RoomInfo> list) {
+                        if (code == 0) {
+                            mRoomInfoList.clear();
+                            mRoomInfoList.addAll(list);
+                            mRoomListViewAdapter.notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showLong(getString(R.string.app_toast_obtain_list_failed, msg));
+                        }
+                        mLayoutSwipeRefresh.setRefreshing(false);
+                        refreshView();
+                    }
+                });
     }
 
     /**

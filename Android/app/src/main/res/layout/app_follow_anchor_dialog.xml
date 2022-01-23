@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="328dp"
+    android:background="@color/app_transparent"
+    android:clipChildren="false"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="248dp"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/app_bg_dialog">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_dialog_anchor_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-40dp"
+            android:src="@drawable/app_bg_cover" />
+
+        <TextView
+            android:id="@+id/tv_dialog_anchor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_dialog_anchor_avatar"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/app_color_black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/tv_dialog_anchor_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_dialog_anchor_name"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_dialog_anchor_fans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="@string/app_fans"
+                android:textColor="@color/app_color_tab_normal"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:background="@color/app_color_tab_normal" />
+
+            <TextView
+                android:id="@+id/tv_dialog_anchor_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="@string/app_follow"
+                android:textColor="@color/app_color_tab_normal"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_dialog_follow"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="54dp"
+            android:background="@drawable/app_bg_follow_anchor"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_dialog_add"
+                android:layout_width="14dp"
+                android:layout_height="14sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/app_add_follow" />
+
+            <TextView
+                android:id="@+id/tv_dialog_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:text="@string/app_follow"
+                android:textColor="@color/app_color_white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</LinearLayout>

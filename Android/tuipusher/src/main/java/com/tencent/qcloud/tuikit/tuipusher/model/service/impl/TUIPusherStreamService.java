@@ -1,6 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.model.service.impl;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -19,12 +20,17 @@ import com.tencent.qcloud.tuikit.tuipusher.model.service.ITUIPusherStreamService
 import com.tencent.qcloud.tuikit.tuipusher.model.utils.LinkURLUtils;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static com.tencent.live2.V2TXLiveDef.V2TXLiveMixInputType.V2TXLiveMixInputTypeAudioVideo;
 
 public class TUIPusherStreamService implements ITUIPusherStreamService {
-    private static final String TAG = TUIPusherStreamService.class.getSimpleName();
+    private static final String TAG                 = TUIPusherStreamService.class.getSimpleName();
+    private static final int    TC_COMPONENT_PUSHER = 11;
+    private static final int    TC_FRAMEWORK_LIVE   = 4;
 
     private ITUIPusherStreamListener mListener;
     private V2TXLivePusher           mV2TXLivePusher;
@@ -58,9 +64,31 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
     }
 
     @Override
+    public void startVirtualCamera(Bitmap bitmap) {
+        mV2TXLivePusher.startVirtualCamera(bitmap);
+    }
+
+    @Override
+    public void stopVirtualCamera() {
+        mV2TXLivePusher.stopVirtualCamera();
+    }
+
+    @Override
     public int startPush(String url) {
         TXCLog.d(TAG, "startPush url:" + url);
+        setFramework();
         return mV2TXLivePusher.startPush(url);
+    }
+
+    private void setFramework() {
+        try {
+            JSONObject params = new JSONObject();
+            params.put("framework", TC_FRAMEWORK_LIVE);
+            params.put("component", TC_COMPONENT_PUSHER);
+            mV2TXLivePusher.setProperty("setFramework", params.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -173,7 +201,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         }
     }
 
-    public V2TXLivePusher getV2TXLivePusher(){
+    public V2TXLivePusher getV2TXLivePusher() {
         return mV2TXLivePusher;
     }
 

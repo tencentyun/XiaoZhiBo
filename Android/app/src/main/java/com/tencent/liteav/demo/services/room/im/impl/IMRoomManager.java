@@ -3,33 +3,37 @@ package com.tencent.liteav.demo.services.room.im.impl;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMFriendAddApplication;
+import com.tencent.imsdk.v2.V2TIMFriendCheckResult;
+import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
 import com.tencent.imsdk.v2.V2TIMGroupChangeInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
 import com.tencent.imsdk.v2.V2TIMGroupListener;
+import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSimpleMsgListener;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMUserInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.liteav.demo.R;
+import com.tencent.liteav.demo.services.room.bean.AudienceInfo;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
+import com.tencent.liteav.demo.services.room.callback.RoomMemberInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.CommonCallback;
 import com.tencent.liteav.demo.services.room.im.IIMRoomManager;
 import com.tencent.liteav.demo.services.room.im.listener.RoomInfoListCallback;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.tencent.imsdk.v2.V2TIMFriendInfo.V2TIM_FRIEND_TYPE_SINGLE;
 
 public class IMRoomManager implements IIMRoomManager {
     private static final String        TAG = "IMRoomManager";
@@ -38,6 +42,7 @@ public class IMRoomManager implements IIMRoomManager {
     private Context                   mContext;
     private LiveRoomSimpleMsgListener mSimpleListener;
     private LiveRoomGroupListener     mGroupListener;
+    private OnMemberChangeListener    mMemberChangeListener;
 
     public static synchronized IMRoomManager getInstance() {
         if (sInstance == null) {
@@ -225,13 +230,13 @@ public class IMRoomManager implements IIMRoomManager {
                     txRoomInfo.coverUrl = timGroupDetailInfo.getFaceUrl();
                     txRoomInfo.roomName = timGroupDetailInfo.getGroupName();
 
-                    if(!TextUtils.isEmpty(timGroupDetailInfo.getOwner())){
+                    if (!TextUtils.isEmpty(timGroupDetailInfo.getOwner())) {
                         userList.add(timGroupDetailInfo.getOwner());
                     }
                     txRoomInfos.add(txRoomInfo);
                     map.put(timGroupDetailInfo.getOwner(), txRoomInfo);
                 }
-                if(userList.size() <= 0){
+                if (userList.size() <= 0) {
                     callback.onCallback(0, "get getUsersInfo success", new ArrayList<RoomInfo>());
                     return;
                 }
@@ -261,6 +266,116 @@ public class IMRoomManager implements IIMRoomManager {
         });
     }
 
+    @Override
+    public void getGroupMemberList(final String roomId, final RoomMemberInfoCallback callback) {
+        V2TIMManager.getGroupManager().getGroupMemberList(roomId,
+                V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_COMMON,
+                0,
+                new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
+                    @Override
+                    public void onSuccess(V2TIMGroupMemberInfoResult v2TIMGroupMemberInfoResult) {
+                        List<V2TIMGroupMemberFullInfo> fullInfoList = v2TIMGroupMemberInfoResult.getMemberInfoList();
+                        List<AudienceInfo> list = new ArrayList<>();
+                        for (V2TIMGroupMemberFullInfo info : fullInfoList) {
+                            AudienceInfo audienceInfo = new AudienceInfo();
+                            audienceInfo.setMemberId(info.getUserID());
+                            audienceInfo.setAvatar(info.getFaceUrl());
+                            audienceInfo.setName(info.getNickName());
+                            list.add(audienceInfo);
+                        }
+                        if (callback != null) {
+                            callback.onCallback(0, "get room info success", list);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        if (callback != null) {
+                            callback.onCallback(i, "get group member list failed!" + s + "  " + roomId,
+                                    new ArrayList<AudienceInfo>());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void addFriend(String userId, String friendId, final CommonCallback callback) {
+        V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(userId);
+        v2TIMFriendAddApplication.setAddType(V2TIM_FRIEND_TYPE_SINGLE);
+        v2TIMFriendAddApplication.setUserID(friendId);
+        V2TIMManager.getFriendshipManager().addFriend(v2TIMFriendAddApplication,
+                new V2TIMValueCallback<V2TIMFriendOperationResult>() {
+                    @Override
+                    public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
+                        if (callback != null) {
+                            callback.onCallback(0, v2TIMFriendOperationResult.getResultInfo());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        if (callback != null) {
+                            callback.onCallback(i, s);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void deleteFromFriendList(String userId, final CommonCallback callback) {
+        List<String> list = new ArrayList<>();
+        list.add(userId);
+        V2TIMManager.getFriendshipManager().deleteFromFriendList(list,
+                V2TIM_FRIEND_TYPE_SINGLE,
+                new V2TIMValueCallback<List<V2TIMFriendOperationResult>>() {
+                    @Override
+                    public void onSuccess(List<V2TIMFriendOperationResult> v2TIMFriendOperationResults) {
+                        if (callback != null) {
+                            callback.onCallback(0, v2TIMFriendOperationResults.get(0).getResultInfo());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        if (callback != null) {
+                            callback.onCallback(i, s);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void checkFriend(String uerId, final CommonCallback callback) {
+        List<String> list = new ArrayList<>();
+        list.add(uerId);
+        V2TIMManager.getFriendshipManager().checkFriend(list,
+                V2TIM_FRIEND_TYPE_SINGLE,
+                new V2TIMValueCallback<List<V2TIMFriendCheckResult>>() {
+                    @Override
+                    public void onSuccess(List<V2TIMFriendCheckResult> v2TIMFriendCheckResults) {
+                        if (callback != null) {
+                            callback.onCallback(0, v2TIMFriendCheckResults.get(0).getResultType() + "");
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        if (callback != null) {
+                            callback.onCallback(i, s);
+                        }
+                    }
+                });
+    }
+
+    public interface OnMemberChangeListener {
+        void onMemberEnter(String groupId, List<AudienceInfo> memberList);
+
+        void onMemberLeave(String groupId, AudienceInfo info);
+    }
+
+    public void setMemberChangeListener(OnMemberChangeListener mMemberChangeListener) {
+        this.mMemberChangeListener = mMemberChangeListener;
+    }
 
     private class LiveRoomSimpleMsgListener extends V2TIMSimpleMsgListener {
 
@@ -282,15 +397,29 @@ public class IMRoomManager implements IIMRoomManager {
         }
     }
 
+
     private class LiveRoomGroupListener extends V2TIMGroupListener {
         @Override
         public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
-
+            List<AudienceInfo> infoList = new ArrayList<>();
+            for (V2TIMGroupMemberInfo info :
+                    memberList) {
+                AudienceInfo audienceInfo = new AudienceInfo();
+                audienceInfo.setMemberId(info.getUserID());
+                audienceInfo.setName(info.getNickName());
+                audienceInfo.setAvatar(info.getFaceUrl());
+                infoList.add(audienceInfo);
+            }
+            mMemberChangeListener.onMemberEnter(groupID, infoList);
         }
 
         @Override
         public void onMemberLeave(String groupID, V2TIMGroupMemberInfo member) {
-
+            AudienceInfo audienceInfo = new AudienceInfo();
+            audienceInfo.setMemberId(member.getUserID());
+            audienceInfo.setAvatar(member.getFaceUrl());
+            audienceInfo.setName(member.getNickName());
+            mMemberChangeListener.onMemberLeave(groupID, audienceInfo);
         }
 
         @Override

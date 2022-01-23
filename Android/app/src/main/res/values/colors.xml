@@ -13,4 +13,7 @@
     <color name="app_color_input_no_match">#FA585E</color>
     <color name="app_color_line">#EEEEEE</color>
     <color name="app_dialog_bg">#66000000</color>
+    <color name="app_ranking_text_first">#FF465D</color>
+    <color name="app_ranking_text_second">#FF8607</color>
+    <color name="app_ranking_text_third">#FCAF41</color>
 </resources>

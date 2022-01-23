@@ -9,7 +9,7 @@ android {
         minSdkVersion MIN_SDK_VERSION as Integer
         targetSdkVersion TARGET_SDK_VERSION as Integer
         versionCode 10
-        versionName "7.3.0"
+        versionName "9.5.0.1482"
 
         multiDexEnabled true
     }
@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation project(':login')
+    implementation project(':tuicore')
     implementation project(':tuipusher')
     implementation project(':tuiplayer')
     implementation project(':tuibeauty')
@@ -40,5 +41,6 @@ dependencies {
     implementation project(':tuigift')
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-    implementation "com.tencent.liteav.tuikit:tuicore:latest.release"
+
+
 }

@@ -21,7 +21,7 @@ import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
 public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresenter, ITUIPlayerStreamListener, ITUIPlayerSignallingListener {
-    private static final String TAG = "TUIPusherPresent";
+    private static final String TAG = "TUIPlayerPresent";
 
     private ITUIPlayerSignallingService       mSignallingService;
     private ITUIPlayerStreamService           mStreamService;
@@ -46,11 +46,12 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
     }
 
     @Override
-    public void startPlay(String url, TXCloudVideoView view) {
+    public int startPlay(String url, TXCloudVideoView view) {
         TXCLog.d(TAG, "startPlay url:" + url);
         mPlayUrl = url;
-        mStreamService.startPlay(mPlayUrl, view);
+        int ret = mStreamService.startPlay(mPlayUrl, view);
         mSignallingService.login();
+        return ret;
     }
 
     @Override
@@ -198,6 +199,26 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
         if (mTUIPlayerView != null && TextUtils.isEmpty(mLinkInviteId)) {
             mTUIPlayerView.onNotifyPlayState(status);
         }
+    }
+
+    @Override
+    public void pauseAudio() {
+        mStreamService.pauseAudio();
+    }
+
+    @Override
+    public void pauseVideo() {
+        mStreamService.pauseVideo();
+    }
+
+    @Override
+    public void resumeAudio() {
+        mStreamService.resumeAudio();
+    }
+
+    @Override
+    public void resumeVideo() {
+        mStreamService.resumeVideo();
     }
 
     private void resetLinkData() {

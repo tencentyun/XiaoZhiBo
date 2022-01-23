@@ -15,12 +15,19 @@ import com.tencent.qcloud.tuikit.tuiplayer.model.listener.ITUIPlayerStreamListen
 import com.tencent.qcloud.tuikit.tuiplayer.model.service.ITUIPlayerStreamService;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_DISCONNECTED;
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_FAILED;
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_OK;
 import static com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView.PlayStatus.START_PLAY;
 import static com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView.PlayStatus.STOP_PLAY;
 
 public class TUIPlayerStreamService implements ITUIPlayerStreamService {
-    private static final String TAG = TUIPlayerStreamService.class.getSimpleName();
+    private static final String TAG                 = TUIPlayerStreamService.class.getSimpleName();
+    private static final int    TC_COMPONENT_PLAYER = 12;
+    private static final int    TC_FRAMEWORK_LIVE   = 4;
 
     private ITUIPlayerStreamListener mListener;
     private V2TXLivePusher           mV2TXLivePusher;
@@ -54,11 +61,20 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
     @Override
     public int startPlay(String url, TXCloudVideoView videoView) {
         String playUrl = url;
-        mV2TXLivePlayer.setRenderView(videoView);
+        int renderCode = mV2TXLivePlayer.setRenderView(videoView);
         mV2TXLivePlayer.setRenderFillMode(V2TXLiveDef.V2TXLiveFillMode.V2TXLiveFillModeFill);
-        int ret = mV2TXLivePlayer.startPlay(playUrl);
-        TXCLog.d(TAG, "startPlay: ret" + ret + ", playUrl:" + playUrl);
-        return 0;
+        setFramework();
+        int playCode = mV2TXLivePlayer.startPlay(playUrl);
+        TXCLog.d(TAG, "setRenderView: ret" + renderCode + "startPlay: ret" + playCode + ", playUrl:" + playUrl);
+        if (renderCode == V2TXLIVE_OK && playCode == V2TXLIVE_ERROR_FAILED) {
+            return V2TXLIVE_OK;
+        } else if (renderCode == V2TXLIVE_OK) {
+            return playCode;
+        } else if (playCode == V2TXLIVE_OK) {
+            return renderCode;
+        } else {
+            return V2TXLIVE_ERROR_FAILED;
+        }
     }
 
     @Override
@@ -68,6 +84,17 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
             mV2TXLivePlayer.stopPlay();
         }
         return 0;
+    }
+
+    private void setFramework() {
+        try {
+            JSONObject params = new JSONObject();
+            params.put("framework", TC_FRAMEWORK_LIVE);
+            params.put("component", TC_COMPONENT_PLAYER);
+            mV2TXLivePlayer.setProperty("setFramework", params.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -101,6 +128,26 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
         if (mV2TXLivePlayer.isPlaying() == 1) {
             mV2TXLivePlayer.stopPlay();
         }
+    }
+
+    @Override
+    public void pauseVideo() {
+        mV2TXLivePlayer.pauseVideo();
+    }
+
+    @Override
+    public void pauseAudio() {
+        mV2TXLivePlayer.pauseAudio();
+    }
+
+    @Override
+    public void resumeVideo() {
+        mV2TXLivePlayer.resumeVideo();
+    }
+
+    @Override
+    public void resumeAudio() {
+        mV2TXLivePlayer.resumeAudio();
     }
 
     class TUILivePusherObserver extends V2TXLivePusherObserver {
