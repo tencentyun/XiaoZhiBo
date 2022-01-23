@@ -48,7 +48,7 @@
     <string name="app_request_pk">Request PK</string>
     <string name="app_reject">Reject</string>
     <string name="app_accept">Accept</string>
-    <string name="app_request_link">Request Link</string>
+    <string name="app_request_link">Request Link To You</string>
     <string name="app_close_room_tip">The live broadcast is in progress, are you sure to leave?</string>
     <string name="app_wait">hold on</string>
     <string name="app_me_ok">Sure</string>
@@ -67,4 +67,18 @@
     <string name="app_link_request_timeout">The mic request timed out</string>
     <string name="app_pk_request_timeout">PK request timed out</string>
     <string name="app_busy_not_pk">Busy line, unable to initiate PK</string>
+    <string name="app_hour_rank">Hour Rank</string>
+    <string name="app_more_live">More Live</string>
+    <string name="app_popularity_list">Popularity list</string>
+    <string name="app_follow">Follow</string>
+    <string name="app_already_followed">Followed</string>
+    <string name="app_text_top_100">TOP 100</string>
+    <string name="app_online_audience">Online Audience</string>
+    <string name="app_audience_information">Audience Information</string>
+    <string name="app_recommend">Recommend</string>
+    <string name="app_show_live_anchor_exit">The anchor has left</string>
+    <string name="app_fans">Fans</string>
+    <string name="app_follow_success">Followed</string>
+    <string name="app_unfollow_success">UnFollow success</string>
+    <string name="app_show_live_link_mic_exit">Link-Mic is in progress, are you sure to leave?</string>
 </resources>

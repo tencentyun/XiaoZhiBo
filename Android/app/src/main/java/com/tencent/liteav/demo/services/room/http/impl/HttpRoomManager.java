@@ -40,7 +40,8 @@ public class HttpRoomManager implements IHttpRoomManager {
     private final Api      mApi;
     private       int      mSdkAppId;
 
-    private Call<ResponseEntity<Void>>             mCreateRoomCall;
+    private Call<ResponseEntity<Void>>             mEnterRoomCall;
+    private Call<ResponseEntity<Void>>             mLeaveRoomCall;
     private Call<ResponseEntity<Void>>             mUpdateRoomCall;
     private Call<ResponseEntity<Void>>             mDestroyRoomCall;
     private Call<ResponseEntity<List<RoomDetail>>> mGetRoomListCall;
@@ -70,21 +71,67 @@ public class HttpRoomManager implements IHttpRoomManager {
         mSdkAppId = sdkAppId;
     }
 
+    public enum RoomOrderType {
+        CREATE_UTC("createUtc"),       // 按时间倒序
+        TOTAL_JOINED("totalJoined");   // 按房间人数倒序
+
+        String type;
+
+        RoomOrderType(String type) {
+            this.type = type;
+        }
+    }
+
     @Override
-    public void createRoom(String roomId, String type, final ActionCallback callback) {
-        if (mCreateRoomCall != null && mCreateRoomCall.isExecuted()) {
-            mCreateRoomCall.cancel();
+    public void enterRoom(String roomId, String type, String roleName, final ActionCallback callback) {
+        if (mEnterRoomCall != null && mEnterRoomCall.isExecuted()) {
+            mEnterRoomCall.cancel();
         }
         Map<String, String> param = new HashMap<>();
         param.put("appId", String.valueOf(mSdkAppId));
         param.put("userId", TUILogin.getUserId());
         param.put("token", ProfileManager.getInstance().getToken());
         param.put("roomId", roomId);
-        param.put("role", RoomRole.ANCHOR.getName());
+        param.put("role", roleName);
         param.put("category", type);
         param.put("apaasUserId", ProfileManager.getInstance().getApaasUserId());
-        mCreateRoomCall = mApi.createRoom(param);
-        mCreateRoomCall.enqueue(new Callback<ResponseEntity<Void>>() {
+        mEnterRoomCall = mApi.enterRoom(param);
+        mEnterRoomCall.enqueue(new Callback<ResponseEntity<Void>>() {
+            @Override
+            public void onResponse(Call<ResponseEntity<Void>> call, Response<ResponseEntity<Void>> response) {
+                ResponseEntity res = response.body();
+                if (res.errorCode == 0) {
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed(res.errorCode, res.errorMessage);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseEntity<Void>> call, Throwable t) {
+                if (callback != null) {
+                    callback.onFailed(ERROR_CODE_UNKNOWN, "未知错误");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void leaveRoom(String roomId, final ActionCallback callback) {
+        if (mLeaveRoomCall != null && mLeaveRoomCall.isExecuted()) {
+            mLeaveRoomCall.cancel();
+        }
+        Map<String, String> param = new HashMap<>();
+        param.put("userId", TUILogin.getUserId());
+        param.put("token", ProfileManager.getInstance().getToken());
+        param.put("roomId", roomId);
+        param.put("apaasUserId", ProfileManager.getInstance().getApaasUserId());
+        mLeaveRoomCall = mApi.leaveRoom(param);
+        mLeaveRoomCall.enqueue(new Callback<ResponseEntity<Void>>() {
             @Override
             public void onResponse(Call<ResponseEntity<Void>> call, Response<ResponseEntity<Void>> response) {
                 ResponseEntity res = response.body();
@@ -183,7 +230,7 @@ public class HttpRoomManager implements IHttpRoomManager {
     }
 
     @Override
-    public void getRoomList(final String type, final RoomInfoCallback callback) {
+    public void getRoomList(final String type, final RoomOrderType orderType, final RoomInfoCallback callback) {
         if (mGetRoomListCall != null && mGetRoomListCall.isExecuted()) {
             mGetRoomListCall.cancel();
         }
@@ -192,15 +239,17 @@ public class HttpRoomManager implements IHttpRoomManager {
         param.put("userId", TUILogin.getUserId());
         param.put("token", ProfileManager.getInstance().getToken());
         param.put("category", type);
+        param.put("orderBy", orderType.type);
         param.put("apaasUserId", ProfileManager.getInstance().getApaasUserId());
         mGetRoomListCall = mApi.getRoomList(param);
         mGetRoomListCall.enqueue(new Callback<ResponseEntity<List<RoomDetail>>>() {
             @Override
-            public void onResponse(Call<ResponseEntity<List<RoomDetail>>> call, Response<ResponseEntity<List<RoomDetail>>> response) {
+            public void onResponse(Call<ResponseEntity<List<RoomDetail>>> call,
+                                   Response<ResponseEntity<List<RoomDetail>>> response) {
                 ResponseEntity res = response.body();
                 if (res.errorCode == 0 && res.data != null) {
-                    List<RoomDetail> RoomInfoList = (List<RoomDetail>) res.data;
-                    callback.onCallback(res.errorCode, res.errorMessage, convertRoomInfoList(RoomInfoList));
+                    List<RoomDetail> roomDetailList = (List<RoomDetail>) res.data;
+                    callback.onCallback(res.errorCode, res.errorMessage, convertRoomInfoList(roomDetailList));
                 } else {
                     if (callback != null) {
                         callback.onCallback(res.errorCode, res.errorMessage, new ArrayList<RoomInfo>());
@@ -230,11 +279,12 @@ public class HttpRoomManager implements IHttpRoomManager {
         mGetRoomDetailCall = mApi.getRoomInfo(param);
         mGetRoomDetailCall.enqueue(new Callback<ResponseEntity<RoomDetail>>() {
             @Override
-            public void onResponse(Call<ResponseEntity<RoomDetail>> call, Response<ResponseEntity<RoomDetail>> response) {
+            public void onResponse(Call<ResponseEntity<RoomDetail>> call,
+                                   Response<ResponseEntity<RoomDetail>> response) {
                 ResponseEntity res = response.body();
                 if (res.errorCode == 0 && res.data != null) {
-                    RoomDetail RoomInfo = (RoomDetail) res.data;
-                    callback.onCallback(res.errorCode, res.errorMessage, convertRoomInfo(RoomInfo));
+                    RoomDetail roomDetail = (RoomDetail) res.data;
+                    callback.onCallback(res.errorCode, res.errorMessage, convertRoomInfo(roomDetail));
                 } else {
                     if (callback != null) {
                         callback.onCallback(res.errorCode, res.errorMessage, null);
@@ -252,7 +302,7 @@ public class HttpRoomManager implements IHttpRoomManager {
     }
 
     private RoomInfo convertRoomInfo(RoomDetail roomDetail) {
-        if(roomDetail == null){
+        if (roomDetail == null) {
             return null;
         }
         RoomInfo info = new RoomInfo();
@@ -264,16 +314,17 @@ public class HttpRoomManager implements IHttpRoomManager {
         info.memberCount = roomDetail.nnUsers;
         info.ownerAvatar = roomDetail.cover;
         info.roomStatus = roomDetail.status;
+        info.totalJoined = roomDetail.totalJoined;
         return info;
     }
 
 
     private List<RoomInfo> convertRoomInfoList(List<RoomDetail> roomDetailList) {
-        if(roomDetailList == null){
+        if (roomDetailList == null) {
             return null;
         }
         List<RoomInfo> infoList = new ArrayList<>();
-        for(int i = 0; i< roomDetailList.size(); i++){
+        for (int i = 0; i < roomDetailList.size(); i++) {
             infoList.add(convertRoomInfo(roomDetailList.get(i)));
         }
         return infoList;
@@ -285,7 +336,11 @@ public class HttpRoomManager implements IHttpRoomManager {
     private interface Api {
         @POST("base/v1/rooms/enter_room")
         @FormUrlEncoded
-        Call<ResponseEntity<Void>> createRoom(@FieldMap Map<String, String> map);
+        Call<ResponseEntity<Void>> enterRoom(@FieldMap Map<String, String> map);
+
+        @POST("base/v1/rooms/leave_room")
+        @FormUrlEncoded
+        Call<ResponseEntity<Void>> leaveRoom(@FieldMap Map<String, String> map);
 
         @POST("base/v1/rooms/update_room")
         @FormUrlEncoded
@@ -315,7 +370,7 @@ public class HttpRoomManager implements IHttpRoomManager {
 
     public enum RoomRole {
         ANCHOR("anchor"),
-        GUEST("guest");
+        GUEST("audience");
 
         RoomRole(String name) {
             this.name = name;

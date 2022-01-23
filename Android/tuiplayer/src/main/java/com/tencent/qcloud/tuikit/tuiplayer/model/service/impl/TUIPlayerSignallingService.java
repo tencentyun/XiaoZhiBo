@@ -37,11 +37,11 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
     private ITUIPlayerSignallingListener mListener;
     private Context                      mContext;
-    private TUIPusherIMSignalingListener mIMSignalingListener;
+    private TUIPlayerIMSignalingListener mIMSignalingListener;
 
     private TUIPlayerSignallingService(Context context) {
         mContext = context;
-        mIMSignalingListener = new TUIPusherIMSignalingListener();
+        mIMSignalingListener = new TUIPlayerIMSignalingListener();
     }
 
     private static volatile TUIPlayerSignallingService instance;
@@ -161,7 +161,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
         TXCLog.d(TAG, "inviteId:" + inviteID);
     }
 
-    private class TUIPusherIMSimpleMsgListener extends V2TIMSimpleMsgListener {
+    private class TUIPlayerIMSimpleMsgListener extends V2TIMSimpleMsgListener {
 
         public void onRecvC2CTextMessage(String msgID, V2TIMUserInfo sender, String text) {
             TXCLog.d(TAG, "onRecvC2CTextMessage");
@@ -183,7 +183,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     }
 
 
-    private class TUIPusherIMGroupListener extends V2TIMGroupListener {
+    private class TUIPlayerIMGroupListener extends V2TIMGroupListener {
         @Override
         public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
             TXCLog.d(TAG, "onMemberEnter");
@@ -212,7 +212,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     /**
      * 信令监听器
      */
-    private final class TUIPusherIMSignalingListener extends V2TIMSignalingListener {
+    private final class TUIPlayerIMSignalingListener extends V2TIMSignalingListener {
 
         /**
          * 收到邀请

@@ -13,7 +13,11 @@ public interface TUIPlayerViewListener {
 
         TUIPLAYER_EVENT_INVALID_LICENSE(-2),
 
-        TUIPLAYER_EVENT_URL_NOTSUPPORT(-3);
+        TUIPLAYER_EVENT_URL_NOTSUPPORT(-3),
+
+        TUIPLAYER_EVENT_LINKMIC_START(10001), // 开始连麦
+
+        TUIPLAYER_EVENT_LINKMIC_STOP(10002);  // 结束连麦
 
         int code;
 
@@ -56,7 +60,7 @@ public interface TUIPlayerViewListener {
      * 对方拒绝 PK请求的 回调
      *
      * @param playView
-     * @param reason  1：对方主动拒绝 2：忙线中(pk 或者 连麦)
+     * @param reason   1：对方主动拒绝 2：忙线中(pk 或者 连麦)
      */
     void onRejectJoinAnchorResponse(TUIPlayerView playView, int reason);
 }

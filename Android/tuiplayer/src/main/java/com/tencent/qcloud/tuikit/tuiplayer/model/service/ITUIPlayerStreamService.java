@@ -52,4 +52,24 @@ public interface ITUIPlayerStreamService {
      * 销毁资源
      */
     void destory();
+
+    /**
+     * 恢复音频流
+     */
+    void resumeAudio();
+
+    /**
+     * 恢复视频流
+     */
+    void resumeVideo();
+
+    /**
+     * 暂停音频流
+     */
+    void pauseAudio();
+
+    /**
+     * 暂停视频流
+     */
+    void pauseVideo();
 }

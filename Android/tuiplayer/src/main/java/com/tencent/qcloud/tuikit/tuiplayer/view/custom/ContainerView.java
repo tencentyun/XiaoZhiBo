@@ -147,12 +147,8 @@ public class ContainerView extends FrameLayout {
         }
     }
 
-    public void setLinkVisible(boolean flag) {
-        if (false) {
-            mImageLink.setVisibility(VISIBLE);
-        } else {
-            mImageLink.setVisibility(GONE);
-        }
+    public void setLinkVisible(int visible) {
+            mImageLink.setVisibility(visible);
     }
 
     private int dip2px(float dpValue) {

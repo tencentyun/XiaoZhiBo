@@ -23,18 +23,24 @@ import com.tencent.qcloud.tuikit.tuiplayer.view.videoview.TUIVideoView;
 
 import java.util.List;
 
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_FAILED;
+
 /**
  * 拉流相关逻辑封装，主要包含功能有
- * 
- * - 开始拉流{@link TUIPlayerView#start(String)}
+ * <p>
+ * - 开始拉流{@link TUIPlayerView#startPlay(String)}
  * - 停止拉流{@link TUIPlayerView#stopPlay()}
  * - 设置拉流状态监听{@link TUIPlayerView#setTUIPlayerViewListener(TUIPlayerViewListener)}
- * - 禁用连麦功能{@link TUIPlayerView#disableLinkMic(boolean)}
+ * - 禁用连麦功能{@link TUIPlayerView#disableLinkMic()}
+ * - 暂停视频流{@link TUIPlayerView#pauseVideo()}
+ * - 恢复视频流{@link TUIPlayerView#resumeVideo()}
+ * - 暂停音频流{@link TUIPlayerView#pauseAudio()}
+ * - 恢复音频流{@link TUIPlayerView#resumeAudio()}
  */
 public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITUIPlayerView {
-    private static final String TAG = "TUIPusherView";
+    private static final String TAG = "TUIPlayerView";
 
-    private TUIPlayerPresenter    mTUIPusherPresenter;
+    private TUIPlayerPresenter    mTUIPlayerPresenter;
     public  View                  mViewRoot;
     public  TUIVideoView          mTUIVideoView;
     public  ContainerView         mContainerView;
@@ -63,7 +69,7 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
     }
 
     private void initPresenter() {
-        mTUIPusherPresenter = new TUIPlayerPresenter(this, getContext());
+        mTUIPlayerPresenter = new TUIPlayerPresenter(this, getContext());
     }
 
 
@@ -81,30 +87,39 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
                     if (mLinkState == LinkState.LINK_REQ_SEND) {
                         ToastUtils.showShort(R.string.tuiplayer_linking_please_wait);
                     } else if (mLinkState == LinkState.LINK_REQ_SEND_SUCCESS) {
-                        mTUIPusherPresenter.cancelLink();
+                        mTUIPlayerPresenter.cancelLink();
                         mLinkState = LinkState.LINK_CANCEL_SEND;
                         updateLinkState(mLinkState, "");
                     } else if (mLinkState == LinkState.LINK_PUSH_SEND_SUCCESS) {
-                        mTUIPusherPresenter.stopLink(15);
+                        mTUIPlayerPresenter.stopLink(15);
                     }
                 } else if (mState == State.PLAY) {
-                    mState = State.LINK;
-                    mLinkState = LinkState.LINK_REQ_SEND;
-                    updateLinkState(mLinkState, "");
-                    mTUIPusherPresenter.requestLink(mAnchorId);
+                    PermissionUtils.permission(PermissionConstants.CAMERA, PermissionConstants.MICROPHONE).callback(new PermissionUtils.FullCallback() {
+                        @Override
+                        public void onGranted(List<String> permissionsGranted) {
+                            mState = State.LINK;
+                            mLinkState = LinkState.LINK_REQ_SEND;
+                            updateLinkState(mLinkState, "");
+                            mTUIPlayerPresenter.requestLink(mAnchorId);
+                        }
+
+                        @Override
+                        public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
+                            ToastUtils.showShort(R.string.tuiplayer_tips_start_camera_audio);
+                        }
+                    }).request();
                 }
             }
         });
         addView(mContainerView);
     }
 
-    public void updateState(State state) {
-
-    }
-
-    public void updateLinkState(LinkState state, String reason) {
+    private void updateLinkState(LinkState state, String reason) {
         switch (state) {
             case LINK_REQ_SEND:
+                if (mListener != null) {
+                    mListener.onPlayEvent(this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_LINKMIC_START, "LinkMic start request");
+                }
                 break;
 
             case LINK_REQ_SEND_SUCCESS:
@@ -116,6 +131,9 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
                 ToastUtils.showShort(R.string.tuiplayer_link_request_send_fail);
                 mState = State.PLAY;
                 mLinkState = LinkState.LINK_IDLE;
+                if (mListener != null) {
+                    mListener.onPlayEvent(this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_LINKMIC_STOP, "LinkMic request failed");
+                }
                 break;
 
             case LINK_CANCEL_SEND:
@@ -125,6 +143,9 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
                 mState = State.PLAY;
                 mLinkState = LinkState.LINK_IDLE;
                 mContainerView.setLinkImage(R.drawable.tuiplayer_link_on_icon);
+                if (mListener != null) {
+                    mListener.onPlayEvent(this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_LINKMIC_STOP, "LinkMic cancel");
+                }
                 break;
 
             case LINK_CANCEL_FAIL:
@@ -140,7 +161,7 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
                 mLinkState = LinkState.LINK_IDLE;
                 mTUIVideoView.showLinkMode(false);
                 mContainerView.setLinkImage(R.drawable.tuiplayer_link_on_icon);
-                if(mListener != null){
+                if (mListener != null) {
                     mListener.onRejectJoinAnchorResponse(this, RejectReason.getRejectReasonCode(reason));
                 }
                 break;
@@ -161,7 +182,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
                 mLinkState = LinkState.LINK_IDLE;
                 mTUIVideoView.showLinkMode(false);
                 mContainerView.setLinkImage(R.drawable.tuiplayer_link_on_icon);
-                mTUIPusherPresenter.startPlay(mPlayUrl, mTUIVideoView.getMainVideoView());
+                mTUIPlayerPresenter.startPlay(mPlayUrl, mTUIVideoView.getMainVideoView());
+                mListener.onPlayEvent(this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_LINKMIC_STOP, "LinkMic stop");
                 break;
 
             case LINK_TIMEOUT:
@@ -180,17 +202,16 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
     }
 
     @Override
-    public void onResponseJoinAnchor(String streamId) {
+    public void onResponseJoinAnchor(final String streamId) {
         mTUIVideoView.showLinkMode(true);
-        mTUIPusherPresenter.startPlay(LinkURLUtils.generatePlayUrl(streamId), mTUIVideoView.getMainVideoView());
-        mTUIPusherPresenter.startPush(true, mTUIVideoView.getLinkVideoView());
+        mTUIPlayerPresenter.startPlay(LinkURLUtils.generatePlayUrl(streamId), mTUIVideoView.getMainVideoView());
+        mTUIPlayerPresenter.startPush(true, mTUIVideoView.getLinkVideoView());
     }
 
     @Override
     public void onNotifyState(State state) {
-        TXCLog.d(TAG, "onNotiyState:" + state);
+        TXCLog.d(TAG, "onNotifyState:" + state);
         mState = state;
-        updateState(mState);
     }
 
     @Override
@@ -257,32 +278,41 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
         LINK_TIMEOUT,               //主播连麦请求超时
     }
 
+    public void setGroupID(String groupId) {
+        if (TextUtils.isEmpty(groupId)) {
+            mRoomId = "";
+        }
+        mRoomId = groupId;
+    }
+
     /**
      * 开始拉流
      *
      * @param url 流地址
      */
-    public void start(String url) {
+    public int startPlay(String url) {
         TXCLog.d(TAG, "start url:" + url);
         if (!LinkURLUtils.checkPlayURL(url)) {
             ToastUtils.showShort(R.string.tuiplayer_url_empty);
-            return;
+            return V2TXLIVE_ERROR_FAILED;
         }
         mPlayUrl = url;
         mAnchorId = LinkURLUtils.getStreamIdByPushUrl(mPlayUrl);
-        mRoomId = getRoomId(mAnchorId);
         mContainerView.setGroupId(mRoomId);
-        PermissionUtils.permission(PermissionConstants.CAMERA, PermissionConstants.MICROPHONE).callback(new PermissionUtils.FullCallback() {
-            @Override
-            public void onGranted(List<String> permissionsGranted) {
-                mTUIPusherPresenter.startPlay(mPlayUrl, mTUIVideoView.getMainVideoView());
-            }
-
-            @Override
-            public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
-                ToastUtils.showShort(R.string.tuiplayer_tips_start_camera_audio);
-            }
-        }).request();
+        int ret = mTUIPlayerPresenter.startPlay(mPlayUrl, mTUIVideoView.getMainVideoView());
+        if (mListener == null) {
+            return ret;
+        }
+        if (ret == 0) {
+            mListener.onPlayEvent(TUIPlayerView.this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_SUCCESS, "Start play success");
+        } else if (ret == -4) {
+            mListener.onPlayEvent(TUIPlayerView.this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_URL_NOTSUPPORT, "URL not support");
+        } else if (ret == -5) {
+            mListener.onPlayEvent(TUIPlayerView.this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_INVALID_LICENSE, "License invalid");
+        } else {
+            mListener.onPlayEvent(TUIPlayerView.this, TUIPlayerViewListener.TUIPlayerEvent.TUIPLAYER_EVENT_FAILED, "Start play failed");
+        }
+        return ret;
     }
 
     /**
@@ -291,37 +321,66 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
     public void stopPlay() {
         TXCLog.d(TAG, "stopPlay");
         if (mLinkState == LinkState.LINK_PUSH_SEND_SUCCESS) {
-            mTUIPusherPresenter.stopLink(15);
+            mTUIPlayerPresenter.stopLink(15);
         }
-        mTUIPusherPresenter.destory();
+        mTUIPlayerPresenter.destory();
     }
 
     /**
      * 是否支持连麦功能
-     *
-     * @param enable true:不支持 false:支持
      */
-    public void disableLinkMic(boolean enable) {
+    public void disableLinkMic() {
         TXCLog.d(TAG, "disableLinkMic");
-        if (enable) {
-            mContainerView.setLinkVisible(false);
+        mContainerView.setLinkVisible(View.GONE);
+    }
+
+
+    /**
+     * 恢复音频流
+     */
+    public void resumeAudio() {
+        mTUIPlayerPresenter.resumeAudio();
+    }
+
+    /**
+     * 恢复视频流
+     */
+    public void resumeVideo() {
+        mTUIPlayerPresenter.resumeVideo();
+    }
+
+    /**
+     * 暂停音频流
+     */
+    public void pauseAudio() {
+        mTUIPlayerPresenter.pauseAudio();
+    }
+
+    /**
+     * 暂停视频流
+     */
+    public void pauseVideo() {
+        mTUIPlayerPresenter.pauseVideo();
+    }
+
+    public enum TUIPlayerUIState {
+        TUIPLAYER_UISTATE_DEFAULT,        //默认，展示全部视图
+        TUIPLAYER_UISTATE_VIDEOONLY,   //只展示视频播放View
+    }
+
+    public void updatePlayerUIState(TUIPlayerUIState state) {
+        if (state == TUIPlayerUIState.TUIPLAYER_UISTATE_DEFAULT) {
+            mContainerView.setVisibility(VISIBLE);
         } else {
-            mContainerView.setLinkVisible(true);
+            mContainerView.setVisibility(GONE);
         }
     }
 
-    public String getRoomId(String userId) {
-        if(TextUtils.isEmpty(userId)){
-            return "";
-        }
-        return userId;
-    }
-
-    public enum RejectReason {
+    private enum RejectReason {
         NORMAL("1"),        //正常拒绝PK
         BUSY("2");          //忙线中(PK或者连麦中)
 
-        RejectReason(String reason){
+        RejectReason(String reason) {
             this.reason = reason;
         }
 
@@ -332,21 +391,21 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerContract.ITU
             return reason;
         }
 
-        public static boolean isRejectReason(String reason){
-            if(TextUtils.isEmpty(reason)){
+        public static boolean isRejectReason(String reason) {
+            if (TextUtils.isEmpty(reason)) {
                 return false;
             }
             return NORMAL.getReason().equals(reason) || BUSY.getReason().equals(reason);
         }
 
-        public static int getRejectReasonCode(String reason){
-            if(TextUtils.isEmpty(reason)){
+        public static int getRejectReasonCode(String reason) {
+            if (TextUtils.isEmpty(reason)) {
                 return -1;
             }
-            if(NORMAL.getReason().equals(reason)){
+            if (NORMAL.getReason().equals(reason)) {
                 return 1;
             }
-            if(BUSY.getReason().equals(reason)){
+            if (BUSY.getReason().equals(reason)) {
                 return 2;
             }
             return -1;

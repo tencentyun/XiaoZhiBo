@@ -16,7 +16,7 @@ public interface ITUIPlayerContract {
          * @param url
          * @param view 承载视频画面的控件
          */
-        void startPlay(String url, TXCloudVideoView view);
+        int startPlay(String url, TXCloudVideoView view);
 
         /**
          * 停止播放
@@ -52,6 +52,26 @@ public interface ITUIPlayerContract {
          * 销毁所有资源
          */
         void destory();
+
+        /**
+         * 恢复音频流
+         */
+        void resumeAudio();
+
+        /**
+         * 恢复视频流
+         */
+        void resumeVideo();
+
+        /**
+         * 暂停音频流
+         */
+        void pauseAudio();
+
+        /**
+         * 暂停视频流
+         */
+        void pauseVideo();
     }
 
 

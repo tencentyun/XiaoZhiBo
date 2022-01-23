@@ -1,6 +1,7 @@
 package com.tencent.qcloud.tuikit.tuipusher.view;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH_
 
 /**
  * 推流相关逻辑封装，主要包含以下功能
- *
+ * <p>
  * - 开始预览{@link TUIPusherView#start(String)}
  * - 设置镜像{@link TUIPusherView#setMirror(boolean)}
  * - 切换摄像头{@link TUIPusherView#switchCamera(boolean)}
@@ -45,6 +46,7 @@ import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH_
  * - 取消PK{@link TUIPusherView#cancelPKRequest()}
  * - 停止PK{@link TUIPusherView#stopPK()}
  * - 停止连麦{@link TUIPusherView#stopJoinAnchor()}
+ * </p>
  */
 public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITUIPusherView {
     private static final String TAG = "TUIPusherView";
@@ -78,7 +80,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         initTUIVideoView();
     }
 
-    private void initFunctionView(){
+    private void initFunctionView() {
         initStartView();
         initCountDownView();
         initContainerView();
@@ -141,7 +143,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
             @Override
             public void onTimeEnd() {
                 mState = PUSH;
-                if(mTUIPusherPresenter != null){
+                if (mTUIPusherPresenter != null) {
                     mTUIPusherPresenter.startPush(mPushUrl);
                 }
                 mCountDownView.setVisibility(GONE);
@@ -165,6 +167,15 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         }).request();
     }
 
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE) {
+            mTUIPusherPresenter.stopVirtualCamera();
+        } else if (visibility == INVISIBLE) {
+            mTUIPusherPresenter.startVirtualCamera(BitmapFactory.decodeResource(getResources(), R.drawable.tuipusher_private));
+        }
+    }
 
     private void updateState(State state) {
         switch (state) {
@@ -444,7 +455,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     public void stop() {
         TXCLog.d(TAG, "stop");
         TUIPusherConfig.getInstance().destory();
-        if(mState == State.PK){
+        if (mState == State.PK) {
             mTUIPusherPresenter.stopPK();
         }
         if (mTUIPusherPresenter != null) {

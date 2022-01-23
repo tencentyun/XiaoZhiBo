@@ -24,9 +24,11 @@ import com.tencent.liteav.demo.common.view.RoundCornerImageView;
 import com.tencent.liteav.demo.common.view.SpaceDecoration;
 import com.tencent.liteav.demo.scene.showlive.ShowLiveAnchorActivity;
 import com.tencent.liteav.demo.scene.showlive.ShowLiveAudienceActivity;
+import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
+import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,9 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
                     public void onItemClick(int position) {
                         RoomInfo info = mRoomInfoList
                                 .get(position);
+                        if (FloatWindow.mIsShowing) {
+                            FloatWindow.getInstance().destroy();
+                        }
                         enterRoom(info);
                     }
                 });
@@ -121,6 +126,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
         intent.putExtra(TCConstants.PUSHER_NAME, info.roomName);
         intent.putExtra(TCConstants.COVER_PIC, info.coverUrl);
         intent.putExtra(TCConstants.PUSHER_AVATAR, info.coverUrl);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -135,23 +141,24 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     private void getRoomList() {
         mLayoutSwipeRefresh.setRefreshing(true);
         // 从后台获取房间列表
-        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE, new RoomInfoCallback() {
-            @Override
-            public void onCallback(int code, String msg, List<RoomInfo> list) {
-                if (getActivity() == null || getActivity().isFinishing()) {
-                    return;
-                }
-                if (code == 0) {
-                    mRoomInfoList.clear();
-                    mRoomInfoList.addAll(list);
-                    mRoomListViewAdapter.notifyDataSetChanged();
-                } else {
-                    ToastUtils.showLong(getString(R.string.app_toast_obtain_list_failed, msg));
-                }
-                mLayoutSwipeRefresh.setRefreshing(false);
-                refreshView();
-            }
-        });
+        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE,
+                HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
+                    @Override
+                    public void onCallback(int code, String msg, List<RoomInfo> list) {
+                        if (getActivity() == null || getActivity().isFinishing()) {
+                            return;
+                        }
+                        if (code == 0) {
+                            mRoomInfoList.clear();
+                            mRoomInfoList.addAll(list);
+                            mRoomListViewAdapter.notifyDataSetChanged();
+                        } else {
+                            ToastUtils.showLong(getString(R.string.app_toast_obtain_list_failed, msg));
+                        }
+                        mLayoutSwipeRefresh.setRefreshing(false);
+                        refreshView();
+                    }
+                });
     }
 
     /**

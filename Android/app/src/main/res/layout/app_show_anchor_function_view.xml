@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -77,12 +78,50 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <include
+        android:id="@+id/include"
         layout="@layout/app_include_live_pusher_info"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/ll_anchor_live_audience_list"
+        layout="@layout/app_include_live_audience_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/include"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_anchor_hour_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/app_pusher_info_background"
+        android:drawableStart="@drawable/app_ic_hour_rank"
+        android:gravity="start|center_vertical"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/app_hour_rank"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <ImageView
+        android:id="@+id/iv_anchor_ad"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/app_ic_advert"
+        app:layout_constraintEnd_toEndOf="@+id/ll_anchor_live_audience_list"
+        app:layout_constraintTop_toBottomOf="@+id/ll_anchor_live_audience_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

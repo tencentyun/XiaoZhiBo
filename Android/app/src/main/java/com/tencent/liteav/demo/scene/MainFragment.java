@@ -24,6 +24,7 @@ import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.common.view.RoundCornerImageView;
 import com.tencent.liteav.demo.scene.shoppinglive.ShoppingLiveEntranceActivity;
 import com.tencent.liteav.demo.scene.showlive.ShowLiveEntranceActivity;
+import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
 
@@ -82,11 +83,12 @@ public class MainFragment extends Fragment {
         });
         mRvList = rootView.findViewById(R.id.main_recycler_view);
         mLiveItemEntityList = createTRTCItems();
-        mTRTCRecyclerViewAdapter = new TRTCRecyclerViewAdapter(mContext, mLiveItemEntityList, new OnItemClickListener() {
+        mTRTCRecyclerViewAdapter = new TRTCRecyclerViewAdapter(mContext,
+                mLiveItemEntityList, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 LiveItemEntity entity = mLiveItemEntityList.get(position);
-                if(entity.mTargetClass == ShoppingLiveEntranceActivity.class){
+                if (entity.mTargetClass == ShoppingLiveEntranceActivity.class) {
                     ToastUtils.showShort(R.string.app_more_function_please_wait);
                     return;
                 }
@@ -126,6 +128,9 @@ public class MainFragment extends Fragment {
                 ProfileManager.getInstance().logout(new ProfileManager.ActionCallback() {
                     @Override
                     public void onSuccess() {
+                        if (FloatWindow.mIsShowing) {
+                            FloatWindow.getInstance().destroy();
+                        }
                         startLoginActivity();
                     }
 
@@ -146,8 +151,12 @@ public class MainFragment extends Fragment {
 
     protected List<LiveItemEntity> createTRTCItems() {
         List<LiveItemEntity> list = new ArrayList<>();
-        list.add(new LiveItemEntity(getString(R.string.app_item_live_show), getString(R.string.app_tv_live_show_tips), R.drawable.app_live_show, 1, ShowLiveEntranceActivity.class));
-        list.add(new LiveItemEntity(getString(R.string.app_item_live_shopping), getString(R.string.app_tv_live_shopping_tips), R.drawable.app_live_shopping, 1, ShoppingLiveEntranceActivity.class));
+        list.add(new LiveItemEntity(getString(R.string.app_item_live_show),
+                getString(R.string.app_tv_live_show_tips),
+                R.drawable.app_live_show, 1, ShowLiveEntranceActivity.class));
+        list.add(new LiveItemEntity(getString(R.string.app_item_live_shopping),
+                getString(R.string.app_tv_live_shopping_tips),
+                R.drawable.app_live_shopping, 1, ShoppingLiveEntranceActivity.class));
         return list;
     }
 
@@ -157,7 +166,7 @@ public class MainFragment extends Fragment {
         File directory = new File(path);
         if (directory != null && directory.exists() && directory.isDirectory()) {
             long lastModify = 0;
-            File files[] = directory.listFiles();
+            File[] files = directory.listFiles();
             if (files != null && files.length > 0) {
                 for (File file : files) {
                     if (file.getName().endsWith("xlog")) {
@@ -181,7 +190,9 @@ public class MainFragment extends Fragment {
             for (String path : files) {
                 File file = new File(path);
                 try {
-                    if (file.length() == 0 || file.length() > 8 * 1024 * 1024) continue;
+                    if (file.length() == 0 || file.length() > 8 * 1024 * 1024) {
+                        continue;
+                    }
                     is = new FileInputStream(file);
                     zos.putNextEntry(new ZipEntry(file.getName()));
                     byte[] buffer = new byte[8 * 1024];

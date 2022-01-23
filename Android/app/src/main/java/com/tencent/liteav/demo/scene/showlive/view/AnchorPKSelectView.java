@@ -22,6 +22,7 @@ import com.tencent.liteav.demo.common.view.SpaceDecoration;
 import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
+import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class AnchorPKSelectView extends RelativeLayout {
     private RecyclerView         mPusherListRv;
     private List<RoomInfo>       mRoomInfos;
     private RoomListAdapter      mRoomListAdapter;
-    private onPKSelectedCallback mOnPKSelectedCallback;
+    private OnPKSelectedCallback mOnPKSelectedCallback;
     private TextView             mPusherTagTv;
     private TextView             mTextCancel;
     private String               mSelfRoomId;
@@ -68,8 +69,9 @@ public class AnchorPKSelectView extends RelativeLayout {
             }
         });
         mPusherListRv.setLayoutManager(new LinearLayoutManager(mContext));
-        mPusherListRv.addItemDecoration(new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.app_small_image_left_margin),
-                1));
+        mPusherListRv.addItemDecoration(
+                new SpaceDecoration(getResources().getDimensionPixelOffset(R.dimen.app_small_image_left_margin),
+                        1));
         mPusherListRv.setAdapter(mRoomListAdapter);
 
         mPusherTagTv = (TextView) findViewById(R.id.tv_pusher_tag);
@@ -88,29 +90,30 @@ public class AnchorPKSelectView extends RelativeLayout {
         mSelfRoomId = roomId;
     }
 
-    public void setOnPKSelectedCallback(onPKSelectedCallback onPKSelectedCallback) {
+    public void setOnPKSelectedCallback(OnPKSelectedCallback onPKSelectedCallback) {
         mOnPKSelectedCallback = onPKSelectedCallback;
     }
 
     public void refreshView() {
         mPusherTagTv.setText(getResources().getString(R.string.app_loading));
-        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE, new RoomInfoCallback() {
-            @Override
-            public void onCallback(int code, String msg, List<RoomInfo> list) {
-                mPusherTagTv.setText(getResources().getString(R.string.app_pk_invite));
-                mRoomInfos.clear();
-                List<RoomInfo> tempList = new ArrayList<>();
-                if (list != null && list.size() > 0 && !TextUtils.isEmpty(mSelfRoomId)) {
-                    for (RoomInfo info : list) {
-                        if (!mSelfRoomId.equals(info.roomId)) {
-                            tempList.add(info);
+        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE,
+                HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
+                    @Override
+                    public void onCallback(int code, String msg, List<RoomInfo> list) {
+                        mPusherTagTv.setText(getResources().getString(R.string.app_pk_invite));
+                        mRoomInfos.clear();
+                        List<RoomInfo> tempList = new ArrayList<>();
+                        if (list != null && list.size() > 0 && !TextUtils.isEmpty(mSelfRoomId)) {
+                            for (RoomInfo info : list) {
+                                if (!mSelfRoomId.equals(info.roomId)) {
+                                    tempList.add(info);
+                                }
+                            }
                         }
+                        mRoomInfos.addAll(tempList);
+                        mRoomListAdapter.notifyDataSetChanged();
                     }
-                }
-                mRoomInfos.addAll(tempList);
-                mRoomListAdapter.notifyDataSetChanged();
-            }
-        });
+                });
     }
 
     @Override
@@ -121,7 +124,7 @@ public class AnchorPKSelectView extends RelativeLayout {
         }
     }
 
-    public interface onPKSelectedCallback {
+    public interface OnPKSelectedCallback {
         void onSelected(RoomInfo roomInfo);
 
         void onCancel();

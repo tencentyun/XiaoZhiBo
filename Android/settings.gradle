@@ -4,6 +4,7 @@ include ':debug'
 include ':login'
 project(':login').projectDir = new File(settingsDir, './login')
 
+include ':tuicore'
 include ':tuipusher'
 include ':tuiplayer'
 

@@ -47,9 +47,10 @@ public class MoreActionDialog extends BottomSheetDialog {
     public boolean isZh(Context context) {
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-        if (language.endsWith("zh"))
+        if (language.endsWith("zh")) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 }

@@ -33,8 +33,9 @@ import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TY
 
 /**
  * 秀场直播 - 主播页面
- *
+ * <p>
  * 推流逻辑主要依赖TUIPusher组建中的{@link TUIPusherView} 实现
+ * </p>
  */
 public class ShowLiveAnchorActivity extends AppCompatActivity {
     private static final String TAG = ShowLiveAnchorActivity.class.getSimpleName();
@@ -48,10 +49,10 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     private boolean                mIsEnterRoom = false;
     private Timer                  mBroadcastTimer;        // 定时的 Timer
     private BroadcastTimerTask     mBroadcastTimerTask;    // 定时任务
-    private long                   mSecond      = 0;            // 开播的时间，单位为秒
+    private long                   mSecond      = 0;       // 开播的时间，单位为秒
 
     private void initFunctionView() {
-        mShowAnchorFunctionView = new ShowAnchorFunctionView(this);
+        mShowAnchorFunctionView = findViewById(R.id.anchor_function_view);
         mShowAnchorFunctionView.setTUIPusherView(mTUIPusherView);
         mShowAnchorFunctionView.setRoomId(getRoomId(TUILogin.getUserId()));
         mShowAnchorFunctionView.setListener(new ShowAnchorFunctionView.OnFunctionListener() {
@@ -60,7 +61,6 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                 showCloseDialog();
             }
         });
-        mTUIPusherView.addView(mShowAnchorFunctionView);
         mShowAnchorFunctionView.setVisibility(View.GONE);
     }
 
@@ -69,8 +69,8 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initStatusBar();
-        mTUIPusherView = new TUIPusherView(this);
-        setContentView(mTUIPusherView);
+        setContentView(R.layout.app_show_live_anchor_activity);
+        mTUIPusherView = findViewById(R.id.anchor_pusher_view);
         initPreviewView();
         initFunctionView();
         initData();
@@ -229,6 +229,9 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     }
 
     private void showPKDialog(String userId, final TUIPusherViewListener.ResponseCallback callback) {
+        if (isFinishing()) {
+            return;
+        }
         if (mPKDialog == null) {
             mPKDialog = new ConfirmDialogFragment();
             mPKDialog.setMessage(userId + getString(R.string.app_request_pk));
@@ -260,6 +263,9 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     }
 
     private void showLinkDialog(String userId, final TUIPusherViewListener.ResponseCallback callback) {
+        if (isFinishing()) {
+            return;
+        }
         if (mLinkDialog == null) {
             mLinkDialog = new ConfirmDialogFragment();
             mLinkDialog.setMessage(userId + getString(R.string.app_request_link));
@@ -284,6 +290,9 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     }
 
     private void showCloseDialog() {
+        if (isFinishing()) {
+            return;
+        }
         if (mDialogClose == null) {
             mDialogClose = new ConfirmDialogFragment();
             mDialogClose.setMessage(getString(R.string.app_close_room_tip));
@@ -344,7 +353,6 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mTUIPusherView.stop();
         stopTimer();
         if (mShowAnchorFunctionView != null) {
@@ -362,6 +370,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                         }
                     });
         }
+        super.onDestroy();
     }
 
     private void startTimer() {

@@ -5,6 +5,7 @@
     android:versionCode="1"
     android:versionName="1.0">
 
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
     <application
         android:name=".app.DemoApplication"
         android:allowBackup="false"
@@ -17,6 +18,7 @@
         <activity
             android:name=".app.SplashActivity"
             android:launchMode="singleTask"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,11 +47,12 @@
 
         <activity
             android:name=".app.MainActivity"
-            android:theme="@style/AppThemeMain"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
+            android:theme="@style/AppThemeMain">
             <intent-filter>
                 <action android:name="com.tencent.liteav.action.portal" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -58,18 +61,20 @@
 
         <activity
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
             android:name=".aboutme.AboutActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
 
         <activity
             android:name=".discover.WebViewActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMain">
 
             <intent-filter>
@@ -82,45 +87,57 @@
             android:name=".aboutme.LogOffActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
 
         <activity
             android:name=".scene.showlive.ShowLiveEntranceActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
 
         <activity
             android:name=".scene.showlive.ShowLiveAnchorActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppThemeMain"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
+            android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
         <activity
             android:name=".scene.showlive.ShowLiveAudienceActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppThemeMain"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
-
+        <activity
+            android:name=".scene.showlive.floatwindow.FloatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
+            android:theme="@style/AppThemeMain"
+            tools:ignore="DuplicateActivity" />
         <activity
             android:name=".scene.shoppinglive.ShoppingLiveEntranceActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
 
         <activity
             android:name=".scene.shoppinglive.ShoppingLiveAnchorActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppThemeMain"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
+            android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
 
         <activity
             android:name=".scene.shoppinglive.ShoppingLiveAudienceActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppThemeMain"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
+            android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
     </application>
 
