@@ -33,10 +33,10 @@ public class TUIBarrageExtension implements ITUIExtension {
             Context context = (Context) param.get("context");
             final String groupId = (String) param.get("groupId");
             //弹幕发送View
-            TUIBarrageButton sendView = new TUIBarrageButton(context, groupId);
+            TUIBarrageButton button = new TUIBarrageButton(context, groupId);
             //弹幕显示View
             final TUIBarrageDisplayView displayView = new TUIBarrageDisplayView(context, groupId);
-            sendView.setBarrageListener(new ITUIBarrageListener() {
+            button.getSendView().setBarrageListener(new ITUIBarrageListener() {
                 @Override
                 public void onSuccess(int code, String msg, TUIBarrageModel model) {
                     if (model == null || TextUtils.isEmpty(model.message)) {
@@ -51,7 +51,7 @@ public class TUIBarrageExtension implements ITUIExtension {
 
                 }
             });
-            hashMap.put(KEY_SEND_VIEW, sendView);
+            hashMap.put(KEY_SEND_VIEW, button);
             hashMap.put(KEY_DISPLAY_VIEW, displayView);
             return hashMap;
         }

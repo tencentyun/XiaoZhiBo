@@ -48,8 +48,7 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
     }
 
     private void initPresenter() {
-        mPresenter = TUIBarragePresenter.getInstance();
-        mPresenter.init(mContext, mGroupId);
+        mPresenter = new TUIBarragePresenter(mContext, mGroupId);
         mPresenter.initDisplayView(this);
     }
 
@@ -61,6 +60,14 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
         mAdapter = new TUIBarrageMsgListAdapter(context, mMsgList, null);
         mRecyclerMsg.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerMsg.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mPresenter != null) {
+            mPresenter.destroyPresenter();
+        }
+        super.onDetachedFromWindow();
     }
 
     @Override

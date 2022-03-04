@@ -1,6 +1,6 @@
 package com.tencent.liteav.demo.app;
 
-import  android.content.Intent;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import com.tencent.liteav.demo.aboutme.UserInfoFragment;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.discover.DiscoverFragment;
 import com.tencent.liteav.demo.scene.MainFragment;
+import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURLKEY;
 
 /**
  * APP主页，主要包含三个Fragment功能
- *
+ * <p>
  * -主页{@link MainFragment}
  * -发现页{@link DiscoverFragment}
  * -我的{@link UserInfoFragment}
@@ -136,6 +137,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     protected void onResume() {
+        KeepAliveService.start(this);
         super.onResume();
     }
 
@@ -167,7 +169,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mAlertDialog.setPositiveClickListener(new ConfirmDialogFragment.PositiveClickListener() {
             @Override
             public void onClick() {
+                if (FloatWindow.mIsShowing) {
+                    FloatWindow.getInstance().destroy();
+                }
                 mAlertDialog.dismiss();
+                KeepAliveService.stop(MainActivity.this);
                 finish();
             }
         });

@@ -1,9 +1,14 @@
 package com.tencent.liteav.demo.scene.showlive;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -11,9 +16,12 @@ import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
+import com.tencent.liteav.demo.services.room.bean.http.ShowLiveCosInfo;
+import com.tencent.liteav.demo.services.room.callback.ActionCallback;
 import com.tencent.liteav.demo.utils.URLUtils;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
@@ -21,14 +29,32 @@ import com.tencent.liteav.demo.scene.showlive.view.ShowAnchorFunctionView;
 import com.tencent.liteav.demo.scene.showlive.view.ShowAnchorPreviewView;
 import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.callback.CommonCallback;
+import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView;
 import com.tencent.qcloud.tuikit.tuipusher.view.listener.TUIPusherViewListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import static com.tencent.liteav.demo.scene.showlive.dialog.SelectPhotoDialog.CODE_CAMERA;
+import static com.tencent.liteav.demo.scene.showlive.dialog.SelectPhotoDialog.CODE_GALLERY;
 import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TYPE_MLVB_SHOW_LIVE;
 
 /**
@@ -38,7 +64,8 @@ import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TY
  * </p>
  */
 public class ShowLiveAnchorActivity extends AppCompatActivity {
-    private static final String TAG = ShowLiveAnchorActivity.class.getSimpleName();
+    private static final String TAG       = ShowLiveAnchorActivity.class.getSimpleName();
+    public static final  String HMAC_SHA1 = "HmacSHA1";
 
     private TUIPusherView          mTUIPusherView;
     private ShowAnchorFunctionView mShowAnchorFunctionView;
@@ -50,6 +77,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     private Timer                  mBroadcastTimer;        // 定时的 Timer
     private BroadcastTimerTask     mBroadcastTimerTask;    // 定时任务
     private long                   mSecond      = 0;       // 开播的时间，单位为秒
+    private ShowLiveCosInfo        mCosInfo;
 
     private void initFunctionView() {
         mShowAnchorFunctionView = findViewById(R.id.anchor_function_view);
@@ -409,4 +437,176 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CODE_CAMERA: {
+                // 拍照获得图片
+                Uri uri = FileProvider.getUriForFile(this,
+                        "com.tencent.liteav.demo.fileprovider",
+                        new File(getExternalCacheDir(), "xiaozhibo_avatar.jpg"));
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    uploadAvatar(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            case CODE_GALLERY: {
+                // 相册获取图片
+                try {
+                    Uri imageUri = data.getData();
+                    if (imageUri != null) {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        uploadAvatar(bitmap);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    public static String bytesToHexStr(byte[] bytes) {
+        StringBuilder hexStr = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(b & 0xFF);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
+            }
+            hexStr.append(hex);
+        }
+        return hexStr.toString();
+    }
+
+    /**
+     * HMAC加密算法
+     *
+     * @param input     待加密字符
+     * @param key       加密的key
+     * @param algorithm 算法类型如sha1/sha256
+     * @return 加密结果
+     */
+    public static String encryptHMAC(String input, String key, String algorithm) {
+        String cipher = "";
+        try {
+            byte[] data = key.getBytes(StandardCharsets.UTF_8);
+            //根据给定的字节数组构造一个密钥，第二个参数指定一个密钥的算法名称，生成HmacSHA1专属密钥
+            SecretKey secretKey = new SecretKeySpec(data, algorithm);
+
+            //生成一个指定Mac算法的Mac对象
+            Mac mac = Mac.getInstance(algorithm);
+            //用给定密钥初始化Mac对象
+            mac.init(secretKey);
+            byte[] text = input.getBytes(StandardCharsets.UTF_8);
+            byte[] encryptByte = mac.doFinal(text);
+            cipher = bytesToHexStr(encryptByte);
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            e.printStackTrace();
+        }
+        return cipher;
+    }
+
+    /**
+     * SHA加密算法
+     *
+     * @param data      待加密数据
+     * @param algorithm 加密算法
+     * @return 加密结果
+     * @throws Exception 加密异常
+     */
+    public static String sha(byte[] data, String algorithm) throws Exception {
+        // 1. 根据算法名称获实现了算法的加密实例
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
+        // 2. 加密数据, 计算数据的哈希值
+        byte[] cipher = digest.digest(data);
+        // 3. 将结果转换为十六进制小写
+        return bytesToHexStr(cipher);
+    }
+
+    private String getCosSignature(String keyTime, String secretKey, String policy) throws Exception {
+        // 1. 生成 SignKey
+        String signKey = encryptHMAC(keyTime, secretKey, HMAC_SHA1);
+        // 2. 生成 StringToSign
+        Log.i("getCosInfo", "signKey " + signKey + "");
+        String stringToSign = null;
+        stringToSign = sha(policy.getBytes(StandardCharsets.UTF_8), "SHA-1");
+        Log.i("getCosInfo", "stringToSign " + stringToSign + "");
+        // 3. 生成 Signature
+        return encryptHMAC(stringToSign, signKey, HMAC_SHA1);
+    }
+
+    private String getCosPolicy(String expirationDate, String secretId, String keyTime) {
+        String cosPolicy = "{\n"
+                + "  \"expiration\": \"" + expirationDate + "\",\n"
+                + "  \"conditions\": [\n"
+                + "    { \"q-sign-algorithm\": \"sha1\" },\n"
+                + "    { \"q-ak\": \"" + secretId + "\" },\n"
+                + "    { \"q-sign-time\": \"" + keyTime + "\" }\n"
+                + "  ]\n"
+                + "}";
+        return cosPolicy;
+    }
+
+    private Map<String, Object> getCosParams(ShowLiveCosInfo cosInfo) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("x-cos-security-token", cosInfo.credential.credentials.sessionToken);
+        param.put("q-sign-algorithm", "sha1");
+        param.put("q-ak", cosInfo.credential.credentials.tmpSecretId);
+        param.put("q-key-time", cosInfo.getKeyTime());
+        param.put("key", cosInfo.fileName + ".jpg");
+        param.put("success_action_status", 200);
+        long timeStamp = ((long) cosInfo.credential.expiredTime) * 1000;
+        Date date = new Date(timeStamp);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String nowAsISO = df.format(date);
+        // 构造策略
+        String policy = getCosPolicy(nowAsISO, cosInfo.credential.credentials.tmpSecretId, cosInfo.getKeyTime());
+        param.put("policy", Base64.encodeToString(policy.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP));
+        try {
+            param.put("q-signature", getCosSignature(cosInfo.getKeyTime(),
+                    cosInfo.credential.credentials.tmpSecretKey, policy));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return param;
+    }
+
+    public void uploadAvatar(Bitmap bitmap) {
+        mCosInfo = mShowAnchorPreviewView.getCosInfo();
+        String uploadURL = "https://" + mCosInfo.bucket + ".cos." + mCosInfo.region + ".myqcloud.com/";
+        // 构造头像地址
+        final String avatarURL = uploadURL + mCosInfo.fileName + ".jpg";
+        RoomService.getInstance(this).uploadRoomAvatar(bitmap, uploadURL, null, getCosParams(mCosInfo),
+                new ActionCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i(TAG, "uploadRoomAvatar success!");
+                        ProfileManager.getInstance().setAvatar(avatarURL, new ProfileManager.ActionCallback() {
+                            @Override
+                            public void onSuccess() {
+                                mShowAnchorPreviewView.setCoverImage(avatarURL);
+                                mShowAnchorFunctionView.refreshAvatar();
+                                Log.i(TAG, "IM setAvatar success!");
+                            }
+
+                            @Override
+                            public void onFailed(int code, String msg) {
+                                Log.i(TAG, "IM setAvatar failed! code:" + code + ",msg:" + msg);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailed(int code, String msg) {
+                        Log.i(TAG, "uploadRoomAvatar failed! code:" + code + ",msg:" + msg);
+                    }
+                });
+    }
 }

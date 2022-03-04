@@ -60,9 +60,6 @@ public class TUIGiftListQueryImpl extends TUIGiftListQuery implements TUIHttpGet
         }
         Gson gson = new Gson();
         TUIGiftBean TUIGiftBean = gson.fromJson(response, TUIGiftBean.class);
-        Log.i("summerccao","    "+ TUIGiftBean.toString());
-        TUIGiftBean.GiftListBean giftBean2 = gson.fromJson(response, TUIGiftBean.GiftListBean.class);
-        Log.i("summerccao2","    "+giftBean2.toString());
         final List<TUIGiftModel> giftDataList = transformGiftInfoList(TUIGiftBean);
         if (giftDataList != null) {
             if (mOnGiftListQueryCallback != null) {

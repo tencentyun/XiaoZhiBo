@@ -32,15 +32,12 @@ public class TUIGiftIMService {
         initIMListener();
     }
 
-    public void setGroupId(String groupId) {
-        mGroupId = groupId;
-    }
 
     private void initIMListener() {
         V2TIMManager.getInstance().addSimpleMsgListener(mRecvGiftMsgListener);
     }
 
-    private void unInitImListener() {
+    public void unInitImListener() {
         V2TIMManager.getInstance().removeSimpleMsgListener(mRecvGiftMsgListener);
     }
 
@@ -71,32 +68,46 @@ public class TUIGiftIMService {
                 if (!TUIGiftConstants.VALUE_VERSION.equals(json.getVersion())) {
                     Log.e(TAG, "protocol version is not match, ignore msg.");
                 }
-
+                Log.d(TAG, "onRecvGroupCustomMessage error : this is not gift msg.");
                 //如果不是礼物消息,则不处理
-                if (!TUIGiftConstants.VALUE_BUSINESS_ID.equals(json.getBusinessID())) {
-                    Log.d(TAG, "onRecvGroupCustomMessage error : this is not gift msg.");
-                    return;
-                }
+                if (TUIGiftConstants.VALUE_BUSINESS_ID.equals(json.getBusinessID())) {
 
-                //礼物信息
-                TUIGiftJson.Data data = json.getData();
-                //扩展信息
-                TUIGiftJson.Data.ExtInfo extInfo = data.getExtInfo();
+                    //礼物信息
+                    TUIGiftJson.Data data = json.getData();
+                    //扩展信息
+                    TUIGiftJson.Data.ExtInfo extInfo = data.getExtInfo();
 
-                HashMap<String, String> userMap = new HashMap<>();
-                userMap.put(TUIGiftConstants.KEY_USER_ID, extInfo.getUserID());
-                userMap.put(TUIGiftConstants.KEY_USER_NAME, extInfo.getNickName());
-                userMap.put(TUIGiftConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put(TUIGiftConstants.KEY_USER_ID, extInfo.getUserID());
+                    userMap.put(TUIGiftConstants.KEY_USER_NAME, extInfo.getNickName());
+                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
 
-                TUIGiftModel model = new TUIGiftModel();
-                model.giftId = data.getGiftId();
-                model.animationUrl = data.getLottieUrl();
-                model.normalImageUrl = data.getImageUrl();
-                model.giveDesc = data.message;
-                model.extInfo = userMap;
-                Log.i(TAG, "model: " + model.toString());
-                if (mPresenter != null) {
-                    mPresenter.recvGroupGiftMessage(mGroupId, model);
+                    TUIGiftModel model = new TUIGiftModel();
+                    model.giftId = data.getGiftId();
+                    model.animationUrl = data.getLottieUrl();
+                    model.normalImageUrl = data.getImageUrl();
+                    model.giveDesc = data.message;
+                    model.extInfo = userMap;
+                    Log.i(TAG, "model: " + model.toString());
+                    if (mPresenter != null) {
+                        mPresenter.recvGroupGiftMessage(mGroupId, model);
+                    }
+                }else if (TUIGiftConstants.VALUE_BUSINESS_ID_LIKE.equals(json.getBusinessID())){
+                    //礼物信息
+                    TUIGiftJson.Data data = json.getData();
+                    //扩展信息
+                    TUIGiftJson.Data.ExtInfo extInfo = data.getExtInfo();
+
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put(TUIGiftConstants.KEY_USER_ID, extInfo.getUserID());
+                    userMap.put(TUIGiftConstants.KEY_USER_NAME, extInfo.getNickName());
+                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
+
+                    TUIGiftModel model = new TUIGiftModel();
+                    model.extInfo = userMap;
+                    if (mPresenter != null) {
+                        mPresenter.recvGroupLikeMessage(mGroupId);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,8 +122,33 @@ public class TUIGiftIMService {
      * @param callback  发送结果回调
      */
     public void sendGroupGiftMessage(TUIGiftModel giftModel, final TUIGiftCallBack.ActionCallBack callback) {
-        String data = getCusMsgJsonStr(giftModel);
+        String data = getCusGiftMsgJsonStr(giftModel);
         Log.i(TAG, "send data: " + data.toString());
+        V2TIMManager.getInstance().sendGroupCustomMessage(data.getBytes(), mGroupId, V2TIMMessage.V2TIM_PRIORITY_NORMAL, new V2TIMValueCallback<V2TIMMessage>() {
+            @Override
+            public void onError(int i, String s) {
+                if (callback != null) {
+                    callback.onCallback(i, s);
+                }
+            }
+
+            @Override
+            public void onSuccess(V2TIMMessage v2TIMMessage) {
+                if (callback != null) {
+                    callback.onCallback(0, "send group message success.");
+                }
+            }
+        });
+    }
+
+    /**
+     * 发送礼物信息
+     *
+     * @param callback  发送结果回调
+     */
+    public void sendGroupLikeMessage(final TUIGiftCallBack.ActionCallBack callback) {
+        String data = getCusLikeMsgJsonStr();
+        Log.i(TAG, "send like: " + data);
         V2TIMManager.getInstance().sendGroupCustomMessage(data.getBytes(), mGroupId, V2TIMMessage.V2TIM_PRIORITY_NORMAL, new V2TIMValueCallback<V2TIMMessage>() {
             @Override
             public void onError(int i, String s) {
@@ -136,7 +172,7 @@ public class TUIGiftIMService {
      * @param giftModel 待转换礼物信息
      * @return 转换好的JSON串
      */
-    public static String getCusMsgJsonStr(TUIGiftModel giftModel) {
+    private static String getCusGiftMsgJsonStr(TUIGiftModel giftModel) {
         TUIGiftJson sendJson = new TUIGiftJson();
         sendJson.setBusinessID(TUIGiftConstants.VALUE_BUSINESS_ID);
         sendJson.setPlatform(TUIGiftConstants.VALUE_PLATFORM);
@@ -148,6 +184,31 @@ public class TUIGiftIMService {
         data.setImageUrl(giftModel.normalImageUrl);
         data.setGiftId(giftModel.giftId);
 
+        //扩展信息
+        TUIGiftJson.Data.ExtInfo extInfo = new TUIGiftJson.Data.ExtInfo();
+        extInfo.setUserID(TUILogin.getUserId());
+        extInfo.setNickName(TUILogin.getNickName());
+        extInfo.setAvatarUrl(TUILogin.getFaceUrl());
+
+        data.setExtInfo(extInfo);
+        sendJson.setData(data);
+
+        Gson gson = new Gson();
+        return gson.toJson(sendJson);
+    }
+
+    /**
+     * 将点赞信息转换成JSON串
+     *
+     * @return 转换好的JSON串
+     */
+    private static String getCusLikeMsgJsonStr() {
+        TUIGiftJson sendJson = new TUIGiftJson();
+        sendJson.setBusinessID(TUIGiftConstants.VALUE_BUSINESS_ID_LIKE);
+        sendJson.setPlatform(TUIGiftConstants.VALUE_PLATFORM);
+        sendJson.setVersion(TUIGiftConstants.VALUE_VERSION);
+
+        TUIGiftJson.Data data = new TUIGiftJson.Data();
         //扩展信息
         TUIGiftJson.Data.ExtInfo extInfo = new TUIGiftJson.Data.ExtInfo();
         extInfo.setUserID(TUILogin.getUserId());

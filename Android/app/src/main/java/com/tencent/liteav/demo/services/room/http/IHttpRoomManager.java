@@ -1,9 +1,14 @@
 package com.tencent.liteav.demo.services.room.http;
 
+import android.graphics.Bitmap;
+
 import com.tencent.liteav.demo.services.room.callback.ActionCallback;
+import com.tencent.liteav.demo.services.room.callback.GetCosInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomDetailCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
+
+import java.util.Map;
 
 public interface IHttpRoomManager {
 
@@ -58,4 +63,21 @@ public interface IHttpRoomManager {
      * @param callback
      */
     void getRoomDetail(String roomId, final RoomDetailCallback callback);
+
+    /**
+     * 获取头像上传cos信息
+     *
+     * @param roomCosType cos类型
+     * @param callback    结果回调
+     */
+    void getRoomCosInfo(String roomCosType, final GetCosInfoCallback callback);
+
+    /**
+     * 上传房间头像
+     *
+     * @param url      上传的cos地址
+     * @param fileName 文件名
+     */
+    void uploadRoomAvatar(Bitmap bitmap,String url, String fileName, Map<String, Object> map,
+                          final ActionCallback callback);
 }

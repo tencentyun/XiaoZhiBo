@@ -21,5 +21,13 @@
             android:orientation="vertical" />
 
     </RelativeLayout>
+    <com.tencent.qcloud.tuikit.tuigift.view.like.TUIGiftHeartLayout
+        android:id="@+id/heart_layout"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:focusable="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+         />
 
 </RelativeLayout>

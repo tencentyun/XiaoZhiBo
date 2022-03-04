@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
+import com.tencent.liteav.demo.app.KeepAliveService;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
@@ -83,6 +84,10 @@ public class LogOffActivity extends AppCompatActivity {
         profileManager.logoff(new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
+                KeepAliveService.stop(LogOffActivity.this);
+                if (FloatWindow.mIsShowing) {
+                    FloatWindow.getInstance().destroy();
+                }
                 ToastUtils.showShort(getString(R.string.app_logoff_account_ok));
                 startLoginActivity();
             }

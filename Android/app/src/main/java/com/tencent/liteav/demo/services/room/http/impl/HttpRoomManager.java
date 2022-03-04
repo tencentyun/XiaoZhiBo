@@ -1,21 +1,29 @@
 package com.tencent.liteav.demo.services.room.http.impl;
 
+import android.graphics.Bitmap;
+
 import com.tencent.liteav.debug.GenerateGlobalConfig;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.bean.http.RoomDetail;
+import com.tencent.liteav.demo.services.room.bean.http.ShowLiveCosInfo;
 import com.tencent.liteav.demo.services.room.callback.ActionCallback;
+import com.tencent.liteav.demo.services.room.callback.GetCosInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomDetailCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.IHttpRoomManager;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.qcloud.tuicore.TUILogin;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +31,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
+import retrofit2.http.Url;
 
 public class HttpRoomManager implements IHttpRoomManager {
     private static final HttpRoomManager mOurInstance = new HttpRoomManager();
@@ -46,6 +58,8 @@ public class HttpRoomManager implements IHttpRoomManager {
     private Call<ResponseEntity<Void>>             mDestroyRoomCall;
     private Call<ResponseEntity<List<RoomDetail>>> mGetRoomListCall;
     private Call<ResponseEntity<RoomDetail>>       mGetRoomDetailCall;
+    private Call<ResponseEntity<ShowLiveCosInfo>>  mGetRoomCosInfo;
+    private Call<Void>                             mUploadAvatar;
 
     public static HttpRoomManager getInstance() {
         return mOurInstance;
@@ -301,6 +315,80 @@ public class HttpRoomManager implements IHttpRoomManager {
         });
     }
 
+    @Override
+    public void getRoomCosInfo(String roomCosType, final GetCosInfoCallback callback) {
+        if (mGetRoomCosInfo != null && mGetRoomCosInfo.isExecuted()) {
+            mGetRoomCosInfo.cancel();
+        }
+        Map<String, String> param = new HashMap<>();
+        param.put("appId", String.valueOf(mSdkAppId));
+        param.put("category", roomCosType);
+        param.put("userId", TUILogin.getUserId());
+        param.put("token", ProfileManager.getInstance().getToken());
+        param.put("apaasUserId", ProfileManager.getInstance().getApaasUserId());
+        mGetRoomCosInfo = mApi.getCosInfo(param);
+        mGetRoomCosInfo.enqueue(new Callback<ResponseEntity<ShowLiveCosInfo>>() {
+            @Override
+            public void onResponse(Call<ResponseEntity<ShowLiveCosInfo>> call,
+                                   Response<ResponseEntity<ShowLiveCosInfo>> response) {
+                ResponseEntity res = response.body();
+                if (res.errorCode == 0 && res.data != null) {
+                    ShowLiveCosInfo cosInfo = (ShowLiveCosInfo) res.data;
+                    callback.onSuccess(cosInfo);
+                } else {
+                    if (callback != null) {
+                        callback.onFailed(res.errorCode, res.errorMessage);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseEntity<ShowLiveCosInfo>> call, Throwable t) {
+                if (callback != null) {
+                    callback.onFailed(ERROR_CODE_UNKNOWN, "unknown error");
+                }
+            }
+        });
+    }
+
+    private Map<String, RequestBody> convertParam(Map<String, Object> map) {
+        Map<String, RequestBody> resultMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"),
+                    String.valueOf(entry.getValue()));
+            resultMap.put(entry.getKey(), body);
+        }
+        return resultMap;
+    }
+
+    @Override
+    public void uploadRoomAvatar(Bitmap bitmap, String url, String fileName, Map<String, Object> map,
+                                 final ActionCallback callback) {
+        if (mUploadAvatar != null && mUploadAvatar.isExecuted()) {
+            mUploadAvatar.cancel();
+        }
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), stream.toByteArray());
+        MultipartBody.Part part = MultipartBody.Part.createFormData("file", fileName, requestBody);
+        mUploadAvatar = mApi.uploadAvatar(url, convertParam(map), part);
+        mUploadAvatar.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful() && callback != null) {
+                    callback.onSuccess();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                if (callback != null) {
+                    callback.onFailed(ERROR_CODE_UNKNOWN, "未知错误");
+                }
+            }
+        });
+    }
+
     private RoomInfo convertRoomInfo(RoomDetail roomDetail) {
         if (roomDetail == null) {
             return null;
@@ -358,6 +446,15 @@ public class HttpRoomManager implements IHttpRoomManager {
         @POST("base/v1/rooms/room_detail")
         @FormUrlEncoded
         Call<ResponseEntity<RoomDetail>> getRoomInfo(@FieldMap Map<String, String> map);
+
+        @POST("base/v1/cos/config")
+        @FormUrlEncoded
+        Call<ResponseEntity<ShowLiveCosInfo>> getCosInfo(@FieldMap Map<String, String> map);
+
+        @POST
+        @Multipart
+        Call<Void> uploadAvatar(@Url String url, @PartMap Map<String, RequestBody> params,
+                                @Part MultipartBody.Part parts);
     }
 
 
@@ -365,6 +462,21 @@ public class HttpRoomManager implements IHttpRoomManager {
         public int    errorCode;
         public String errorMessage;
         public T      data;
+    }
+
+
+    public enum RoomCosType {
+        AVATAR("avatar");
+
+        RoomCosType(String type) {
+            this.type = type;
+        }
+
+        private String type;
+
+        public String getType() {
+            return type;
+        }
     }
 
 

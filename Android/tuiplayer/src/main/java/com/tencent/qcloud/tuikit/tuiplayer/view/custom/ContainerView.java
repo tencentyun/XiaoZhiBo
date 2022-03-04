@@ -28,6 +28,7 @@ public class ContainerView extends FrameLayout {
     private View           mViewRoot;
     private ImageView      mImageLink;
     private RelativeLayout mLayoutGift;
+    private RelativeLayout mLayoutLike;
     private RelativeLayout mLayoutGiftShow;
     private RelativeLayout mLayoutBarrage;
     private RelativeLayout mLayoutBarrageShow;
@@ -46,6 +47,7 @@ public class ContainerView extends FrameLayout {
         mLayoutBarrage = mViewRoot.findViewById(R.id.rl_barrage);
         mLayoutBarrageShow = mViewRoot.findViewById(R.id.rl_barrage_show);
         mLayoutGift = mViewRoot.findViewById(R.id.rl_gift);
+        mLayoutLike = mViewRoot.findViewById(R.id.rl_like);
         mLayoutGiftShow = mViewRoot.findViewById(R.id.rl_gift_show);
         mIconWidth = dip2px(44);
         mIconHeight = dip2px(44);
@@ -89,6 +91,14 @@ public class ContainerView extends FrameLayout {
             } else {
                 TXCLog.d(TAG, "TUIGift TUIGiftPlayView getExtensionInfo not find");
             }
+
+            Object likeView = giftRetMap.get("TUILikeButton");
+            if (likeView != null && likeView instanceof View) {
+                setLikeView((View) likeView);
+                TXCLog.d(TAG, "TUIGift TUILikeButton getExtensionInfo success");
+            } else {
+                TXCLog.d(TAG, "TUIGift TUILikeButton getExtensionInfo not find");
+            }
         } else {
             TXCLog.d(TAG, "TUIGift getExtensionInfo null");
         }
@@ -130,6 +140,12 @@ public class ContainerView extends FrameLayout {
         mLayoutBarrageShow.addView(view, params);
     }
 
+    public void setLikeView(View view) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mIconWidth, mIconHeight);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        mLayoutLike.addView(view);
+    }
+
     public void setGiftView(View view) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mIconWidth, mIconHeight);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -148,7 +164,7 @@ public class ContainerView extends FrameLayout {
     }
 
     public void setLinkVisible(int visible) {
-            mImageLink.setVisibility(visible);
+        mImageLink.setVisibility(visible);
     }
 
     private int dip2px(float dpValue) {

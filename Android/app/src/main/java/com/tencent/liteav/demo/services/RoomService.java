@@ -1,11 +1,14 @@
 package com.tencent.liteav.demo.services;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.tencent.liteav.demo.services.room.bean.AudienceInfo;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
+import com.tencent.liteav.demo.services.room.bean.http.ShowLiveCosInfo;
 import com.tencent.liteav.demo.services.room.callback.ActionCallback;
+import com.tencent.liteav.demo.services.room.callback.GetCosInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomMemberInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.CommonCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
@@ -14,6 +17,7 @@ import com.tencent.liteav.demo.services.room.im.impl.IMRoomManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TYPE_MLVB_SHOW_LIVE;
 
@@ -219,6 +223,45 @@ public class RoomService implements IRoomService {
                     callback.onCallback(0, "success", list);
                 } else {
                     callback.onCallback(code, msg, list);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getRoomCosInfo(String roomCosType, final GetCosInfoCallback callback) {
+        HttpRoomManager.getInstance().getRoomCosInfo(roomCosType, new GetCosInfoCallback() {
+            @Override
+            public void onSuccess(ShowLiveCosInfo cosInfo) {
+                if (callback != null) {
+                    callback.onSuccess(cosInfo);
+                }
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                if (callback != null) {
+                    callback.onFailed(code, msg);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void uploadRoomAvatar(Bitmap bitmap, String url, String fileName, Map<String, Object> map,
+                                 final ActionCallback callback) {
+        HttpRoomManager.getInstance().uploadRoomAvatar(bitmap, url, fileName, map, new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                if (callback != null) {
+                    callback.onFailed(code, msg);
                 }
             }
         });

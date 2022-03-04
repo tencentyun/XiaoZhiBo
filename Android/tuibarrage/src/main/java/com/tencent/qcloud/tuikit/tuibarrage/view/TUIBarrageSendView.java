@@ -13,16 +13,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuikit.tuibarrage.R;
+import com.tencent.qcloud.tuikit.tuibarrage.model.TUIBarrageConstants;
+import com.tencent.qcloud.tuikit.tuibarrage.model.TUIBarrageModel;
+import com.tencent.qcloud.tuikit.tuibarrage.presenter.ITUIBarragePresenter;
+import com.tencent.qcloud.tuikit.tuibarrage.presenter.TUIBarrageCallBack;
+import com.tencent.qcloud.tuikit.tuibarrage.presenter.TUIBarragePresenter;
 
 /**
  * 弹幕发送界面
  */
-public class TUIBarrageSendView extends Dialog {
+public class TUIBarrageSendView extends Dialog implements ITUIBarrageSendView {
     private static final String TAG = "TUIBarrageSendView";
 
-    private final InputMethodManager mInputMethodManager;
-    private       OnTextSendListener mOnTextSendListener;
+    private final InputMethodManager   mInputMethodManager;
+    private       ITUIBarragePresenter mPresenter;
+    private       ITUIBarrageListener  mBarrageListener;
+    private       String               mGroupId;
 
     private Context  mContext;
     private EditText mEditText;
@@ -30,13 +38,15 @@ public class TUIBarrageSendView extends Dialog {
     private View     mLayoutOutSide;
     private View     mLayoutInputView;
 
-    public TUIBarrageSendView(Context context) {
+    public TUIBarrageSendView(Context context, String groupId) {
         super(context, R.style.TUIBarrageInputDialog);
         setContentView(R.layout.tuibarrage_dialog_send);
+        mGroupId = groupId;
         this.mContext = context;
         mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         initView();
         initListener();
+        initPresenter();
     }
 
     private void initView() {
@@ -49,13 +59,18 @@ public class TUIBarrageSendView extends Dialog {
         mLayoutInputView = findViewById(R.id.ll_input_view);
     }
 
+    private void initPresenter() {
+        mPresenter = new TUIBarragePresenter(mContext, mGroupId);
+    }
+
     private void initListener() {
         mBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String msg = mEditText.getText().toString().trim();
                 if (!TextUtils.isEmpty(msg)) {
-                    mOnTextSendListener.onTextSend(msg);
+                    TUIBarrageModel model = createBarrageModel(msg);
+                    sendBarrage(model);
 
                     mInputMethodManager.showSoftInput(mEditText, InputMethodManager.SHOW_FORCED);
                     mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
@@ -107,11 +122,51 @@ public class TUIBarrageSendView extends Dialog {
         });
     }
 
-    public void setOnTextSendListener(OnTextSendListener onTextSendListener) {
-        this.mOnTextSendListener = onTextSendListener;
+    @Override
+    public void onDetachedFromWindow() {
+        if (mPresenter != null) {
+            mPresenter.destroyPresenter();
+        }
+        super.onDetachedFromWindow();
     }
 
-    public interface OnTextSendListener {
-        void onTextSend(String msg);
+    public void setBarrageListener(ITUIBarrageListener barrageListener) {
+        mBarrageListener = barrageListener;
+    }
+
+    @Override
+    public void sendBarrage(TUIBarrageModel model) {
+        if (model == null) {
+            return;
+        }
+
+        if (mPresenter == null) {
+            initPresenter();
+        }
+
+        mPresenter.sendBarrage(model, new TUIBarrageCallBack.BarrageSendCallBack() {
+            @Override
+            public void onSuccess(int code, String msg, TUIBarrageModel model) {
+                if (mBarrageListener != null) {
+                    mBarrageListener.onSuccess(code, msg, model);
+                }
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                if (mBarrageListener != null) {
+                    mBarrageListener.onFailed(code, msg);
+                }
+            }
+        });
+    }
+
+    private TUIBarrageModel createBarrageModel(String message) {
+        TUIBarrageModel model = new TUIBarrageModel();
+        model.message = message;
+        model.extInfo.put(TUIBarrageConstants.KEY_USER_ID, TUILogin.getUserId());
+        model.extInfo.put(TUIBarrageConstants.KEY_USER_NAME, TUILogin.getNickName());
+        model.extInfo.put(TUIBarrageConstants.KEY_USER_AVATAR, TUILogin.getFaceUrl());
+        return model;
     }
 }

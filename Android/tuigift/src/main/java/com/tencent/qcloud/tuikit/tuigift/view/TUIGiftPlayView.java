@@ -13,9 +13,12 @@ import android.widget.RelativeLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.tencent.qcloud.tuikit.tuigift.R;
+import com.tencent.qcloud.tuikit.tuigift.core.TUIGiftExtension;
 import com.tencent.qcloud.tuikit.tuigift.model.TUIGiftModel;
 import com.tencent.qcloud.tuikit.tuigift.presenter.TUIGiftPresenter;
+import com.tencent.qcloud.tuikit.tuigift.view.like.TUIGiftHeartLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class TUIGiftPlayView extends LinearLayout implements ITUIGiftPlayView {
     private TUIGiftPresenter    mPresenter;
     private String              mGroupId;
     private LottieAnimationView mAnimationView;
+    private TUIGiftHeartLayout  mHeartLayout;
     private List<TUIGiftModel>  mSentGift;
 
     public TUIGiftPlayView(Context context) {
@@ -59,6 +63,7 @@ public class TUIGiftPlayView extends LinearLayout implements ITUIGiftPlayView {
         LayoutInflater.from(getContext()).inflate(R.layout.tuigift_layout_lottie_animator, this, true);
         mGiftBulletGroup = (LinearLayout) findViewById(R.id.gift_bullet_group);
         mAnimationView = findViewById(R.id.gift_lottie_view);
+        mHeartLayout = findViewById(R.id.heart_layout);
         mAnimationView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -79,15 +84,21 @@ public class TUIGiftPlayView extends LinearLayout implements ITUIGiftPlayView {
             }
         });
         initPresenter();
+        TUIGiftExtension.map.put(mGroupId + TUIGiftExtension.KEY_TYPE_PLAY, new WeakReference<Object>(this));
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        mPresenter.destroyPresenter();
+        super.onDetachedFromWindow();
     }
 
     /**
      * 初始化Presenter
      */
     private void initPresenter() {
-        mPresenter = TUIGiftPresenter.getInstance();
-        mPresenter.setContext(mContext);
-        mPresenter.initGiftPlayView(this, mGroupId);
+        mPresenter = new TUIGiftPresenter(mContext, mGroupId);
+        mPresenter.initGiftPlayView(this);
     }
 
     /**
@@ -145,5 +156,9 @@ public class TUIGiftPlayView extends LinearLayout implements ITUIGiftPlayView {
         } else {
             showGiftBullet(giftModel);
         }
+    }
+
+    public void receiveLike() {
+        mHeartLayout.addFavor();
     }
 }

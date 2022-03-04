@@ -106,8 +106,9 @@
             tools:ignore="DuplicateActivity" />
         <activity
             android:name=".scene.showlive.ShowLiveAudienceActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
         <activity
@@ -139,7 +140,21 @@
             android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain"
             tools:ignore="DuplicateActivity" />
+        <service
+            android:name=".app.KeepAliveService"
+            android:enabled="true"
+            android:exported="false"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.tencent.liteav.demo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/photo_paths" />
+        </provider>
     </application>
+
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />

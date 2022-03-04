@@ -81,4 +81,8 @@
     <string name="app_follow_success">Followed</string>
     <string name="app_unfollow_success">UnFollow success</string>
     <string name="app_show_live_link_mic_exit">Link-Mic is in progress, are you sure to leave?</string>
+    <string name="app_working">Running</string>
+    <string name="app_show_live_anchor_select_photo">Select photo</string>
+    <string name="app_show_live_anchor_photo_library">Photo library</string>
+    <string name="app_show_live_anchor_camera">Camera</string>
 </resources>

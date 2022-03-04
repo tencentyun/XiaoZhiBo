@@ -76,6 +76,9 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
         mButtonCreateRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (FloatWindow.mIsShowing) {
+                    FloatWindow.getInstance().destroy();
+                }
                 createRoom();
             }
         });
@@ -126,7 +129,6 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
         intent.putExtra(TCConstants.PUSHER_NAME, info.roomName);
         intent.putExtra(TCConstants.COVER_PIC, info.coverUrl);
         intent.putExtra(TCConstants.PUSHER_AVATAR, info.coverUrl);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

@@ -1,13 +1,10 @@
 package com.tencent.liteav.demo.scene.showlive.floatwindow;
 
-import android.app.Activity;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,7 +17,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.tencent.liteav.demo.R;
+import com.tencent.liteav.demo.common.TCConstants;
 import com.tencent.liteav.demo.scene.showlive.ShowLiveAudienceActivity;
+import com.tencent.liteav.demo.services.room.bean.RoomInfo;
+import com.tencent.liteav.demo.utils.URLUtils;
 import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 
 import java.lang.reflect.Method;
@@ -38,14 +38,16 @@ public class FloatWindow implements IFloatWindowCallback {
     private WindowManager              mWindowManager;
     private WindowManager.LayoutParams mLayoutParams;
 
-    private float   mStartX;   //最开始点击的X坐标
-    private float   mStartY;   //最开始点击的Y坐标
-    private float   mCurX;     //X坐标
-    private float   mCurY;     //Y坐标
-    private int     mScreenWidth;
-    private int     mScreenHeight;
-    private boolean mIsMove;
-    private String  mRoomId;
+    private float    mStartX;   //最开始点击的X坐标
+    private float    mStartY;   //最开始点击的Y坐标
+    private float    mTouchX;   //开始移动时的X坐标
+    private float    mTouchY;   //开始移动时的Y坐标
+    private float    mCurX;     //X坐标
+    private float    mCurY;     //Y坐标
+    private int      mScreenWidth;
+    private int      mScreenHeight;
+    private boolean  mIsMove;
+    private RoomInfo mRoomInfo;
 
     private static FloatWindow sInstance;
 
@@ -78,8 +80,8 @@ public class FloatWindow implements IFloatWindowCallback {
     }
 
     public String getRoomId() {
-        if (!TextUtils.isEmpty(mRoomId)) {
-            return mRoomId;
+        if (mRoomInfo != null && !TextUtils.isEmpty(mRoomInfo.roomId)) {
+            return mRoomInfo.roomId;
         }
         return "";
     }
@@ -98,11 +100,11 @@ public class FloatWindow implements IFloatWindowCallback {
         }
     }
 
-    public void init(Context context, String roomId, TUIPlayerView playerView) {
+    public void init(Context context, RoomInfo roomInfo) {
         mContext = context;
-        mRoomId = roomId;
+        mRoomInfo = roomInfo;
         initLayoutParams();
-        initView(playerView);
+        initView();
         mIsShowing = false;
         createDemoApplication(context, this);
     }
@@ -138,16 +140,40 @@ public class FloatWindow implements IFloatWindowCallback {
         }
     }
 
-    private void initView(TUIPlayerView playerView) {
+    private void initView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.app_view_flaotwindow, null);
         mRootView = view;
-        mTUIPlayerView = playerView;
+        mTUIPlayerView = new TUIPlayerView(mContext);
         mTUIPlayerView.updatePlayerUIState(TUIPlayerView.TUIPlayerUIState.TUIPLAYER_UISTATE_VIDEOONLY);
+        mTUIPlayerView.setGroupID(getRoomId());
+        String playUrl = URLUtils.generatePlayUrl(getRoomId(), URLUtils.PlayType.WEBRTC);
+        mTUIPlayerView.startPlay(playUrl);
         ((ViewGroup) mRootView).addView(mTUIPlayerView);
         mImageClose = view.findViewById(R.id.iv_close_float_window);
         ((ViewGroup) mRootView).bringChildToFront(mImageClose);
         mTUIPlayerView.setOnTouchListener(new FloatingOnTouchListener());
         mImageClose.setOnTouchListener(new FloatingOnTouchListener());
+        mTUIPlayerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                destroy();
+                Intent intent = new Intent(mContext, ShowLiveAudienceActivity.class);
+                intent.putExtra(TCConstants.ROOM_TITLE, mRoomInfo.roomName);
+                intent.putExtra(TCConstants.GROUP_ID, Integer.valueOf(mRoomInfo.roomId));
+                intent.putExtra(TCConstants.USE_CDN_PLAY, false);
+                intent.putExtra(TCConstants.PUSHER_ID, mRoomInfo.ownerId);
+                intent.putExtra(TCConstants.PUSHER_NAME, mRoomInfo.roomName);
+                intent.putExtra(TCConstants.COVER_PIC, mRoomInfo.coverUrl);
+                intent.putExtra(TCConstants.PUSHER_AVATAR, mRoomInfo.coverUrl);
+                mContext.getApplicationContext().startActivity(intent);
+            }
+        });
+        mImageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnCloseListener.close();
+            }
+        });
     }
 
     private void initLayoutParams() {
@@ -173,21 +199,12 @@ public class FloatWindow implements IFloatWindowCallback {
         mLayoutParams.y = mScreenHeight / 3;
     }
 
-
-    //点击事件
-    private void click(int i) {
-        if (i == R.id.iv_close_float_window) {
-            mOnCloseListener.close();
-        } else {
-            Intent intent = new Intent(mContext, ShowLiveAudienceActivity.class);
-            mContext.getApplicationContext().startActivity(intent);
-        }
-    }
-
     public void destroy() {
         if (mWindowManager != null && mRootView != null) {
             Log.d(TAG, "destroy:  removeView ");
+            mTUIPlayerView.stopPlay();
             ((ViewGroup) mRootView).removeView(mTUIPlayerView);
+            mTUIPlayerView = null;
             mWindowManager.removeView(mRootView);
             mRootView = null;
             mWindowManager = null;
@@ -202,94 +219,88 @@ public class FloatWindow implements IFloatWindowCallback {
     private class FloatingOnTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            mCurX = mLayoutParams.x;
-            mCurY = mLayoutParams.y;
-
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mIsMove = false;
-                    mOldX = (int) event.getRawX();
-                    mOldY = (int) event.getRawY();
-                    //获取初始位置
-                    mStartX = (event.getRawX() - mLayoutParams.x);
-                    mStartY = (event.getRawY() - mLayoutParams.y);
+                    mStartX = (int) event.getRawX(); //初始点相对屏幕左上角的坐标
+                    mStartY = (int) event.getRawY();
+                    mTouchX = (int) event.getRawX(); //该值在move的时候变化
+                    mTouchY = (int) event.getRawY();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     mCurX = event.getRawX();
                     mCurY = event.getRawY();
-                    updateViewPosition();//更新悬浮窗口位置
-                    if (Math.abs(mCurX - mOldX) <= 5 && Math.abs(mCurY - mOldY) <= 5) {
-                    } else {
+                    //更新悬浮窗口位置(跟手功能)
+                    mLayoutParams.x += mCurX - mTouchX;
+                    mLayoutParams.y += mCurY - mTouchY;
+                    mWindowManager.updateViewLayout(mRootView, mLayoutParams);
+                    //更新坐标
+                    mTouchX = mCurX;
+                    mTouchY = mCurY;
+                    if (Math.abs(mCurX - mStartX) >= 5 || Math.abs(mCurY - mStartY) >= 5) {
                         mIsMove = true;
                     }
                     break;
-
                 case MotionEvent.ACTION_UP:
                     mCurX = event.getRawX();
                     mCurY = event.getRawY();
-                    //若位置变动不大,默认为点击
-                    if (Math.abs(mCurX - mOldX) <= 5 && Math.abs(mCurY - mOldY) <= 5 && !mIsMove) {
-                        click(v.getId());
+                    if ((Math.abs(mCurX - mStartX) >= 5 || Math.abs(mCurY - mStartY) >= 5) && mIsMove) {
+                        if (mCurX < mScreenWidth / 2) {
+                            startScrollLeft();
+                        } else {
+                            startScrollRight();
+                        }
                     }
-                    move();
-                    mOldX = (int) event.getRawX();
-                    mOldY = (int) event.getRawY();
                     break;
                 default:
                     break;
             }
-            return true;
+            return mIsMove;
         }
     }
 
-    /**
-     * 更新悬浮窗口位置
-     */
-    private void updateViewPosition() {
-        mLayoutParams.x = (int) (mCurX - mStartX);
-        mLayoutParams.y = (int) (mCurY - mStartY);
-        if (mWindowManager != null) {
-            mWindowManager.updateViewLayout(mRootView, mLayoutParams);
-        }
+    //悬浮窗贴边动画,移动到左边
+    public void startScrollLeft() {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(mCurX, 0).setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mLayoutParams.x = (int) (mCurX * (1 - animation.getAnimatedFraction()));
+                //防止悬浮窗上下越界
+                calculateHeight();
+                mWindowManager.updateViewLayout(mRootView, mLayoutParams);
+            }
+        });
+        valueAnimator.start();
     }
 
-
-    public void move() {
-        if (mHandler == null || mWindowManager == null) {
-            return;
-        }
-        for (int i = 0; i < mWindowManager.getDefaultDisplay().getWidth(); i++) {
-            //一毫秒更新一次，直到达到边缘了
-            mHandler.sendEmptyMessageDelayed(i, 300);
-        }
-        mWindowManager.updateViewLayout(mRootView, mLayoutParams);
+    //悬浮窗贴边动画,移动到右边
+    public void startScrollRight() {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(mCurX, mScreenWidth * 2 / 3).setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mLayoutParams.x = (int) (mCurX + (mScreenWidth * 2 / 3 - mCurX) * animation.getAnimatedFraction());
+                //防止悬浮窗上下越界
+                calculateHeight();
+                mWindowManager.updateViewLayout(mRootView, mLayoutParams);
+            }
+        });
+        valueAnimator.start();
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            moveToBeside();
-        }
-    };
-
-    //靠边停驻
-    private void moveToBeside() {
-        if (!mIsShowing) {
-            return;
-        }
-        if (mLayoutParams.x < 0) {
-            mLayoutParams.x = 0;
-        } else if (mLayoutParams.x + mLayoutParams.width > mScreenWidth) {
-            mLayoutParams.x = mScreenWidth - mLayoutParams.width;
-        }
+    //计算高度,防止悬浮窗上下越界
+    private void calculateHeight() {
+        int height = mRootView.getHeight();
+        int screenHeight = mWindowManager.getDefaultDisplay().getHeight();
+        //获取系统状态栏的高度
+        int resourceId = mContext.getResources().getIdentifier("status_bar_height",
+                "dimen", "android");
+        int statusBarHeight = mContext.getResources().getDimensionPixelSize(resourceId);
         if (mLayoutParams.y < 0) {
             mLayoutParams.y = 0;
-        } else if (mLayoutParams.y + mLayoutParams.height > mScreenHeight) {
-            mLayoutParams.y = mScreenHeight - mLayoutParams.height;
-        }
-        if (mWindowManager != null) {
-            mWindowManager.updateViewLayout(mRootView, mLayoutParams);
+        } else if (mLayoutParams.y > (screenHeight - height - statusBarHeight)) {
+            mLayoutParams.y = screenHeight - height - statusBarHeight;
         }
     }
 
