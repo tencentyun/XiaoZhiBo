@@ -82,4 +82,8 @@
     <string name="app_follow_success">关注成功</string>
     <string name="app_unfollow_success">取消关注成功</string>
     <string name="app_show_live_link_mic_exit">连麦进行中，确定离开吗？</string>
+    <string name="app_working">正在运行中</string>
+    <string name="app_show_live_anchor_select_photo">选取照片</string>
+    <string name="app_show_live_anchor_photo_library">照片图库</string>
+    <string name="app_show_live_anchor_camera">相机</string>
 </resources>

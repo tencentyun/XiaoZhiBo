@@ -52,26 +52,33 @@
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"></RelativeLayout>
+            android:background="@android:color/transparent" />
+
+        <RelativeLayout
+            android:id="@+id/rl_like"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_barrage_show"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        app:layout_constraintBottom_toTopOf="@+id/ll_container"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_container"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <RelativeLayout
         android:id="@+id/rl_gift_show"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toTopOf="@+id/ll_container"
-        android:layout_marginBottom="200dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_container"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,29 +7,17 @@ import com.tencent.qcloud.tuikit.tuibarrage.R;
 import com.tencent.qcloud.tuikit.tuibarrage.model.TUIBarrageConstants;
 import com.tencent.qcloud.tuikit.tuibarrage.model.TUIBarrageIMService;
 import com.tencent.qcloud.tuikit.tuibarrage.model.TUIBarrageModel;
-import com.tencent.qcloud.tuikit.tuibarrage.view.ITUIBarrageButton;
 import com.tencent.qcloud.tuikit.tuibarrage.view.ITUIBarrageDisplayView;
 
 public class TUIBarragePresenter implements ITUIBarragePresenter {
     private static final String TAG = "TUIBarragePresenter";
 
-    private static TUIBarragePresenter sInstance;
-
     protected Context                mContext;
     public    String                 mGroupId;
     private   ITUIBarrageDisplayView mDisplayView;
-    private   ITUIBarrageButton      mSendView;
     private   TUIBarrageIMService    mImService;
 
-    public static TUIBarragePresenter getInstance() {
-        if (sInstance == null) {
-            sInstance = new TUIBarragePresenter();
-        }
-        return sInstance;
-    }
-
-    @Override
-    public void init(Context context, String groupId) {
+    public TUIBarragePresenter(Context context, String groupId) {
         mContext = context;
         mGroupId = groupId;
         initIMService();
@@ -43,13 +31,14 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
     }
 
     @Override
-    public void initSendView(ITUIBarrageButton view) {
-        mSendView = view;
+    public void initDisplayView(ITUIBarrageDisplayView view) {
+        mDisplayView = view;
     }
 
     @Override
-    public void initDisplayView(ITUIBarrageDisplayView view) {
-        mDisplayView = view;
+    public void destroyPresenter() {
+        mDisplayView = null;
+        mImService.unInitImListener();
     }
 
     @Override

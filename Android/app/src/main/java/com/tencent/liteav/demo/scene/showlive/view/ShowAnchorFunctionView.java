@@ -119,6 +119,15 @@ public class ShowAnchorFunctionView extends FrameLayout implements View.OnClickL
         mRoomId = roomId;
     }
 
+    public void refreshAvatar() {
+        try {
+            UserModel userModel = UserModelManager.getInstance().getUserModel();
+            ImageLoader.loadImage(getContext(), mImagesAnchorHead, userModel.userAvatar, R.drawable.app_bg_cover);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setTUIPusherView(TUIPusherView view) {
         mTUIPusherView = view;
     }

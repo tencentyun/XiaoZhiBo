@@ -9,4 +9,9 @@ public interface ITUIGiftListPanelView {
      * @param giftModel 待发送礼物
      */
     void sendGift(TUIGiftModel giftModel);
+
+    /**
+     * 点赞
+     */
+    void sendLike();
 }

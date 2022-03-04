@@ -45,7 +45,7 @@ public class TUIBarrageIMService {
         V2TIMManager.getInstance().addSimpleMsgListener(mSimpleListener);
     }
 
-    private void unInitImListener() {
+    public void unInitImListener() {
         V2TIMManager.getInstance().setGroupListener(null);
         V2TIMManager.getInstance().removeSimpleMsgListener(mSimpleListener);
     }

@@ -32,6 +32,11 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
     private Context                 mContext;
     private TUIGiftPresenter        mPresenter;
     private String                  mGroupId;
+    private long                    mSendLikeDate;
+    private int                     mCurrentLikeCount;
+
+    private static final int mMaxLikeCount = 20;
+    private static final int mMinDuration  = 5;
 
     public TUIGiftListPanelView(Context context) {
         super(context);
@@ -45,13 +50,10 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
 
     /**
      * 初始化Presenter
-     *
-     * @param groupId 传入groupId
      */
-    private void initPresenter(String groupId) {
-        mPresenter = TUIGiftPresenter.getInstance();
-        mPresenter.setContext(mContext);
-        mPresenter.initGiftPanelView(this, groupId);
+    private void initPresenter() {
+        mPresenter = new TUIGiftPresenter(mContext, mGroupId);
+        mPresenter.initGiftPanelView(this);
     }
 
     /**
@@ -70,6 +72,7 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
      */
     public void init(String groupId) {
         mGroupId = groupId;
+        initPresenter();
         if (mGiftModelSource == null || mGiftModelSource.size() == 0) {
             Log.i(TAG, "giftModelSource empty!");
             return;
@@ -89,6 +92,9 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
                 }
             }
         });
+        if (mGiftViewList != null && !mGiftViewList.isEmpty()) {
+            mGiftViewList.clear();
+        }
         int pageSize = mGiftViewManager.getPagerCount(mGiftModelSource.size(), COLUMNS, ROWS);
         // 获取页数
         for (int i = 0; i < pageSize; i++) {
@@ -105,10 +111,12 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
         mListener = listener;
     }
 
-    public TUIGiftPresenter getPresenter(String groupId) {
+    public TUIGiftPresenter getPresenter() {
         if (mPresenter == null) {
-            initPresenter(groupId);
+            initPresenter();
         }
+        mCurrentLikeCount = 0;
+        mSendLikeDate = System.currentTimeMillis() / 1000;
         return mPresenter;
     }
 
@@ -123,7 +131,7 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
             @Override
             public void onSuccess(int code, String msg, TUIGiftModel giftModel) {
                 if (mListener != null) {
-                    mListener.onSuccess(code, msg, giftModel);
+                    mListener.onSendGiftSuccess(code, msg, giftModel);
                 }
             }
 
@@ -136,4 +144,41 @@ public class TUIGiftListPanelView extends ViewPager implements ITUIGiftListPanel
         });
     }
 
+    @Override
+    public void sendLike() {
+        if (mCurrentLikeCount >= mMaxLikeCount) {
+            sendLikeByPresenter();
+            mCurrentLikeCount = 0;
+            mSendLikeDate = System.currentTimeMillis() / 1000;
+        }
+        int duration = (int) (System.currentTimeMillis() / 1000 - mSendLikeDate);
+        if (duration >= mMinDuration) {
+            sendLikeByPresenter();
+            mCurrentLikeCount = 0;
+            mSendLikeDate = System.currentTimeMillis() / 1000;
+        } else {
+            mCurrentLikeCount += 1;
+            if (mListener != null) {
+                mListener.onSendLikeSuccess(0, "send like by local");
+            }
+        }
+    }
+
+    private void sendLikeByPresenter() {
+        mPresenter.sendGroupLikeMessage(new TUIGiftCallBack.GiftSendCallBack() {
+            @Override
+            public void onSuccess(int code, String msg, TUIGiftModel giftModel) {
+                if (mListener != null) {
+                    mListener.onSendLikeSuccess(code, msg);
+                }
+            }
+
+            @Override
+            public void onFailed(int code, String msg) {
+                if (mListener != null) {
+                    mListener.onFailed(code, msg);
+                }
+            }
+        });
+    }
 }

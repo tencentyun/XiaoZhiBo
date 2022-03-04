@@ -45,6 +45,13 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        String userAvatar = UserModelManager.getInstance().getUserModel().userAvatar;
+        ImageLoader.loadImage(getContext(), mImageAvatar, userAvatar, R.drawable.app_bg_cover);
+        super.onResume();
+    }
+
     private void showStatementDialog() {
         final ShowTipDialogFragment dialog = new ShowTipDialogFragment();
         dialog.setMessage(getString(R.string.app_statement_detail));

@@ -5,7 +5,9 @@ import android.content.Context;
 import com.tencent.qcloud.tuicore.interfaces.ITUIExtension;
 import com.tencent.qcloud.tuikit.tuigift.view.TUIGiftButton;
 import com.tencent.qcloud.tuikit.tuigift.view.TUIGiftPlayView;
+import com.tencent.qcloud.tuikit.tuigift.view.TUILikeButton;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,12 @@ public class TUIGiftExtension implements ITUIExtension {
     public static final String OBJECT_TUI_GIFT    = TUIGiftExtension.class.getName();
     public static final String KEY_EXTENSION_VIEW = "TUIExtensionView";
     public static final String KEY_PLAY_VIEW      = "TUIGiftPlayView";
+    public static final String KEY_LIKE_BUTTON    = "TUILikeButton";
+    public static final String KEY_TYPE_PLAY      = "play";
+    public static final String KEY_TYPE_PANEL     = "panel";
+    public static final String KEY_TYPE_PLUG      = "plug";
+
+    public static Map<String, WeakReference<Object>> map = new HashMap<>();
 
     @Override
     public Map<String, Object> onGetExtensionInfo(String key, Map<String, Object> param) {
@@ -28,8 +36,11 @@ public class TUIGiftExtension implements ITUIExtension {
             Context context = (Context) param.get("context");
             String groupId = (String) param.get("groupId");
             TUIGiftButton giftButton = new TUIGiftButton(context, groupId);
+            TUILikeButton likeButton = new TUILikeButton(context, groupId);
             TUIGiftPlayView playView = new TUIGiftPlayView(context, groupId);
+            map.put(groupId + KEY_TYPE_PLAY, new WeakReference<Object>(playView));
             hashMap.put(KEY_EXTENSION_VIEW, giftButton);
+            hashMap.put(KEY_LIKE_BUTTON, likeButton);
             hashMap.put(KEY_PLAY_VIEW, playView);
             return hashMap;
         }

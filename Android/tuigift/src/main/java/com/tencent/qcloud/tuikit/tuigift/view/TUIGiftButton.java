@@ -26,8 +26,8 @@ public class TUIGiftButton extends FrameLayout {
         initView(context);
     }
 
-    public TUIGiftButton(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public TUIGiftButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView(context);
     }

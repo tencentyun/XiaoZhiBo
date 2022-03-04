@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.demo.R;
+import com.tencent.liteav.demo.app.KeepAliveService;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.common.view.RoundCornerImageView;
 import com.tencent.liteav.demo.scene.shoppinglive.ShoppingLiveEntranceActivity;
@@ -128,6 +129,7 @@ public class MainFragment extends Fragment {
                 ProfileManager.getInstance().logout(new ProfileManager.ActionCallback() {
                     @Override
                     public void onSuccess() {
+                        KeepAliveService.stop(mContext);
                         if (FloatWindow.mIsShowing) {
                             FloatWindow.getInstance().destroy();
                         }

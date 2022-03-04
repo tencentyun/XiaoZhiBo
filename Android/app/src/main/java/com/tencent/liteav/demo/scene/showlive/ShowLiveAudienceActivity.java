@@ -184,7 +184,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
             mPlayerIndex = mViewGroup.indexOfChild(mTUIPlayerView);
         }
         mViewGroup.removeView(mTUIPlayerView);
-        FloatWindow.getInstance().init(this, mRoomInfoList.get(mCurrentRoomIndex).roomId, mTUIPlayerView);
+        FloatWindow.getInstance().init(this, mRoomInfoList.get(mCurrentRoomIndex));
         FloatWindow.getInstance().createView();
     }
 
@@ -325,7 +325,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
                 FloatActivity.request(this, new PermissionListener() {
                     @Override
                     public void onSuccess() {
-                        moveTaskToBack(true);
+                        ShowLiveAudienceActivity.this.finish();
                         showFloatWindow();
                     }
 
@@ -335,7 +335,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                moveTaskToBack(true);
+                ShowLiveAudienceActivity.this.finish();
                 showFloatWindow();
             }
         }
