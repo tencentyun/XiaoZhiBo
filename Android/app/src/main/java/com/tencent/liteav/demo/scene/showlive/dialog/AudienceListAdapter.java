@@ -35,7 +35,7 @@ public class AudienceListAdapter extends RecyclerView.Adapter<AudienceListAdapte
     }
 
     @Override
-    public void onBindViewHolder(AudienceListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         if (position == 0) {
             holder.mTextRanking.setTextColor(mContext.getResources().getColor(R.color.app_ranking_text_first));
         } else if (position == 1) {

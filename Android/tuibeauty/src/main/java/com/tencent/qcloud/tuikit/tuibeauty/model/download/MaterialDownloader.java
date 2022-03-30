@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.tuikit.tuibeauty.R;
-import com.tencent.qcloud.tuikit.tuibeauty.view.utils.TUIBeautyResourceParse;
+import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyResourceParse;
 
 import java.io.File;
 import java.util.concurrent.Executors;
@@ -17,13 +17,17 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static com.tencent.qcloud.tuikit.tuibeauty.model.utils.FileUtils.organizeAssetsDirectory;
+
 /**
  * 美颜模块素材下载
  */
 public class MaterialDownloader {
 
     public static final String DOWNLOAD_FILE_POSTFIX  = ".zip";
-    public static final String ONLINE_MATERIAL_FOLDER = "cameraVideoAnimal";
+    public static final String ONLINE_MATERIAL_FOLDER = "xmagic/res";
+    public static final String ONLINE_LIB_FOLDER      = "xmagic/libs";
+    public static final String ONLINE_MOTION_FOLDER   = "xmagic/res/MotionRes";
 
     private static final int CPU_COUNT      = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
@@ -43,7 +47,7 @@ public class MaterialDownloader {
         mProcessing = false;
     }
 
-    public void start(@Nullable DownloadListener listener) {
+    public void start(@Nullable DownloadListener listener, boolean isLibs, boolean isMotion) {
         if (listener == null || TextUtils.isEmpty(mURL) || mProcessing) {
             return;
         }
@@ -70,6 +74,7 @@ public class MaterialDownloader {
                     return;
                 }
                 file.delete();
+                organizeAssetsDirectory(dataDir);
                 mListener.onDownloadSuccess(dataDir);
                 stop();
             }
@@ -91,7 +96,14 @@ public class MaterialDownloader {
             }
 
         };
-        File onlineMaterialDir = TUIBeautyResourceParse.getExternalFilesDir(mContext, ONLINE_MATERIAL_FOLDER);
+        File onlineMaterialDir;
+        if (isLibs) {
+            onlineMaterialDir = TUIBeautyResourceParse.getExternalFilesDir(mContext, ONLINE_LIB_FOLDER);
+        } else if (isMotion) {
+            onlineMaterialDir = TUIBeautyResourceParse.getExternalFilesDir(mContext, ONLINE_MOTION_FOLDER);
+        } else {
+            onlineMaterialDir = TUIBeautyResourceParse.getExternalFilesDir(mContext, ONLINE_MATERIAL_FOLDER);
+        }
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
             mListener.onDownloadFail(mContext.getString(R.string.tuibeauty_video_material_download_progress_no_enough_storage_space));
             stop();
@@ -125,4 +137,5 @@ public class MaterialDownloader {
                     Executors.defaultThreadFactory(), new DiscardOldestPolicy());
         }
     }
+
 }

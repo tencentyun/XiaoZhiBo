@@ -21,6 +21,7 @@ import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
+import com.tencent.liteav.login.ui.LoginWithoutServerActivity;
 
 public class LogOffActivity extends AppCompatActivity {
 
@@ -89,7 +90,11 @@ public class LogOffActivity extends AppCompatActivity {
                     FloatWindow.getInstance().destroy();
                 }
                 ToastUtils.showShort(getString(R.string.app_logoff_account_ok));
-                startLoginActivity();
+                if (UserModelManager.getInstance().haveBackstage()) {
+                    startLoginActivity();
+                } else {
+                    startLoginWithoutServerActivity();
+                }
             }
 
             @Override
@@ -101,6 +106,13 @@ public class LogOffActivity extends AppCompatActivity {
 
     private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void startLoginWithoutServerActivity() {
+        Intent intent = new Intent(this, LoginWithoutServerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

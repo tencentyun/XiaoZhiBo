@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyInfo;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyTabInfo;
-import com.tencent.qcloud.tuikit.tuibeauty.view.utils.TUIBeautyResourceParse;
+import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyResourceParse;
 
 public class TUIBeautyTabAdapter extends BaseAdapter implements View.OnClickListener {
 

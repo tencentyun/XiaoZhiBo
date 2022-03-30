@@ -15,6 +15,8 @@ import com.tencent.live2.V2TXLivePusher;
 import com.tencent.live2.V2TXLivePusherObserver;
 import com.tencent.live2.impl.V2TXLivePlayerImpl;
 import com.tencent.live2.impl.V2TXLivePusherImpl;
+import com.tencent.qcloud.tuicore.TUIConstants;
+import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuikit.tuipusher.model.listener.ITUIPusherStreamListener;
 import com.tencent.qcloud.tuikit.tuipusher.model.service.ITUIPusherStreamService;
 import com.tencent.qcloud.tuikit.tuipusher.model.utils.LinkURLUtils;
@@ -24,8 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.tencent.live2.V2TXLiveDef.V2TXLiveBufferType.V2TXLiveBufferTypeTexture;
 import static com.tencent.live2.V2TXLiveDef.V2TXLiveMixInputType.V2TXLiveMixInputTypeAudioVideo;
+import static com.tencent.live2.V2TXLiveDef.V2TXLivePixelFormat.V2TXLivePixelFormatTexture2D;
 
 public class TUIPusherStreamService implements ITUIPusherStreamService {
     private static final String TAG                 = TUIPusherStreamService.class.getSimpleName();
@@ -59,6 +65,18 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         mV2TXLivePusher.setRenderView(videoView);
         int result = mV2TXLivePusher.startCamera(isFront);
         mV2TXLivePusher.startMicrophone();
+        mV2TXLivePusher.enableCustomVideoProcess(true, V2TXLivePixelFormatTexture2D, V2TXLiveBufferTypeTexture);
+        mV2TXLivePusher.setObserver(new V2TXLivePusherObserver() {
+            @Override
+            public int onProcessVideoFrame(V2TXLiveDef.V2TXLiveVideoFrame srcFrame, V2TXLiveDef.V2TXLiveVideoFrame dstFrame) {
+                Map<String, Object> map = new HashMap<>();
+                map.put(TUIConstants.TUIBeauty.PARAM_NAME_SRC_TEXTURE_ID, srcFrame.texture.textureId);
+                map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_WIDTH, srcFrame.width);
+                map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_HEIGHT, srcFrame.height);
+                dstFrame.texture.textureId = (int) TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map);
+                return 0;
+            }
+        });
         mIsPreview = true;
         return 0;
     }

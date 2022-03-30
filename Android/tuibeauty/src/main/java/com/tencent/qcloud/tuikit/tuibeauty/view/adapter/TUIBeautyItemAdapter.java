@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tencent.qcloud.tuikit.tuibeauty.R;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyItemInfo;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyTabInfo;
-import com.tencent.qcloud.tuikit.tuibeauty.view.utils.ResourceUtils;
-import com.tencent.qcloud.tuikit.tuibeauty.view.utils.TUIBeautyResourceParse;
+import com.tencent.qcloud.tuikit.tuibeauty.model.utils.ResourceUtils;
+import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyResourceParse;
+import com.tencent.xmagic.XmagicProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class TUIBeautyItemAdapter extends BaseAdapter {
     private List<TUIBeautyItemInfo> mTUIBeautyItemInfoList;
     private OnItemClickListener     mItemClickListener;
     private int                     mSelectPos;    // 当前选中
+
 
     public interface OnItemClickListener {
         void onItemClick(TUIBeautyItemInfo TUIBeautyItemInfo, int position);
@@ -48,6 +50,11 @@ public class TUIBeautyItemAdapter extends BaseAdapter {
         }
         mTUIBeautyItemInfoList.clear();
         mTUIBeautyItemInfoList.addAll(TUIBeautyTabInfo.getTabItemList());
+        List<XmagicProperty<?>> propertyList = new ArrayList<>();
+        for (TUIBeautyItemInfo info :
+                mTUIBeautyItemInfoList) {
+            propertyList.add(info.getProperty());
+        }
         notifyDataSetChanged();
     }
 
@@ -109,6 +116,7 @@ public class TUIBeautyItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (mItemClickListener != null) {
+                    TUIBeautyItemInfo.setItemCategory(mTUIBeautyTabInfo.getTabType());
                     mItemClickListener.onItemClick(TUIBeautyItemInfo, position);
                     if (mSelectPos != position) {
                         mSelectPos = position;

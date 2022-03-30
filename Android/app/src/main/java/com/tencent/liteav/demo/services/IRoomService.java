@@ -8,6 +8,7 @@ import com.tencent.liteav.demo.services.room.callback.RoomMemberInfoCallback;
 import com.tencent.liteav.demo.services.room.callback.CommonCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
+import com.tencent.liteav.demo.services.room.im.listener.RoomInfoListCallback;
 
 import java.util.Map;
 
@@ -108,4 +109,12 @@ public interface IRoomService {
      */
     void uploadRoomAvatar(Bitmap bitmap, String url, String fileName, Map<String, Object> map,
                           final ActionCallback callback);
+
+    /**
+     * 获取指定房间信息
+     *
+     * @param roomId   房间号
+     * @param callback 获取结果回调
+     */
+    void getGroupInfo(String roomId, RoomInfoListCallback callback);
 }

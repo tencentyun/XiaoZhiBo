@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">MLVB Live</string>
     <string name="app_btn_ok">Done</string>
-    <string name="app_item_live_show">Audio Call</string>
-    <string name="app_item_live_shopping">Video Call</string>
+    <string name="app_item_live_show">Show Live</string>
+    <string name="app_item_live_shopping">Shopping Live</string>
     <string name="app_title_share_log">Share Logs</string>
     <string name="app_dialog_log_out">Are you sure you want to log out?</string>
     <string name="app_dialog_exit_app">Are you sure you want to exit?</string>
@@ -85,4 +85,15 @@
     <string name="app_show_live_anchor_select_photo">Select photo</string>
     <string name="app_show_live_anchor_photo_library">Photo library</string>
     <string name="app_show_live_anchor_camera">Camera</string>
+    <string name="app_input_room_id_hint">Enter a room id</string>
+    <string name="app_enter_room">Enter Room</string>
+    <string name="app_welcome_tips">Welcome to Tencent\nReal-Time Communication</string>
+    <string name="app_build_background_service">&#160;Build background services&#160;</string>
+    <string name="app_build_background_tips">" You can only experience some functions without configuring background services. If you want to experience all functions, please"</string>
+    <string name="app_finished_configuring">I have finished configuring</string>
+    <string name="app_not_configured_yet">Not configured yet</string>
+    <string name="app_tools">Tools</string>
+    <string name="app_switch_camera">Switch Camera</string>
+    <string name="app_create_room">Create Room</string>
+    <string name="app_description_of_room">Description of the live room</string>
 </resources>

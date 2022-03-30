@@ -42,4 +42,6 @@
     <string name="login_welcome_user_name_tips">欢迎新同学\n第一次登录需要设置昵称哦</string>
     <string name="login_btn_register">注册</string>
     <string name="login_not_register">未注册用户</string>
+    <string name="login_user_id">用户名</string>
+    <string name="login_hint_user_id">请输入用户userId</string>
 </resources>

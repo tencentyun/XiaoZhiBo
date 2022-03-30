@@ -33,7 +33,7 @@
             android:gravity="center"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:text="秀场直播"
+            android:text="@string/app_item_live_show"
             android:textAlignment="center"
             android:textColor="@color/app_color_black"
             android:textStyle="bold"

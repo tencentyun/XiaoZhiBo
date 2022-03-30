@@ -18,8 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.tencent.liteav.basic.UserModel;
-import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.services.room.bean.http.ShowLiveCosInfo;
 import com.tencent.liteav.demo.services.room.callback.ActionCallback;
 import com.tencent.liteav.demo.utils.URLUtils;
@@ -30,6 +28,8 @@ import com.tencent.liteav.demo.scene.showlive.view.ShowAnchorPreviewView;
 import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.callback.CommonCallback;
 import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.qcloud.tuicore.TUIConstants;
+import com.tencent.qcloud.tuicore.TUICore;
 import com.tencent.qcloud.tuicore.TUILogin;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView;
@@ -53,6 +53,8 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.tencent.liteav.debug.GenerateGlobalConfig.XMAGIC_LICENSE_KEY;
+import static com.tencent.liteav.debug.GenerateGlobalConfig.XMAGIC_LICENSE_URL;
 import static com.tencent.liteav.demo.scene.showlive.dialog.SelectPhotoDialog.CODE_CAMERA;
 import static com.tencent.liteav.demo.scene.showlive.dialog.SelectPhotoDialog.CODE_GALLERY;
 import static com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager.TYPE_MLVB_SHOW_LIVE;
@@ -98,6 +100,11 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initStatusBar();
         setContentView(R.layout.app_show_live_anchor_activity);
+        Map<String, Object> map = new HashMap<>();
+        map.put(TUIConstants.TUIBeauty.PARAM_NAME_CONTEXT, ShowLiveAnchorActivity.this);
+        map.put(TUIConstants.TUIBeauty.PARAM_NAME_LICENSE_URL, XMAGIC_LICENSE_URL);
+        map.put(TUIConstants.TUIBeauty.PARAM_NAME_LICENSE_KEY, XMAGIC_LICENSE_KEY);
+        TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_INIT_XMAGIC, map);
         mTUIPusherView = findViewById(R.id.anchor_pusher_view);
         initPreviewView();
         initFunctionView();
@@ -122,17 +129,16 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
             @Override
             public void onClickStartPushButton(final TUIPusherView pushView, String url,
                                                final ResponseCallback callback) {
-                final UserModel userModel = UserModelManager.getInstance().getUserModel();
                 if (TextUtils.isEmpty(mShowAnchorPreviewView.getRoomName())) {
                     mShowAnchorPreviewView.setRoomName(
-                            (TextUtils.isEmpty(userModel.userName)
-                                    ? userModel.userId : userModel.userName)
+                            (TextUtils.isEmpty(TUILogin.getNickName())
+                                    ? TUILogin.getUserId() : TUILogin.getNickName())
                                     + getResources().getString(R.string.app_user_show_live_room));
                 }
                 RoomService.getInstance(ShowLiveAnchorActivity.this).createRoom(
-                        getRoomId(userModel.userId), TYPE_MLVB_SHOW_LIVE,
+                        getRoomId(TUILogin.getUserId()), TYPE_MLVB_SHOW_LIVE,
                         mShowAnchorPreviewView.getRoomName(),
-                        userModel.userAvatar,
+                        TUILogin.getFaceUrl(),
                         new CommonCallback() {
                             @Override
                             public void onCallback(int code, String msg) {
@@ -140,7 +146,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                                 if (code == 0) {
                                     startTimer();
                                     mShowAnchorFunctionView.startRecordAnimation();
-                                    mTUIPusherView.setGroupId(getRoomId(userModel.userId));
+                                    mTUIPusherView.setGroupId(getRoomId(TUILogin.getUserId()));
                                     mShowAnchorPreviewView.setVisibility(View.GONE);
                                     mIsEnterRoom = true;
                                     callback.response(true);
@@ -238,8 +244,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
     private void initPreviewView() {
         mShowAnchorPreviewView = new ShowAnchorPreviewView(ShowLiveAnchorActivity.this);
         mShowAnchorPreviewView.setTitle(getRoomId(TUILogin.getUserId()));
-        UserModel userModel = UserModelManager.getInstance().getUserModel();
-        mShowAnchorPreviewView.setCoverImage(userModel.userAvatar);
+        mShowAnchorPreviewView.setCoverImage(TUILogin.getFaceUrl());
         mTUIPusherView.addView(mShowAnchorPreviewView);
     }
 
@@ -337,9 +342,8 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                 public void onClick() {
                     mDialogClose.dismiss();
                     if (mIsEnterRoom) {
-                        UserModel userModel = UserModelManager.getInstance().getUserModel();
                         RoomService.getInstance(ShowLiveAnchorActivity.this).destroyRoom(
-                                getRoomId(userModel.userId), TYPE_MLVB_SHOW_LIVE, new CommonCallback() {
+                                getRoomId(TUILogin.getUserId()), TYPE_MLVB_SHOW_LIVE, new CommonCallback() {
                                     @Override
                                     public void onCallback(int code, String msg) {
                                         Log.d(TAG, "RoomService destroyRoom code:" + code + ", msg:" + msg);
@@ -387,9 +391,8 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
             mShowAnchorFunctionView.stopRecordAnimation();
         }
         if (mIsEnterRoom) {
-            UserModel userModel = UserModelManager.getInstance().getUserModel();
             RoomService.getInstance(ShowLiveAnchorActivity.this).destroyRoom(
-                    getRoomId(userModel.userId),
+                    getRoomId(TUILogin.getUserId()),
                     TYPE_MLVB_SHOW_LIVE,
                     new CommonCallback() {
                         @Override

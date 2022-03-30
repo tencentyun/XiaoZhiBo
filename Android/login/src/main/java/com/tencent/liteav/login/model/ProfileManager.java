@@ -61,6 +61,7 @@ public class ProfileManager {
     private static final String PER_APAASUSER_ID = "per_apaasuser_id";
     private static final String PER_TOKEN        = "per_user_token";
     private static final String PER_SDK_APP_ID   = "per_sdk_app_id";
+    private static final String PER_FIRST_OPEN   = "per_user_first_open";
     private static final String BASE_URL         = GenerateGlobalConfig.SERVERLESSURL;
     private static final int    MSG_KEEP_ALIVE   = 1001;
     private static final int    INTERVAL_TIME    = 10000; //10s
@@ -191,6 +192,86 @@ public class ProfileManager {
             mLoginCall.cancel();
             mUserInfo = null;
         }
+    }
+
+    public void loginIMWithoutServer(final UserModel userModel, final ActionCallback callback) {
+        if (mContext == null) {
+            Log.d(TAG, "login im failed, context is null");
+            return;
+        }
+        TUILogin.init(mContext, GenerateGlobalConfig.SDKAPPID, null, new V2TIMSDKListener() {
+
+            @Override
+            public void onKickedOffline() {
+
+            }
+
+            @Override
+            public void onUserSigExpired() {
+
+            }
+        });
+        TUILogin.login(userModel.userId, userModel.userSig, new V2TIMCallback() {
+            @Override
+            public void onError(int code, String msg) {
+                Log.d(TAG, "login fail code: " + code + " msg:" + msg);
+                if (callback != null) {
+                    isLogin = false;
+                    callback.onFailed(code, msg);
+                }
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "login onSuccess");
+                getUserInfo(userModel.userId, new GetUserInfoCallback() {
+                    @Override
+                    public void onSuccess(UserModel model) {
+                        if (callback != null) {
+                            isLogin = true;
+                            callback.onSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(int code, String msg) {
+                        if (callback != null) {
+                            isLogin = false;
+                            callback.onFailed(code, msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void setUserFirstOpen(boolean isFirstOpen) {
+        SPUtils.getInstance(PER_DATA).put(PER_FIRST_OPEN, isFirstOpen);
+    }
+
+    public boolean getUserFirstOpen() {
+        return SPUtils.getInstance(PER_DATA).getBoolean(PER_FIRST_OPEN, false);
+    }
+
+    private void getUserInfo(final String userId, final GetUserInfoCallback callback) {
+        IMManager.sharedInstance().getUserInfo(userId, new IMManager.UserCallback() {
+            @Override
+            public void onCallback(int code, String msg, IMUserInfo userInfo) {
+                if (callback == null) {
+                    return;
+                }
+                if (code == 0) {
+                    UserModel userModel = new UserModel();
+                    userModel.userAvatar = userInfo.userAvatar;
+                    userModel.userName = userInfo.userName;
+                    userModel.userId = userInfo.userId;
+                    UserModelManager.getInstance().setUserModel(userModel);
+                    callback.onSuccess(userModel);
+                } else {
+                    callback.onFailed(code, msg);
+                }
+            }
+        });
     }
 
     //注销登录
@@ -536,20 +617,20 @@ public class ProfileManager {
         config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);
         boolean isInitIMSDK = TUILogin.init(mContext, ProfileManager.getInstance().getSdkAppId(), config,
                 new V2TIMSDKListener() {
-            @Override
-            public void onConnecting() {
-            }
+                    @Override
+                    public void onConnecting() {
+                    }
 
-            @Override
-            public void onConnectSuccess() {
+                    @Override
+                    public void onConnectSuccess() {
 
-            }
+                    }
 
-            @Override
-            public void onConnectFailed(int code, String error) {
-                Log.e(TAG, "init im sdk error.");
-            }
-        });
+                    @Override
+                    public void onConnectFailed(int code, String error) {
+                        Log.e(TAG, "init im sdk error.");
+                    }
+                });
 
         if (!isInitIMSDK) {
             if (callback != null) {

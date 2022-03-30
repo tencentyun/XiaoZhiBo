@@ -78,6 +78,6 @@ public interface IHttpRoomManager {
      * @param url      上传的cos地址
      * @param fileName 文件名
      */
-    void uploadRoomAvatar(Bitmap bitmap,String url, String fileName, Map<String, Object> map,
+    void uploadRoomAvatar(Bitmap bitmap, String url, String fileName, Map<String, Object> map,
                           final ActionCallback callback);
 }

@@ -3,7 +3,7 @@ package com.tencent.qcloud.tuikit.tuibeauty.model.download;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.tencent.qcloud.tuikit.tuibeauty.view.utils.TUIBeautyResourceParse;
+import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyResourceParse;
 
 import java.io.File;
 import java.io.FileOutputStream;

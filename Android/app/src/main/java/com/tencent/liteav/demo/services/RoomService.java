@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.services.room.bean.AudienceInfo;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.bean.http.ShowLiveCosInfo;
@@ -14,6 +16,7 @@ import com.tencent.liteav.demo.services.room.callback.CommonCallback;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
 import com.tencent.liteav.demo.services.room.im.impl.IMRoomManager;
+import com.tencent.liteav.demo.services.room.im.listener.RoomInfoListCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,10 @@ public class RoomService implements IRoomService {
             @Override
             public void onCallback(int code, String msg) {
                 Log.d(TAG, " TXRoomService.getInstance().createRoom() code:" + code + ", message:" + msg);
+                if (!UserModelManager.getInstance().haveBackstage()) {
+                    callback.onCallback(code, msg);
+                    return;
+                }
                 //TODO 2、服务器创建房间
                 HttpRoomManager.getInstance().enterRoom(roomId, type,
                         HttpRoomManager.RoomRole.ANCHOR.getName(), new ActionCallback() {
@@ -78,25 +85,27 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void destroyRoom(String roomId, final String type, final CommonCallback callback) {
-        //TODO 1、服务器删除房间
-        HttpRoomManager.getInstance().destroyRoom(roomId, type, new ActionCallback() {
-            @Override
-            public void onSuccess() {
-                callback.onCallback(0, "");
-            }
-
-            @Override
-            public void onFailed(int code, String msg) {
-                callback.onCallback(code, msg);
-            }
-        });
-
-        //TODO 2、IM退出群组
+    public void destroyRoom(final String roomId, final String type, final CommonCallback callback) {
+        //TIM退出群组
         IMRoomManager.getInstance().destroyRoom(roomId, new CommonCallback() {
             @Override
             public void onCallback(int code, String msg) {
+                if (!UserModelManager.getInstance().haveBackstage()) {
+                    callback.onCallback(code, msg);
+                    return;
+                }
+                //服务器删除房间
+                HttpRoomManager.getInstance().destroyRoom(roomId, type, new ActionCallback() {
+                    @Override
+                    public void onSuccess() {
+                        callback.onCallback(0, "");
+                    }
 
+                    @Override
+                    public void onFailed(int code, String msg) {
+                        callback.onCallback(code, msg);
+                    }
+                });
             }
         });
     }
@@ -108,6 +117,10 @@ public class RoomService implements IRoomService {
             @Override
             public void onCallback(int code, String msg) {
                 Log.d(TAG, "TXRoomService.getInstance().enterRoom code:" + code + ", msg:" + msg);
+                if (!UserModelManager.getInstance().haveBackstage()) {
+                    callback.onCallback(code, msg);
+                    return;
+                }
                 HttpRoomManager.getInstance().enterRoom(roomId + "",
                         type, HttpRoomManager.RoomRole.GUEST.getName(), new ActionCallback() {
                             @Override
@@ -135,6 +148,12 @@ public class RoomService implements IRoomService {
             @Override
             public void onCallback(int code, String msg) {
                 Log.d(TAG, "TXRoomService.getInstance().exitRoom() code:" + code + ", message:" + msg);
+                if (!UserModelManager.getInstance().haveBackstage()) {
+                    if (callback != null) {
+                        callback.onCallback(code, msg);
+                    }
+                    return;
+                }
                 HttpRoomManager.getInstance().leaveRoom(roomId + "", new ActionCallback() {
                     @Override
                     public void onSuccess() {
@@ -157,6 +176,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public void getRoomList(String type, HttpRoomManager.RoomOrderType orderType, final RoomInfoCallback callback) {
+        if (!UserModelManager.getInstance().haveBackstage()) {
+            return;
+        }
         HttpRoomManager.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE, orderType, new RoomInfoCallback() {
             @Override
             public void onCallback(int code, String msg, List<RoomInfo> list) {
@@ -230,6 +252,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public void getRoomCosInfo(String roomCosType, final GetCosInfoCallback callback) {
+        if (!UserModelManager.getInstance().haveBackstage()) {
+            return;
+        }
         HttpRoomManager.getInstance().getRoomCosInfo(roomCosType, new GetCosInfoCallback() {
             @Override
             public void onSuccess(ShowLiveCosInfo cosInfo) {
@@ -250,6 +275,9 @@ public class RoomService implements IRoomService {
     @Override
     public void uploadRoomAvatar(Bitmap bitmap, String url, String fileName, Map<String, Object> map,
                                  final ActionCallback callback) {
+        if (!UserModelManager.getInstance().haveBackstage()) {
+            return;
+        }
         HttpRoomManager.getInstance().uploadRoomAvatar(bitmap, url, fileName, map, new ActionCallback() {
             @Override
             public void onSuccess() {
@@ -263,6 +291,18 @@ public class RoomService implements IRoomService {
                 if (callback != null) {
                     callback.onFailed(code, msg);
                 }
+            }
+        });
+    }
+
+    @Override
+    public void getGroupInfo(String roomId, final RoomInfoListCallback callback) {
+        List<String> roomIdList = new ArrayList<>();
+        roomIdList.add(roomId);
+        IMRoomManager.getInstance().getRoomInfos(roomIdList, new RoomInfoListCallback() {
+            @Override
+            public void onCallback(int code, String msg, List<RoomInfo> list) {
+                callback.onCallback(code, msg, list);
             }
         });
     }

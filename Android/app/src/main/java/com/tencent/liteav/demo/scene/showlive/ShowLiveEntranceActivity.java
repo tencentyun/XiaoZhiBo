@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.common.TCConstants;
 import com.tencent.liteav.demo.common.utils.Utils;
@@ -24,7 +25,7 @@ import com.tencent.liteav.login.model.ProfileManager;
 
 /**
  * 秀场直播 - 入口页面， 主要包含
- *
+ * <p>
  * -直播列表页面{@link ShowLiveRoomListFragment}
  * -主播页面{@link ShowLiveAnchorActivity}
  * -观众页面{@link ShowLiveAudienceActivity}
@@ -34,7 +35,9 @@ public class ShowLiveEntranceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HttpRoomManager.getInstance().initSdkAppId(ProfileManager.getInstance().getSdkAppId());
+        if (UserModelManager.getInstance().haveBackstage()) {
+            HttpRoomManager.getInstance().initSdkAppId(ProfileManager.getInstance().getSdkAppId());
+        }
         setContentView(R.layout.app_activity_showlive_entrance);
         Utils.initStatusBar(this);
         initTitleEvent();

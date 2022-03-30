@@ -93,6 +93,10 @@ public class TUIBeautyTabInfo {
         return tab_item_list;
     }
 
+    public void setTabItemList(List<TUIBeautyItemInfo> list) {
+        this.tab_item_list = list;
+    }
+
     @Override
     public String toString() {
         return "TUIBeautyTabInfo{" +

@@ -1,21 +1,16 @@
 package com.tencent.qcloud.tuikit.tuibeauty.presenter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import androidx.annotation.IntRange;
 
-import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyInfo;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyItemInfo;
 import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyTabInfo;
+import com.tencent.xmagic.XmagicProperty;
 
 public interface ITUIBeautyPresenter {
-    /**
-     * 设置美颜管理类
-     *
-     * @param beautyManager
-     */
-    void setBeautyManager(TXBeautyManager beautyManager);
 
     /**
      * 设置美颜效果
@@ -36,13 +31,6 @@ public interface ITUIBeautyPresenter {
     void setBeautyStyleAndLevel(int style, int level);
 
     /**
-     * 是否支持高级美颜
-     *
-     * @param enable
-     */
-    void setMotionTmplEnable(boolean enable);
-
-    /**
      * 美颜数据本地存储
      *
      * @param beautyInfo
@@ -55,17 +43,25 @@ public interface ITUIBeautyPresenter {
     void clear();
 
     /**
-     * 返回美颜选择项
+     * 更新Xmagic property
      *
-     * @param beautyInfo
-     * @param index
+     * @param itemInfo 美颜itemInfo
      */
-    TUIBeautyItemInfo getFilterItemInfo(TUIBeautyInfo beautyInfo, @IntRange(from = 0) int index);
+    void updateProperty(TUIBeautyItemInfo itemInfo);
 
     /**
      * 获取美颜数据
      */
-    TUIBeautyInfo getDefaultBeauty();
+    TUIBeautyInfo getDefaultBeauty(Context context);
+
+    /**
+     * 更新property当前effValue
+     *
+     * @param property 要更新的property
+     * @param value    更新后的effValue
+     * @return 更新后的property
+     */
+    XmagicProperty<XmagicProperty.XmagicPropertyValues> setCurrentDisPlayValue(XmagicProperty<XmagicProperty.XmagicPropertyValues> property, int value);
 
     /**
      * 美颜强度变化监听

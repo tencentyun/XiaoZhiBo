@@ -11,8 +11,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
+import com.tencent.liteav.login.ui.LoginWithoutServerActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -43,10 +45,20 @@ public class SplashActivity extends AppCompatActivity {
     private void navigationMain() {
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
+        } else if (!ProfileManager.getInstance().getUserFirstOpen()) {
+            ProfileManager.getInstance().setUserFirstOpen(true);
+            Intent intent = new Intent(this, NavigationActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             if (!ProfileManager.getInstance().isLogin()) {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                if (UserModelManager.getInstance().haveBackstage()) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, LoginWithoutServerActivity.class);
+                    startActivity(intent);
+                }
             } else {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -60,7 +72,8 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent("com.tencent.liteav.action.WED_DATA");
         intent.setData(data);
         if (Build.VERSION.SDK_INT >= 26) {
-            ComponentName componentName = new ComponentName(getPackageName(), "com.tencent.liteav.demo.player.expand.webdata.reveiver.WebDataReceiver");
+            ComponentName componentName = new ComponentName(getPackageName(),
+                    "com.tencent.liteav.demo.player.expand.webdata.reveiver.WebDataReceiver");
             intent.setComponent(componentName);
         }
         Log.d(TAG, "navigationWebData: intent -> " + intent);

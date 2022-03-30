@@ -14,10 +14,13 @@ public class UserModelManager {
     private static final String PER_DATA       = "per_profile_manager";
     private static final String PER_USER_MODEL = "per_user_model";
     private static final String PER_USER_DATE  = "per_user_publish_video_date";
+    private static final String USAGE_MODEL    = "usage_model";
+    private static final String HAVE_BACKSTAGE = "have_backstage";
 
     private static UserModelManager sInstance;
     private        UserModel        mUserModel;
     private        String           mUserPubishVideoDate;
+    private        Boolean          mHaveBackstage;
 
     public static UserModelManager getInstance() {
         if (sInstance == null) {
@@ -51,6 +54,7 @@ public class UserModelManager {
             String json = SPUtils.getInstance(PER_DATA).getString(PER_USER_MODEL);
             mUserModel = GsonUtils.fromJson(json, UserModel.class);
         } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -63,10 +67,7 @@ public class UserModelManager {
 
     private void setUserPublishVideoDate(String date) {
         mUserPubishVideoDate = date;
-        try {
-            SPUtils.getInstance(PER_DATA).put(PER_USER_DATE, mUserPubishVideoDate);
-        } catch (Exception e) {
-        }
+        SPUtils.getInstance(PER_DATA).put(PER_USER_DATE, mUserPubishVideoDate);
     }
 
     // 首次TRTC打开摄像头提示"Demo特别配置了无限期云端存储"
@@ -80,5 +81,21 @@ public class UserModelManager {
             return true;
         }
         return false;
+    }
+
+    public void setUsageModel(boolean haveBackstage) {
+        mHaveBackstage = haveBackstage;
+        try {
+            SPUtils.getInstance(USAGE_MODEL).put(HAVE_BACKSTAGE, mHaveBackstage);
+        } catch (Exception e) {
+            Log.d(TAG, "setUsageModel failed");
+        }
+    }
+
+    public boolean haveBackstage() {
+        if (mHaveBackstage == null) {
+            mHaveBackstage = SPUtils.getInstance(USAGE_MODEL).getBoolean(HAVE_BACKSTAGE, true);
+        }
+        return mHaveBackstage;
     }
 }

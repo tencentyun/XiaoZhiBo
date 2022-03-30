@@ -86,4 +86,15 @@
     <string name="app_show_live_anchor_select_photo">选取照片</string>
     <string name="app_show_live_anchor_photo_library">照片图库</string>
     <string name="app_show_live_anchor_camera">相机</string>
+    <string name="app_input_room_id_hint">请输入房间号</string>
+    <string name="app_enter_room">进入房间</string>
+    <string name="app_welcome_tips">欢迎使用\n腾讯云视立方小直播</string>
+    <string name="app_build_background_service">&#160;搭建后台服务&#160;</string>
+    <string name="app_build_background_tips">不配置后台服务只可体验部分功能,若需体验全部功能请</string>
+    <string name="app_not_configured_yet">暂不配置</string>
+    <string name="app_finished_configuring">我已完成配置</string>
+    <string name="app_tools">工具</string>
+    <string name="app_switch_camera">切换摄像头</string>
+    <string name="app_create_room">创建房间</string>
+    <string name="app_description_of_room">直播间的描述</string>
 </resources>

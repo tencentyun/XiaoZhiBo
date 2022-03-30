@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.app.KeepAliveService;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
@@ -28,6 +30,8 @@ import com.tencent.liteav.demo.scene.showlive.ShowLiveEntranceActivity;
 import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
+import com.tencent.liteav.login.ui.LoginWithoutServerActivity;
+import com.tencent.qcloud.tuicore.TUILogin;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -126,6 +130,24 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick() {
                 mAlertDialog.dismiss();
+                if (!UserModelManager.getInstance().haveBackstage()) {
+                    TUILogin.logout(new V2TIMCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "logout success ");
+                            KeepAliveService.stop(mContext);
+                            if (FloatWindow.mIsShowing) {
+                                FloatWindow.getInstance().destroy();
+                            }
+                            startLoginWithoutServerActivity();
+                        }
+
+                        @Override
+                        public void onError(int code, String msg) {
+                            Log.d(TAG, "logout fail : code = " + code + " , msg = " + msg);
+                        }
+                    });
+                }
                 ProfileManager.getInstance().logout(new ProfileManager.ActionCallback() {
                     @Override
                     public void onSuccess() {
@@ -147,6 +169,12 @@ public class MainFragment extends Fragment {
 
     private void startLoginActivity() {
         Intent intent = new Intent(mContext, LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    private void startLoginWithoutServerActivity() {
+        Intent intent = new Intent(mContext, LoginWithoutServerActivity.class);
         startActivity(intent);
         getActivity().finish();
     }

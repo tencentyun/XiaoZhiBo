@@ -58,42 +58,44 @@ public class IMRoomManager implements IIMRoomManager {
     }
 
     @Override
-    public void createRoom(final String roomId, final String roomName, final String coverUrl, final CommonCallback callback) {
+    public void createRoom(final String roomId, final String roomName, final String coverUrl,
+                           final CommonCallback callback) {
         Log.e(TAG, "createRoom roomId:" + roomId);
-        V2TIMManager.getInstance().createGroup(V2TIMManager.GROUP_TYPE_AVCHATROOM, roomId, roomName, new V2TIMValueCallback<String>() {
-            @Override
-            public void onError(int code, String s) {
-                String msg = s;
-                if (code == 10036) {
-                    msg = mContext.getString(R.string.app_create_room_limit);
-                }
-                if (code == 10037) {
-                    msg = mContext.getString(R.string.app_create_or_join_group_limit);
-                }
-                if (code == 10038) {
-                    msg = mContext.getString(R.string.app_group_member_limit);
-                }
-                if (code == 10025) {
-                    // 10025 表明群主是自己，那么认为创建房间成功
-                    onSuccess("success");
-                } else {
-                    Log.e(TAG, "create room fail, code:" + code + " msg:" + msg);
-                    if (callback != null) {
-                        callback.onCallback(code, msg);
+        V2TIMManager.getInstance().createGroup(V2TIMManager.GROUP_TYPE_AVCHATROOM, roomId,
+                roomName, new V2TIMValueCallback<String>() {
+                    @Override
+                    public void onError(int code, String s) {
+                        String msg = s;
+                        if (code == 10036) {
+                            msg = mContext.getString(R.string.app_create_room_limit);
+                        }
+                        if (code == 10037) {
+                            msg = mContext.getString(R.string.app_create_or_join_group_limit);
+                        }
+                        if (code == 10038) {
+                            msg = mContext.getString(R.string.app_group_member_limit);
+                        }
+                        if (code == 10025) {
+                            // 10025 表明群主是自己，那么认为创建房间成功
+                            onSuccess("success");
+                        } else {
+                            Log.e(TAG, "create room fail, code:" + code + " msg:" + msg);
+                            if (callback != null) {
+                                callback.onCallback(code, msg);
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void onSuccess(String s) {
-                Log.d(TAG, "createGroup onSuccess s: " + s);
-                V2TIMManager.getInstance().addSimpleMsgListener(mSimpleListener);
-                V2TIMManager.getInstance().setGroupListener(mGroupListener);
-                if (callback != null) {
-                    callback.onCallback(0, "create room success.");
-                }
-            }
-        });
+                    @Override
+                    public void onSuccess(String s) {
+                        Log.d(TAG, "createGroup onSuccess s: " + s);
+                        V2TIMManager.getInstance().addSimpleMsgListener(mSimpleListener);
+                        V2TIMManager.getInstance().setGroupListener(mGroupListener);
+                        if (callback != null) {
+                            callback.onCallback(0, "create room success.");
+                        }
+                    }
+                });
     }
 
     private void updateGroupInfo(String roomId, String roomName, String coverUrl) {
@@ -105,7 +107,8 @@ public class IMRoomManager implements IIMRoomManager {
         V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                Log.e(TAG, "updateGroupInfo room owner update anchor list into group introduction fail, code: " + code + " msg:" + desc);
+                Log.e(TAG, "updateGroupInfo room owner update anchor list into group introduction fail, "
+                        + "code: " + code + " msg:" + desc);
             }
 
             @Override
@@ -392,7 +395,8 @@ public class IMRoomManager implements IIMRoomManager {
         }
 
         @Override
-        public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, byte[] customData) {
+        public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender,
+                                             byte[] customData) {
 
         }
     }
@@ -440,4 +444,30 @@ public class IMRoomManager implements IIMRoomManager {
         }
     }
 
+    @Override
+    public void getGroupInfo(final String roomId, final CommonCallback callback) {
+        List<String> roomIdList = new ArrayList<>();
+        roomIdList.add(roomId);
+        V2TIMManager.getGroupManager().getGroupsInfo(roomIdList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
+            @Override
+            public void onSuccess(List<V2TIMGroupInfoResult> resultList) {
+                if (resultList == null || resultList.isEmpty()) {
+                    Log.e(TAG, "room not exist, result is null");
+                    return;
+                }
+                V2TIMGroupInfoResult groupInfoResult = resultList.get(0);
+                if (callback != null) {
+                    callback.onCallback(groupInfoResult.getResultCode(), groupInfoResult.getResultMessage());
+                }
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                Log.e(TAG, "get group info failed : " + msg);
+                if (callback != null) {
+                    callback.onCallback(code, msg);
+                }
+            }
+        });
+    }
 }

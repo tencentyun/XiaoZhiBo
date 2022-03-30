@@ -85,4 +85,13 @@ public interface IIMRoomManager {
      * @param callback 查验结果回调
      */
     void checkFriend(String uerId, CommonCallback callback);
+
+    /**
+     * 获取指定房间信息
+     *
+     * @param roomId   房间号
+     * @param callback 结果回调
+     */
+    void getGroupInfo(String roomId, CommonCallback callback);
+
 }

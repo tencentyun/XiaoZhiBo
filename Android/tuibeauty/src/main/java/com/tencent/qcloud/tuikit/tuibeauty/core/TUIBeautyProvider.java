@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.tencent.qcloud.tuicore.TUIConstants;
 import com.tencent.qcloud.tuicore.TUICore;
 
 /**
@@ -19,6 +20,7 @@ public final class TUIBeautyProvider extends ContentProvider {
     public boolean onCreate() {
         Log.d(TAG, "TUIBeautyProvider onCreate");
         TUICore.registerExtension(TUIBeautyExtension.OBJECT_TUI_BEAUTY, new TUIBeautyExtension());
+        TUICore.registerService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIBeautyService.shareInstance());
         return false;
     }
 

@@ -3,18 +3,13 @@
     <string name="tuibeauty_setup">Beauty Setup</string>
     <string name="tuibeauty_common_none">None</string>
     <string name="tuibeauty_palm_out">Palm out</string>
-
     <string name="tuibeauty_setting_panel_beauty">Beauty</string>
     <string name="tuibeauty_setting_panel_filter">Filter</string>
     <string name="tuibeauty_setting_panel_dynamic_effect">Animated Effect</string>
-    <string name="tuibeauty_setting_panel_green_screen">Green screen</string>
-    <string name="tuibeauty_setting_panel_facebeauty">Cosmetic</string>
-    <string name="tuibeauty_setting_panel_gesture">Gesture</string>
-
+    <string name="tuibeauty_setting_panel_makeup">Cosmetic</string>
     <string name="tuibeauty_panel_style_smooth">Smooth</string>
-    <string name="tuibeauty_panel_style_natural">Natural</string>
-    <string name="tuibeauty_panel_style_pitu">PS</string>
-
+    <string name="tuibeauty_beauty_natural">Natural</string>
+    <string name="tuibeauty_beauty_pitu">PS</string>
     <string name="tuibeauty_panel_white">White</string>
     <string name="tuibeauty_panel_ruddy">Rosy skin</string>
     <string name="tuibeauty_panel_bigeye">Eye enlarging</string>
@@ -36,7 +31,6 @@
     <string name="tuibeauty_panel_noseposition">Nose position</string>
     <string name="tuibeauty_panel_mousewidth">Lip thickness</string>
     <string name="tuibeauty_panel_faceshape">Face Beauty</string>
-
     <string name="tuibeauty_panel_filter_standard">Standard</string>
     <string name="tuibeauty_panel_filter_ziran">Nature</string>
     <string name="tuibeauty_panel_filter_baixi">White</string>
@@ -55,40 +49,66 @@
     <string name="tuibeauty_panel_filter_reminiscence">Nostalgic</string>
     <string name="tuibeauty_panel_filter_blues">Blues</string>
     <string name="tuibeauty_panel_filter_cool">Cool</string>
-    <string name="tuibeauty_panel_filter_Japanese">Sweet</string>
-
-    <string name="tuibeauty_effect_boom">Boom</string>
-    <string name="tuibeauty_effect_neon_rat">Rainbow Mouse</string>
-    <string name="tuibeauty_effect_star_ear">Star ear</string>
-    <string name="tuibeauty_effect_call">Glow stick</string>
-    <string name="tuibeauty_effect_constellation">Q constellation</string>
-    <string name="tuibeauty_effect_ribbon">Color Ribbon</string>
-    <string name="tuibeauty_effect_headband">Bang Ribbon</string>
-    <string name="tuibeauty_effect_face_change">Change face</string>
-    <string name="tuibeauty_effect_purple_kitten">Violet Cat</string>
-    <string name="tuibeauty_effect_flower_faerie">Floral Fairy</string>
-    <string name="tuibeauty_effect_princess">Little princess</string>
-
-    <string name="tuibeauty_cutout_background_ai">Blend pic</string>
-    <string name="tuibeauty_good_luck">Good luck</string>
-
-    <string name="tuibeauty_gesture_pikaqiu">PikaQiu</string>
-    <string name="tuibeauty_gesture_meteor_shower">Meteor Shower</string>
-    <string name="tuibeauty_gesture_snow_control">Snow Control</string>
-    <string name="tuibeauty_gesture_tv_star">TV Star</string>
-    <string name="tuibeauty_gesture_bottle_cap_challenge">Bottle</string>
-
-    <string name="tuibeauty_makeups_retro">Fu Gu</string>
-    <string name="tuibeauty_makeups_cherry">Cherries</string>
-    <string name="tuibeauty_makeups_seas">Ocean</string>
-    <string name="tuibeauty_makeups_pink">FenfenXia</string>
-    <string name="tuibeauty_makeups_widow">Widow Makeup</string>
-    <string name="tuibeauty_makeups_lip">Qixichun</string>
-    <string name="tuibeauty_makeups_costume">Gufeng</string>
-    <string name="tuibeauty_makeups_ugly">Ugly Girl</string>
-    <string name="tuibeauty_makeups_mixing">Mixed Makeup</string>
-
+    <string name="tuibeauty_panel_filter_japanese">Sweet</string>
     <string name="tuibeauty_video_material_download_progress_material_unzip_failed">Unable to decompress materials</string>
     <string name="tuibeauty_video_material_download_progress_download_failed">Unable to download</string>
     <string name="tuibeauty_video_material_download_progress_no_enough_storage_space">Insufficient storage</string>
+    <string name="tuibeauty_beauty_whiten">whiten</string>
+    <string name="tuibeauty_beauty_smooth">smooth</string>
+    <string name="tuibeauty_beauty_ruddy">rosy</string>
+    <string name="tuibeauty_image_contrast">contrast</string>
+    <string name="tuibeauty_image_saturation">saturation</string>
+    <string name="tuibeauty_image_sharpen">clear</string>
+    <string name="tuibeauty_beauty_enlarge_eye">enlarge eye</string>
+    <string name="tuibeauty_beauty_thin_face">thin face</string>
+    <string name="tuibeauty_beauty_thin_face1">nature</string>
+    <string name="tuibeauty_beauty_thin_face2">goddess</string>
+    <string name="tuibeauty_beauty_thin_face3">hansome</string>
+    <string name="tuibeauty_beauty_v_face">V face</string>
+    <string name="tuibeauty_beauty_narrow_face">thin face</string>
+    <string name="tuibeauty_beauty_short_face">short face</string>
+    <string name="tuibeauty_beauty_basic_face">face style</string>
+    <string name="tuibeauty_beauty_lips">lipstick</string>
+    <string name="tuibeauty_beauty_lips1">old-style red</string>
+    <string name="tuibeauty_beauty_lips2">peach color</string>
+    <string name="tuibeauty_beauty_lips3">Coral Orange</string>
+    <string name="tuibeauty_beauty_lips4">gentle powder</string>
+    <string name="tuibeauty_beauty_lips5">vitality Orange</string>
+    <string name="tuibeauty_beauty_redcheeks">face blush</string>
+    <string name="tuibeauty_beauty_redcheeks1">simple</string>
+    <string name="tuibeauty_beauty_redcheeks2">midsummer</string>
+    <string name="tuibeauty_beauty_redcheeks3">shy</string>
+    <string name="tuibeauty_beauty_redcheeks4">mature</string>
+    <string name="tuibeauty_beauty_redcheeks5">freckle</string>
+    <string name="tuibeauty_beauty_liti">soft light</string>
+    <string name="tuibeauty_beauty_liti1">nature</string>
+    <string name="tuibeauty_beauty_liti2">handsome</string>
+    <string name="tuibeauty_beauty_liti3">light</string>
+    <string name="tuibeauty_beauty_liti4">fresh</string>
+    <string name="tuibeauty_beauty_thin_cheek">thin cheekbones</string>
+    <string name="tuibeauty_beauty_chin">jaw</string>
+    <string name="tuibeauty_beauty_forehead">forehead</string>
+    <string name="tuibeauty_beauty_eye_lighten">dazzling</string>
+    <string name="tuibeauty_beauty_eye_distance">eye distance</string>
+    <string name="tuibeauty_beauty_eye_angle">corner of eye</string>
+    <string name="tuibeauty_beauty_thin_nose">thin nose</string>
+    <string name="tuibeauty_beauty_nose_wing">Nose</string>
+    <string name="tuibeauty_beauty_nose_position">nose position</string>
+    <string name="tuibeauty_beauty_tooth_beauty">tooth</string>
+    <string name="tuibeauty_beauty_remove_pounch">wrinkle removal</string>
+    <string name="tuibeauty_beauty_wrinkle_smooth">remove nasal lines</string>
+    <string name="tuibeauty_beauty_remove_eye_pouch">remove eye bags</string>
+    <string name="tuibeauty_beauty_mouth_size">mouth size</string>
+    <string name="tuibeauty_beauty_mouth_height">mouth height</string>
+    <string name="tuibeauty_motion_keaituya">cute doodle</string>
+    <string name="tuibeauty_motion_tutujiang">bunny sauce</string>
+    <string name="tuibeauty_motion_zhixingmeigui">intellectual rose</string>
+    <string name="tuibeauty_motion_sakuragirl">sakura girl</string>
+    <string name="tuibeauty_motion_bubblegum">childhood bubble gum</string>
+    <string name="tuibeauty_makeup_fenfenxia">peach makeup</string>
+    <string name="tuibeauty_makeup_video_shaishangzhuang">sunburn makeup</string>
+    <string name="tuibeauty_empty_segmentation">segmentation</string>
+    <string name="tuibeauty_segmentation_blur_45">blurred background-weak</string>
+    <string name="tuibeauty_segmentation_blur_75">blurred background-severe</string>
+    <string name="tuibeauty_tips_xmagic_auth_failed">auth failed</string>
 </resources>

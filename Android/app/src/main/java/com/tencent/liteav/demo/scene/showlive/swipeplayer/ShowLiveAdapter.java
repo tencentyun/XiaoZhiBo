@@ -37,7 +37,7 @@ public class ShowLiveAdapter extends RecyclerView.Adapter<ShowLiveAdapter.RoomVi
     }
 
     @Override
-    public void onBindViewHolder(ShowLiveAdapter.RoomViewHolder holder, int position) {
+    public void onBindViewHolder(RoomViewHolder holder, int position) {
         if (position != getItemCount() - 1) {
             holder.setIsRecyclable(false);
         }

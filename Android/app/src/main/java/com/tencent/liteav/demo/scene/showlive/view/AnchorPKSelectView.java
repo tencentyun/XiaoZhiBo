@@ -1,28 +1,36 @@
 package com.tencent.liteav.demo.scene.showlive.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.liteav.basic.ImageLoader;
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.common.view.SpaceDecoration;
 import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
+import com.tencent.liteav.demo.services.room.im.listener.RoomInfoListCallback;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +46,26 @@ public class AnchorPKSelectView extends RelativeLayout {
     private TextView             mPusherTagTv;
     private TextView             mTextCancel;
     private String               mSelfRoomId;
+    private EditText             mEditRoomId;
+    private TextView             mTextEnterRoom;
+    private ConstraintLayout     mPkByIdLayout;
+
+    private final TextWatcher mEditTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTextEnterRoom.setEnabled(!TextUtils.isEmpty(mEditRoomId.getText().toString()));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     public AnchorPKSelectView(Context context) {
         this(context, null);
@@ -84,6 +112,34 @@ public class AnchorPKSelectView extends RelativeLayout {
                 mOnPKSelectedCallback.onCancel();
             }
         });
+        mPkByIdLayout = findViewById(R.id.layout_invite_pk_by_id);
+        mEditRoomId = findViewById(R.id.et_input_room_id);
+        mTextEnterRoom = findViewById(R.id.tv_enter_room_by_id);
+        mEditRoomId.addTextChangedListener(mEditTextWatcher);
+        if (UserModelManager.getInstance().haveBackstage()) {
+            mPusherListRv.setVisibility(VISIBLE);
+        } else {
+            mPkByIdLayout.setVisibility(VISIBLE);
+        }
+        mTextEnterRoom.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoomService.getInstance(getContext()).getGroupInfo(mEditRoomId.getText().toString().trim(),
+                        new RoomInfoListCallback() {
+                            @Override
+                            public void onCallback(int code, String msg, List<RoomInfo> list) {
+                                if (getContext() == null || ((Activity) getContext()).isFinishing()) {
+                                    return;
+                                }
+                                if (code == 0 && list.size() != 0) {
+                                    mOnPKSelectedCallback.onSelected(list.get(0));
+                                } else {
+                                    ToastUtil.toastShortMessage(msg);
+                                }
+                            }
+                        });
+            }
+        });
     }
 
     public void setSelfRoomId(String roomId) {
@@ -120,7 +176,11 @@ public class AnchorPKSelectView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == VISIBLE) {
-            refreshView();
+            if (UserModelManager.getInstance().haveBackstage()) {
+                refreshView();
+            } else {
+                mPusherTagTv.setText(getResources().getString(R.string.app_pk_invite));
+            }
         }
     }
 

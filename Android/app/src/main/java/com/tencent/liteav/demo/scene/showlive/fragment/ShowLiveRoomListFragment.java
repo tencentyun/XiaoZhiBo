@@ -1,15 +1,20 @@
 package com.tencent.liteav.demo.scene.showlive.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +23,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
+import com.tencent.liteav.basic.UserModel;
+import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.common.TCConstants;
 import com.tencent.liteav.demo.common.view.RoundCornerImageView;
@@ -29,6 +36,8 @@ import com.tencent.liteav.demo.services.RoomService;
 import com.tencent.liteav.demo.services.room.bean.RoomInfo;
 import com.tencent.liteav.demo.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.demo.services.room.http.impl.HttpRoomManager;
+import com.tencent.liteav.demo.services.room.im.listener.RoomInfoListCallback;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +56,26 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     private RoomListAdapter    mRoomListViewAdapter;               //mRecyclerRoomList控件的适配器
     private boolean            mIsUseCDNPlay = false;                //用来表示当前是否CDN模式（区别于TRTC模式）
     private List<RoomInfo>     mRoomInfoList = new ArrayList<>();   //保存从网络侧加载到的直播间信息
+    private EditText           mEditRoomId;
+    private TextView           mTextEnterRoom;
+    private ConstraintLayout   mLayoutEnterById;
+
+    private final TextWatcher mEditTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mTextEnterRoom.setEnabled(!TextUtils.isEmpty(mEditRoomId.getText().toString()));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     public static ShowLiveRoomListFragment newInstance() {
         Bundle args = new Bundle();
@@ -71,6 +100,9 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     private void initView(@NonNull final View itemView) {
         mRecyclerRoomList = itemView.findViewById(R.id.rv_room_list);
         mTextRoomListEmpty = itemView.findViewById(R.id.tv_list_empty);
+        mEditRoomId = itemView.findViewById(R.id.et_input_room_id);
+        mTextEnterRoom = itemView.findViewById(R.id.tv_enter_room_by_id);
+        mLayoutEnterById = itemView.findViewById(R.id.layout_enter_room_by_id);
 
         mButtonCreateRoom = itemView.findViewById(R.id.container_create_room);
         mButtonCreateRoom.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +114,33 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
                 createRoom();
             }
         });
+        mEditRoomId.addTextChangedListener(mEditTextWatcher);
+        mTextEnterRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoomService.getInstance(getContext()).getGroupInfo(mEditRoomId.getText().toString().trim(),
+                        new RoomInfoListCallback() {
+                            @Override
+                            public void onCallback(int code, String msg, List<RoomInfo> list) {
+                                if (getContext() == null || ((Activity) getContext()).isFinishing()) {
+                                    return;
+                                }
+                                if (code == 0 && list.size() != 0) {
+                                    enterRoom(list.get(0));
+                                } else {
+                                    ToastUtil.toastShortMessage(msg);
+                                }
+                            }
+                        });
+            }
+        });
 
         mLayoutSwipeRefresh = itemView.findViewById(R.id.swipe_refresh_layout_list);
+        if (UserModelManager.getInstance().haveBackstage()) {
+            mLayoutSwipeRefresh.setVisibility(View.VISIBLE);
+        } else {
+            mLayoutEnterById.setVisibility(View.VISIBLE);
+        }
         mLayoutSwipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
         mLayoutSwipeRefresh.setOnRefreshListener(this);

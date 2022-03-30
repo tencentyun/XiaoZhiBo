@@ -10,7 +10,7 @@
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_gravity="center"
-        android:src="@drawable/tuibeauty_ic_common_none" />
+        android:src="@drawable/tuibeauty_common_none" />
 
     <TextView
         android:id="@+id/beauty_tv_title"

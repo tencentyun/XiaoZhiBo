@@ -55,8 +55,9 @@ public class DemoApplication extends MultiDexApplication {
             @Override
             public void onActivityResumed(Activity activity) {
                 if (activity instanceof ShowLiveAudienceActivity) {
-                    if (mCallback != null)
+                    if (mCallback != null) {
                         mCallback.onAppBackground(false);
+                    }
                 }
             }
 

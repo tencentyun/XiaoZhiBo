@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/app_bg_bottom_dialog"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/app_bg_bottom_dialog">
 
     <TextView
         android:id="@+id/tv_pusher_tag"
@@ -34,5 +34,14 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tv_pusher_tag"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginEnd="20dp"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/app_enter_room_by_id"
+        android:id="@+id/layout_invite_pk_by_id"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/tv_pusher_tag"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -19,7 +19,7 @@
 
 - 腾讯云服务的开启：点击[这里](https://cloud.tencent.com/document/product/454/38625)
 
-- 后台程序的运行：点击[这里](https://cloud.tencent.com/document/product/454/38625)
+- 后台程序的运行（可选）：点击[这里](https://cloud.tencent.com/document/product/454/38625)
 
 ## 运行示例
 
@@ -39,12 +39,14 @@ git clone https://github.com/tencentyun/XiaoZhiBo
 
 ### 工程配置
 1. 找到并打开`XiaoZhiBo/Android/debug/src/main/java/com/tencent/liteav/debug/GenerateGlobalConfig.java`文件，按照上述步骤中记录的关键信息，设置此文件中的相关参数：
-  - `SERVERLESSURL`：默认为 PLACEHOLDER , 请设置为后台服务部署成功后记录下的URL，例如：`https://service-xxxyyzzz-1001234567.gz.apigw.tencentcs.com`
+  - `SERVERLESSURL(可选)`：默认为 PLACEHOLDER ，请设置为后台服务部署成功后记录下的URL，例如：`https://service-xxxyyzzz-1001234567.gz.apigw.tencentcs.com`
   - `LICENSEURL`：默认为 PLACEHOLDER ，请设置为实际的License Url信息；
   - `LICENSEURLKEY`：默认为 PLACEHOLDER ，请设置为实际的License Key信息；
   - `PLAY_DOMAIN`：默认为 PLACEHOLDER ，请设置为实际的拉流域名；
-2. 修改 app模块下的 `build.gradle` 文件中 `applicationId` 字段为License 信息所对应的包名；
-
+2. 找到并打开`XiaoZhiBo/Android/debug/src/main/java/com/tencent/liteav/debug/文件GenerateTestUserSig.java`文件，按照上述步骤中记录的关键信息，设置此文件中的相关参数：
+  - `SDKAPPID`: 默认为 PLACEHOLDER ，请设置为实际的 SDKAppID
+  - `SECRETKEY`: 默认为 PLACEHOLDER ，请设置为实际的密钥信息
+3. 修改 app 模块下的 `build.gradle` 文件中 `applicationId` 字段为 License 信息所对应的包名。
 ### 编译运行
 用 Android Studio 打开该项目，连上Android设备，编译并运行。
 

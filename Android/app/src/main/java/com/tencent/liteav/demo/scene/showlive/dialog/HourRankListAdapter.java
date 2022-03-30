@@ -34,7 +34,7 @@ public class HourRankListAdapter extends RecyclerView.Adapter<HourRankListAdapte
     }
 
     @Override
-    public void onBindViewHolder(HourRankListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         if (position == 0) {
             holder.mTextRanking.setTextColor(mContext.getResources().getColor(R.color.app_ranking_text_first));
         } else if (position == 1) {

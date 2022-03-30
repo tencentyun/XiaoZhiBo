@@ -46,7 +46,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         android:background="@null"
-        android:hint="直播间的描述"
+        android:hint="@string/app_description_of_room"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@android:color/white"

@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.qcloud.tuikit.tuibeauty.R;
+import com.tencent.qcloud.tuikit.tuibeauty.model.TUIBeautyManager;
 
 /**
  * 美颜功能展开按钮
@@ -14,18 +15,12 @@ import com.tencent.qcloud.tuikit.tuibeauty.R;
 public class TUIBeautyButton extends FrameLayout {
     private static final String TAG = "TUIBeautyButton";
 
-    private Context         mContext;
-    private TXBeautyManager mBeautyManager;
     private TUIBeautyView   mBeautyPanel;
-
-    public TUIBeautyButton(Context context) {
-        super(context);
-    }
+    private TXBeautyManager mBeautyManager;
 
     public TUIBeautyButton(Context context, TXBeautyManager beautyManager) {
-        this(context);
-        this.mContext = context;
-        this.mBeautyManager = beautyManager;
+        super(context);
+        mBeautyManager = beautyManager;
         initView(context);
     }
 
@@ -41,5 +36,15 @@ public class TUIBeautyButton extends FrameLayout {
                 }
             }
         });
+    }
+
+    public TUIBeautyManager getTUIBeautyManager() {
+        return TUIBeautyManager.getInstance();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        TUIBeautyManager.getInstance().destroy();
+        super.onDetachedFromWindow();
     }
 }
