@@ -50,17 +50,19 @@ TUIBeauty
 
 ### 工程配置
 1. 将 `TUIBeauty/Resources`、`TUIBeauty/Source`、`TUIBeauty/TUIBeauty.podspec` 模块导入到自己的工程中
-2. 在项目的 `Podfile` 文件中添加我们的 TUIBeauty 模块
+2. 在TUIBeauty/Frameworks目录下添加美颜相关的SDK：XMagic.framework、YTCommonXMagic.framework、libpag.framework 
+3. 在项目的 `Podfile` 文件中添加我们的 TUIBeauty 模块
 
 ```
-   pod 'TUIBeauty', :path => "../", :subspecs => ["Professional"]
+   pod 'TUIBeauty', :path => "../", :subspecs => ["Live"]
 ```
 
 ### 功能使用
 1. 创建 `TUIBeautyView`
 
 ```
-   TUIBeautyView *mBeautyView = [[TUIBeautyView alloc] initWithFrame:CGRectZero beautyManager:[sdkObject getBeautyManager]];
+    TUIBeautyView *beautyView = [[TUIBeautyView alloc] initWithFrame:CGRectZero beautyManager:beautyManager licenseUrl:licenseUrl licenseKey:licenseKey];
+
 ```
 
 2. 使用 `TUIBeautyView` 相关功能

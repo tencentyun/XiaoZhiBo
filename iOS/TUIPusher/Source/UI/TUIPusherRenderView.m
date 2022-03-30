@@ -147,9 +147,9 @@ typedef enum : NSUInteger {
             }];
             [self.remoteView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 if (@available(iOS 11.0, *)) {
-                    make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(10);
+                    make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(160);
                 } else {
-                    make.top.equalTo(self).offset(10);
+                    make.top.equalTo(self).offset(160);
                 }
                 make.trailing.equalTo(self).offset(-10);
                 make.size.mas_equalTo(CGSizeMake(100, 150));
@@ -200,9 +200,9 @@ typedef enum : NSUInteger {
     self.remoteView = remoteView;
     [remoteView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
-            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(10);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(160);
         } else {
-            make.top.equalTo(self).offset(10);
+            make.top.equalTo(self).offset(160);
         }
         make.trailing.equalTo(self).offset(-10);
         make.size.mas_equalTo(CGSizeMake(100, 150));

@@ -69,7 +69,8 @@ class TUIBeautyViewController: UIViewController {
         guard let beautyManager = pusher.getBeautyManager() else {
             return
         }
-        beautyView = TUIBeautyView(frame: .zero, beautyManager: beautyManager)
+        
+        beautyView = TUIBeautyView(frame: .zero, beautyManager: beautyManager, licenseUrl:LICENSEURL,licenseKey:LICENSEURLKEY)
         guard let beautyView = beautyView else {
             return
         }
@@ -77,6 +78,9 @@ class TUIBeautyViewController: UIViewController {
         beautyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+       let result = pusher.enableCustomVideoProcess(true, pixelFormat:.texture2D, bufferType: .texture)
+        let pushObserver  = beautyView.getBeautyService()
+        pusher.setObserver(pushObserver as! V2TXLivePusherObserver)
     }
     
     override func viewWillAppear(_ animated: Bool) {

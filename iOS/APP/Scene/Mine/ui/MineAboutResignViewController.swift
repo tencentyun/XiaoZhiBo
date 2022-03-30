@@ -125,6 +125,10 @@ class MineAboutResignViewController: UIViewController {
     }
     
     @objc func resignPhoneNumber() {
+        // 悬浮框存在，关闭悬浮框
+        if ShowLiveFloatingManager.shared.isFloating {
+            ShowLiveFloatingManager.shared.closeWindowAndExitRoom()
+        }
         loading.startAnimating()
         if let userModel = ProfileManager.sharedManager().currentUserModel{
             HttpLogicRequest.userDelete(userId: userModel.userId, token: userModel.token ,success: { (user) in

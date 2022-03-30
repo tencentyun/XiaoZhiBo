@@ -10,7 +10,7 @@
 #import "UIView+TUILayout.h"
 #import "UIView+TUIToast.h"
 #import "NSDictionary+TUISafe.h"
-#import "ReactiveObjC/ReactiveObjC.h"
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <SDWebImage/SDWebImage.h>
 
 @import ImSDK_Plus;
@@ -218,8 +218,8 @@
 
 //more view
 #define TMoreView_Column_Count 4
-#define TMoreView_Section_Padding 30
-#define TMoreView_Margin 10
+#define TMoreView_Section_Padding 24
+#define TMoreView_Margin 20
 #define TMoreView_Page_Height 30
 
 //menu item cell
@@ -234,7 +234,7 @@
 //more item cell
 #define TMoreCell_ReuseId @"TMoreCell"
 #define TMoreCell_Margin 5
-#define TMoreCell_Image_Size CGSizeMake(70, 70)
+#define TMoreCell_Image_Size CGSizeMake(65, 65)
 #define TMoreCell_Title_Height 20
 
 //face item cell
@@ -330,7 +330,7 @@
 
 //personal common cell
 #define TPersonalCommonCell_Image_Size CGSizeMake(48, 48)
-#define TPersonalCommonCell_Margin 10
+#define TPersonalCommonCell_Margin 20
 #define TPersonalCommonCell_Indicator_Size CGSizeMake(15, 15)
 
 //group common cell
@@ -491,7 +491,7 @@
 
 #define TUICore_TUICallingService_ShowCallingViewMethod_GroupIDKey @"TUICore_TUICallingService_ShowCallingViewMethod_GroupIDKey"
 #define TUICore_TUICallingService_ShowCallingViewMethod_UserIDsKey @"TUICore_TUICallingService_ShowCallingViewMethod_UserIDsKey"
-#define TUICore_TUICallingService_ShowCallingViewMethod_CallTypeKey @"TUICore_TUICallingService_ShowCallingViewMethod_CallTypeKey"
+#define TUICore_TUICallingService_ShowCallingViewMethod_CallTypeKey @"TUICore_TUICallingService_ShowCallingViewMethod_CallTypeKey" //@"0" 音频通话 @"1" 视频通话
 
 #define TUICore_TUICallingService_ReceivePushCallingMethod @"TUICore_TUICallingService_ReceivePushCallingMethod"
 #define TUICore_TUICallingService_ShowCallingViewMethod_SignalingInfo @"TUICore_TUICallingService_ShowCallingViewMethod_SignalingInfo"
@@ -500,8 +500,13 @@
 #pragma mark - TUICore_TUIGiftExtension
 /// 获取入口btn
 #define TUICore_TUIGiftExtension_GetEnterBtn    @"TUICore_TUIGiftExtension_GetEnterBtn"
+#define TUICore_TUIGiftExtension_GetLikeBtn    @"TUICore_TUIGiftExtension_GetLikeBtn"
 #define TUICore_TUIGiftExtension_GetTUIGiftListPanel    @"TUICore_TUIGiftExtension_GetTUIGiftListPanel"
 #define TUICore_TUIGiftExtension_GetTUIGiftPlayView    @"TUICore_TUIGiftExtension_GetTUIGiftPlayView"
+
+#pragma mark - TUICore_TUIGiftService
+#define TUICore_TUIGiftService @"TUICore_TUIGiftService"
+#define TUICore_TUIGiftService_SendLikeMethod  @"TUICore_TUIGiftService_SendLikeMethod"
 
 #pragma mark - TUICore_TUIBarrageExtension
 /// 获取入口btn
@@ -517,6 +522,12 @@
 #define TUICore_TUIBeautyExtension_Extension_View @"TUICore_TUIBeautyExtension_Extension_View"
 
 #define TUICore_TUIBeautyExtension_BeautyView_BeautyManager @"TUICore_TUIBeautyExtension_BeautyView_BeautyManager"
+#define TUICore_TUIBeautyExtension_BeautyView_LicenseUrl @"TUICore_TUIBeautyExtension_BeautyView_LicenseUrl"
+#define TUICore_TUIBeautyExtension_BeautyView_LicenseKey @"TUICore_TUIBeautyExtension_BeautyView_LicenseKey"
+#define TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate @"TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate"
+
+
+
 
 #pragma mark - TUICore_TUIAudioEffectViewExtension
 #define TUICore_TUIAudioEffectViewExtension_AudioEffectView @"TUICore_TUIAudioEffectViewExtension_AudioEffectView"

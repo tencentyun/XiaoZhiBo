@@ -44,7 +44,53 @@ class HttpBaseRequest {
                 completionHandler?(result)
             }
     }
-
+    
+    /// Cos文件上传
+    /// - Parameters:
+    ///   - url: URL请求地址
+    ///   - data: 上传的文件Data
+    ///   - mimeType: multipartFormData-mimeType
+    ///   - name: multipartFormData-name
+    ///   - fileName: multipartFormData-fileName
+    ///   - headers: 请求Header
+    ///   - completionHandler: 请求回调
+    /// - Note: Alamofire upload 不支持参数设置，需要自己处理下请求地址
+    static func trtcUpload(_ url: URLConvertible,
+                           data: Data,
+                           mimeType: String,
+                           name: String = "file",
+                           fileName: String? = nil,
+                           headers: [String: String]? = nil,
+                           completionHandler: HttpCompletionCallBack? = nil) {
+        let result: HttpJsonModel = HttpJsonModel()
+        let headerInfo: HTTPHeaders? = (headers != nil) ? HTTPHeaders(headers!) : nil
+        guard var uploadRequest = try? URLRequest(url: url, method: .post, headers: headerInfo) else {
+            result.errorMessage = "upload error: URLRequest generate error"
+            completionHandler?(result)
+            return
+        }
+        // 超时设置
+        uploadRequest.timeoutInterval = 2*60
+        AF.upload(multipartFormData: { formData in
+            formData.append(data, withName: name, fileName: fileName, mimeType: mimeType)
+        }, with: uploadRequest).response { response in
+            // 上传成功时返回的 HTTP 状态码，可选200、201或204，默认为204。
+            // 上传成功时重定向的目标 URL 地址，如果设置，那么在上传成功时将返回 HTTP 状态码为303（Redirect）
+            if response.response?.statusCode == 200 || response.response?.statusCode == 303 || response.response?.statusCode == 204 {
+                result.errorCode = 0
+                result.errorMessage = "success"
+            } else if let statusCode = response.response?.statusCode {
+                result.errorCode = Int32(statusCode)
+                result.errorMessage = HTTPURLResponse.localizedString(forStatusCode: statusCode)
+            } else {
+                result.errorCode = -1
+                result.errorMessage = LoginLocalize("Demo.TRTC.http.syserror")
+            }
+            // 请求完成回调
+            completionHandler?(result)
+        }
+    }
+    
     private static func addBaseParametersData(_ parameters: Parameters? = nil) -> Parameters? {
         guard var resultParameters = parameters else {
             return nil

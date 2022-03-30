@@ -70,17 +70,24 @@ class ShowLiveListViewController: UIViewController {
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.getRoomList() // 调整房间列表的刷新时机
         guard let rootView = self.view as? ShowLiveListRootView else {
             return
         }
+        viewModel.getRoomList() // 调整房间列表的刷新时机
         rootView.updateBaseCollectionOffsetY()
     }
     
     public override func loadView() {
-        let rootView = ShowLiveListRootView.init(viewModel: viewModel)
-        viewModel.viewResponder = rootView
-        view = rootView
+        if MLVBConfigManager.shared.isSetupService {
+            let rootView = ShowLiveListRootView(viewModel: viewModel)
+            viewModel.viewResponder = rootView
+            view = rootView
+        } else {
+            let rootView = ShowLiveListLiteRootView(viewModel: viewModel)
+            viewModel.viewResponder = rootView
+            view = rootView
+        }
+        
     }
     
     /// 取消
@@ -99,6 +106,7 @@ class ShowLiveListViewController: UIViewController {
     
 }
 
+// MARK: - ShowLiveListViewNavigator
 extension ShowLiveListViewController: ShowLiveListViewNavigator {
     func pushRoomView(viewController: UIViewController) {
         navigationController?.pushViewController(viewController, animated: true)
@@ -113,6 +121,7 @@ extension ShowLiveListViewController: ShowLiveListViewNavigator {
     }
 }
 
+// MARK: - internationalization string
 private extension String {
     static let controllerTitle = ShowLiveLocalize("Scene.ShowLive.List.title")
 }

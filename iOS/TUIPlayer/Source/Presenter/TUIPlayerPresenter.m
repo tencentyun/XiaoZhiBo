@@ -9,6 +9,7 @@
 #import "TUIPlayerStreamService.h"
 #import "TUIPlayerSignalingService.h"
 #import "TUIPlayerHeader.h"
+#import "TUIPlayerKit.h"
 
 @interface TUIPlayerPresenter () <TUIPlayerSignalingServiceDelegate, TUIPlayerStreamServiceDelegate>
 
@@ -21,15 +22,31 @@
 
 @implementation TUIPlayerPresenter
 
-- (BOOL)startPlay:(NSString *)url atView:(nonnull UIView *)view {
+- (NSInteger)startPlay:(NSString *)url atView:(nonnull UIView *)view {
     if (![self.signalingService checkLoginStatus]) {
-        return NO;
+        return V2TXLIVE_ERROR_FAILED;
     }
     return [self.streamService startPlay:url atView:view];
 }
 
 - (void)stopPlay {
     [self.streamService stopPlay];
+}
+
+- (void)pauseVideo {
+    [self.streamService pauseVideo];
+}
+
+- (void)resumeVideo {
+    [self.streamService resumeVideo];
+}
+
+- (void)pauseAudio {
+    [self.streamService pauseAudio];
+}
+
+- (void)resumeAudio {
+    [self.streamService resumeAudio];
 }
 
 - (BOOL)sendLinkMicRequest:(NSString *)userId {

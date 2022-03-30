@@ -34,10 +34,17 @@
     
 }
 
+- (void)playLikeModel:(TUIGiftModel *)likeModel {
+    
+}
+
 #pragma mark TUIGiftPresenterDelegate
 
 - (void)onReceiveGift:(TUIGiftModel *)model {
     [self playGiftModel:model];
 }
 
+- (void)onReceiveLike:(TUIGiftModel *)model {
+    [self playLikeModel:model];
+}
 @end

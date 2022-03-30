@@ -12,5 +12,5 @@ NSAppleMusicUsageDescription = "腾讯云视立方小直播需要需要访问你
 NSCameraUsageDescription = "腾讯云视立方小直播需要访问你的相机权限，以便能正常使用秀场直播画面预览，美颜等功能";
 NSMicrophoneUsageDescription = "腾讯云视立方小直播需要访问你的麦克风权限，以便能正常使用秀场直播声音采集功能";
 NSPhotoLibraryAddUsageDescription = "腾讯云视立方小直播需要访问你的相册权限，开启后才能保存编辑的文件";
-NSPhotoLibraryUsageDescription = "腾讯云视立方小直播需要访问你的相册权限，开启后才能编辑视频文件";
+NSPhotoLibraryUsageDescription = "腾讯云视立方小直播需要访问你的相册权限，开启后才能上传头像、编辑视频文件";
 

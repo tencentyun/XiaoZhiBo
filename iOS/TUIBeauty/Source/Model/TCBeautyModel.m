@@ -91,7 +91,11 @@
 
 - (TCBeautyBaseItem *)clearItem {
     if (self.enableClearBtn) {
-        TCBeautyBaseItem *clearItem = [[TCBeautyBaseItem alloc] initWithTitle:BeautyLocalize(@"TC.Common.Clear") normalIcon:[UIImage imageNamed:@"clear_nor" inBundle:BeautyBundle() compatibleWithTraitCollection:nil] selIcon:[UIImage imageNamed:@"clear_nor" inBundle:BeautyBundle() compatibleWithTraitCollection:nil] package:self isClear:YES];
+        TCBeautyBaseItem *clearItem = [[TCBeautyBaseItem alloc] initWithTitle:BeautyLocalize(@"TC.Common.Clear")
+                                                                   normalIcon:[UIImage imageNamed:@"naught" inBundle:BeautyBundle() compatibleWithTraitCollection:nil]
+                                                                      selIcon:[UIImage imageNamed:@"naught" inBundle:BeautyBundle() compatibleWithTraitCollection:nil]
+                                                                      package:self
+                                                                      isClear:YES];
         return clearItem;
     }
     return nil;
@@ -131,25 +135,27 @@
 }
 
 - (void)sendAction:(NSArray *)args {
-    if (args.count > 0) {
-        self.currentValue = [args.firstObject floatValue];
-    }
-    if (args.count == 5) {
-        self.beautyStyle = [args[1] intValue];
-        self.beautyLevel = [args[2] floatValue];
-        self.whiteLevel  = [args[3] floatValue];
-        self.ruddyLevel  = [args[4] floatValue];
-    }
-    if (self.index <= 4) {
-        [self applyBeautySettings];
-    }
-    else if (args.count == 1) {
-        if ([self.target respondsToSelector:self.action]) {
-            SuppressPerformSelectorLeakWarning([self.target performSelector:self.action withObject:args.firstObject])
+    if (!self.isXmagic){
+        if (args.count > 0) {
+            self.currentValue = [args.firstObject floatValue];
         }
-    }
-    else {
-        [super sendAction:args];
+        if (args.count == 5) {
+            self.beautyStyle = [args[1] intValue];
+            self.beautyLevel = [args[2] floatValue];
+            self.whiteLevel  = [args[3] floatValue];
+            self.ruddyLevel  = [args[4] floatValue];
+        }
+        if (self.index <= 4) {
+            [self applyBeautySettings];
+        }
+        else if (args.count == 1) {
+            if ([self.target respondsToSelector:self.action]) {
+                SuppressPerformSelectorLeakWarning([self.target performSelector:self.action withObject:args.firstObject])
+            }
+        }
+        else {
+            [super sendAction:args];
+        }
     }
 }
 
@@ -176,57 +182,79 @@
 
 - (void)decodeItems:(NSArray<NSDictionary *> *)array target:(id<TCBeautyPanelActionPerformer>)target {
     for (int i = 0; i < array.count; i++) {
+        
         NSDictionary *dic = array[i];
         NSString *title = dic[@"title"];
+
         if (![title isKindOfClass:[NSString class]]) {
             continue;
         }
-        NSString *normalIcon = dic[@"normalIcon"];
-        if (![normalIcon isKindOfClass:[NSString class]]) {
-            continue;
-        }
-        NSString *selIcon = @"";
-        SEL action = nil;
-        float minValue = 0;
-        float maxValue = 10;
-        float currentValue = 6;
-        if ([dic.allKeys containsObject:@"selector"]) {
-            NSString *selectorStr = dic[@"selector"];
-            if ([selectorStr isKindOfClass:[NSString class]]) {
-                action = NSSelectorFromString(selectorStr);
-            }
-        }
-        if ([dic.allKeys containsObject:@"selIcon"]) {
-            NSString *iconStr = dic[@"selIcon"];
-            if ([iconStr isKindOfClass:[NSString class]]) {
-                selIcon = iconStr;
-            }
-        }
-        if ([dic.allKeys containsObject:@"minValue"]) {
-            NSNumber *min = dic[@"minValue"];
-            if ([min isKindOfClass:[NSNumber class]]) {
-                minValue = [min floatValue];
-            }
-        }
-        if ([dic.allKeys containsObject:@"maxValue"]) {
-            NSNumber *max = dic[@"maxValue"];
-            if ([max isKindOfClass:[NSNumber class]]) {
-                maxValue = [max floatValue];
-            }
-        }
-        if ([dic.allKeys containsObject:@"currentValue"]) {
-            NSNumber *current = dic[@"currentValue"];
-            if ([current isKindOfClass:[NSNumber class]]) {
-                currentValue = [current floatValue];
-            }
-        }
         
-        TCBeautyBeautyItem *item = [[TCBeautyBeautyItem alloc] initWithTitle:BeautyLocalize(title) normalIcon:[UIImage imageNamed:normalIcon inBundle:BeautyBundle() compatibleWithTraitCollection:nil] package:self target:target action:action currentValue:currentValue minValue:minValue maxValue:maxValue];
-        if (selIcon.length > 0) {
-            item.selectIcon = [UIImage imageNamed:selIcon inBundle:BeautyBundle() compatibleWithTraitCollection:nil];
+        NSNumber *isXmagic = dic[@"isXmagic"];
+        
+        if ([isXmagic boolValue]) {
+            NSString *normalIcon =[NSString stringWithFormat:@"%@/%@.png", [BeautyBundle() bundlePath], dic[@"key"]];
+            NSData *data = [NSData dataWithContentsOfFile:normalIcon];
+            UIImage *icon = [UIImage imageWithData:data];
+            float currentValue = [dic[@"beautyValue"] floatValue];
+            float minValue = 0;
+            float maxValue = 100;
+            TCBeautyBeautyItem *item = [[TCBeautyBeautyItem alloc] initWithTitle:BeautyLocalize(title) normalIcon:icon package:self target:nil action:nil currentValue:currentValue minValue:minValue maxValue:maxValue];
+            item.key = dic[@"key"];
+            item.isXmagic = YES;
+            item.index = i;
+            item.extraConfig = dic[@"extraConfig"];
+            [self.items addObject:item];
+            continue;
+        } else {
+            NSString *normalIcon = dic[@"normalIcon"];
+            if (![normalIcon isKindOfClass:[NSString class]]) {
+                continue;
+            }
+            NSString *selIcon = @"";
+            SEL action = nil;
+            float minValue = 0;
+            float maxValue = 10;
+            float currentValue = 6;
+            if ([dic.allKeys containsObject:@"selector"]) {
+                NSString *selectorStr = dic[@"selector"];
+                if ([selectorStr isKindOfClass:[NSString class]]) {
+                    action = NSSelectorFromString(selectorStr);
+                }
+            }
+            if ([dic.allKeys containsObject:@"selIcon"]) {
+                NSString *iconStr = dic[@"selIcon"];
+                if ([iconStr isKindOfClass:[NSString class]]) {
+                    selIcon = iconStr;
+                }
+            }
+            if ([dic.allKeys containsObject:@"minValue"]) {
+                NSNumber *min = dic[@"minValue"];
+                if ([min isKindOfClass:[NSNumber class]]) {
+                    minValue = [min floatValue];
+                }
+            }
+            if ([dic.allKeys containsObject:@"maxValue"]) {
+                NSNumber *max = dic[@"maxValue"];
+                if ([max isKindOfClass:[NSNumber class]]) {
+                    maxValue = [max floatValue];
+                }
+            }
+            if ([dic.allKeys containsObject:@"currentValue"]) {
+                NSNumber *current = dic[@"currentValue"];
+                if ([current isKindOfClass:[NSNumber class]]) {
+                    currentValue = [current floatValue];
+                }
+            }
+            
+            TCBeautyBeautyItem *item = [[TCBeautyBeautyItem alloc] initWithTitle:BeautyLocalize(title) normalIcon:[UIImage imageNamed:normalIcon inBundle:BeautyBundle() compatibleWithTraitCollection:nil] package:self target:target action:action currentValue:currentValue minValue:minValue maxValue:maxValue];
+            item.isXmagic = NO;
+            if (selIcon.length > 0) {
+                item.selectIcon = [UIImage imageNamed:selIcon inBundle:BeautyBundle() compatibleWithTraitCollection:nil];
+            }
+            item.index = i;
+            [self.items addObject:item];
         }
-        item.index = i;
-        [self.items addObject:item];
     }
 }
 
@@ -347,6 +375,15 @@
 }
 
 - (instancetype)initWithTitle:(NSString *)title identifier:(NSString *)identifier url:(NSString *)url package:(TCBeautyBasePackage *)package target:(id<TCBeautyPanelActionPerformer>)target {
+    if (self = [super initWithTitle:title normalIcon:[UIImage imageNamed:identifier inBundle:BeautyBundle() compatibleWithTraitCollection:nil] selIcon:nil package:package isClear:NO]) {
+        self.identifier = identifier;
+        self.url = url;
+        [self addTarget:target action:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithTitle:(NSString *)title key:(NSString *)identifier url:(NSString *)url package:(TCBeautyBasePackage *)package target:(id<TCBeautyPanelActionPerformer>)target {
     if (self = [super initWithTitle:title normalIcon:[UIImage imageNamed:identifier inBundle:BeautyBundle() compatibleWithTraitCollection:nil] selIcon:nil package:package isClear:NO]) {
         self.identifier = identifier;
         self.url = url;
@@ -495,6 +532,37 @@
         [self.items addObject:item];
     }
 }
+
+- (void)decodeItems:(NSDictionary *) packageInfo {
+    NSString *bundleStr = [packageInfo objectForKey:@"bundle"];
+    NSArray *items = [packageInfo objectForKey:@"items"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    for (int i = 0; i < items.count; i++) {
+        NSDictionary *dic = items[i];
+        NSString *title = [dic objectForKey:@"title"];
+        NSString *key = [dic objectForKey:@"key"];
+        NSString *path = [dic objectForKey:@"path"];
+
+        NSDictionary *extraConfig = [dic objectForKey:@"extraConfig"];
+
+        NSString *iconPath = [NSString stringWithFormat:@"%@/%@.png", [BeautyBundle() resourcePath], key];
+        if ([fileManager fileExistsAtPath:iconPath]) {
+            TCBeautyMotionItem *item = [[TCBeautyMotionItem alloc] initWithTitle:BeautyLocalize(title) identifier:key url:nil package:self target:nil];
+            NSData *data = [NSData dataWithContentsOfFile:iconPath];
+            UIImage *icon = [UIImage imageWithData:data];
+            item.normalIcon = icon;
+            item.extraConfig = extraConfig;
+            item.isXmagic = YES;
+            item.path  = path;
+            item.bundel = bundleStr;
+            item.key = key;
+            item.index = i + [self.items count];
+            [self.items addObject:item];
+        }
+    }
+}
+
 
 @end
 

@@ -55,11 +55,11 @@
 "Demo.TRTC.Portal.appversion" = "Application Version";
 "Demo.TRTC.Portal.limit20count" = "Chinese characters, letters, numbers and underscores, 2 - 20 words";
 "Demo.TRTC.Portal.changenickname" = "Change Your Nickname";
-"Demo.TRTC.Portal.disclaimerdesc" = "TRTC (this app) is a tryout app, whose copyright is owned by Tencent Cloud. This app is for tryout only and must not be used commercially.\nIn accordance with relevant regulations, this app forbids pornographic, abusive, terrorism, and politically sensitive content. All audio/video interactions are recorded and archived.";
+"Demo.TRTC.Portal.disclaimerdesc" = "XiaoZhiBo (this app) is a tryout app, whose copyright is owned by Tencent Cloud. This app is for tryout only and must not be used commercially.\nIn accordance with relevant regulations, this app forbids pornographic, abusive, terrorism, and politically sensitive content. All audio/video interactions are recorded and archived.";
 "Demo.TRTC.Home.appusetoshowfunc" = "This app demonstrates the features of Tencent Video Cloud terminal products.";
 
-"Demo.TRTC.Portal.Main.title" = "Demo.TRTC.Portal.Main.title";
-"Demo.TRTC.Portal.Main.showLiveTitle" = "Demo.TRTC.Portal.Main.showLiveTitle";
+"Demo.TRTC.Portal.Main.title" = "XiaoZhiBo";
+"Demo.TRTC.Portal.Main.showLiveTitle" = "Show Live";
 "Demo.TRTC.Portal.Main.shopLiveTitle" = "Demo.TRTC.Portal.Main.shopLiveTitle";
-"Demo.TRTC.Portal.Main.showLiveDesc" = "Demo.TRTC.Portal.Main.showLiveDesc";
+"Demo.TRTC.Portal.Main.showLiveDesc" = "PK, beauty special effects, fun interactive gameplay";
 "Demo.TRTC.Portal.Main.shopLiveDesc" = "Demo.TRTC.Portal.Main.shopLiveDesc";

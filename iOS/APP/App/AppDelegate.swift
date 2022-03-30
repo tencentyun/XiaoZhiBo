@@ -10,11 +10,6 @@ import TUIPusher
 import TUICore
 import Toast_Swift
 
-/// 用户协议
-let WEBURL_Agreement:String = "https://web.sdk.qcloud.com/document/Tencent-MLVB-User-Agreement.html"
-/// 隐私协议
-let WEBURL_Privacy:String = "https://web.sdk.qcloud.com/document/Tencent-MLVB-Privacy-Protection-Guidelines.html"
-
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let kXiaoZhiBoAppId = "0"
@@ -39,10 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UserOverdueLogicManager.sharedManager().userOverdueState = .loggedAndOverdue
             })
         } else {
-            let loginViewController = TRTCLoginViewController()
-            let naviVC = UINavigationController(rootViewController: loginViewController)
-            naviVC.view.backgroundColor = .white
-            window?.rootViewController = naviVC
+            if MLVBConfigManager.isGithub() {
+                let viewController = TRTCStartLoginViewController()
+                let rootVC = UINavigationController(rootViewController: viewController)
+                rootVC.view.backgroundColor = .white
+                window?.rootViewController = rootVC
+            } else {
+                let loginViewController = TRTCLoginViewController()
+                let rootVC = UINavigationController(rootViewController: loginViewController)
+                rootVC.view.backgroundColor = .white
+                window?.rootViewController = rootVC
+            }
         }
         setupNavigationBarAppearance()
         window?.makeKeyAndVisible()
@@ -79,13 +81,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @objc public func showLoginViewController() {
-        let loginVC = TRTCLoginViewController()
-        let nav = UINavigationController(rootViewController: loginVC)
-        if let keyWindow = AppUtils.getCurrentWindow() {
-            keyWindow.rootViewController = nav
-            keyWindow.makeKeyAndVisible()
+        if MLVBConfigManager.shared.isSetupService {
+            let loginVC = TRTCLoginViewController()
+            let nav = UINavigationController(rootViewController: loginVC)
+            if let keyWindow = AppUtils.getCurrentWindow() {
+                keyWindow.rootViewController = nav
+                keyWindow.makeKeyAndVisible()
+            } else {
+                debugPrint("window error")
+            }
         } else {
-            debugPrint("window error")
+            let loginVC = TRTCLoginLiteViewController()
+            let nav = UINavigationController(rootViewController: loginVC)
+            if let keyWindow = AppUtils.getCurrentWindow() {
+                keyWindow.rootViewController = nav
+                keyWindow.makeKeyAndVisible()
+            } else {
+                debugPrint("window error")
+            }
         }
     }
     

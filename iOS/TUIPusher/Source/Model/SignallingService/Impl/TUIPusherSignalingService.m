@@ -254,6 +254,17 @@
     }
     else if ([cmd isEqualToString:PUSHER_SIGNALING_VALUE_DATA_CMD_PK_REQ]) {
         // request PK
+        if (self.currentPKInviteId && [self.currentPKInviteId isKindOfClass:[NSString class]] && self.currentPKInviteId.length > 0) {
+            // 如果当前正在处理其它用户的PK申请, 将新的申请拒绝掉， 避免PK混乱
+            NSDictionary *signaling = [TUIPusherSignalingHelper rejectPkSignaling:(int)TUIPusherRejectReasonBusy];
+            NSString *jsonStr = [self dic2JsonStr:signaling];
+            [[V2TIMManager sharedInstance] reject:inviteID data:jsonStr succ:^{
+                
+            } fail:^(int code, NSString *desc) {
+                
+            }];
+            return;
+        }
         self.currentPKInviteId = inviteID;
         self.currentPKRequestUserId = inviter;
         if ([self.delegate respondsToSelector:@selector(onReceivePKInvite:cmd:streamId:)]) {
@@ -262,6 +273,17 @@
     }
     else if ([cmd isEqualToString:PUSHER_PLAYER_SIGNALING_VALUE_DATA_CMD_LINK_REQ]) {
         // request Link Mic
+        if (self.currentLinkMicInviteId && [self.currentLinkMicInviteId isKindOfClass:[NSString class]] && self.currentLinkMicInviteId.length > 0) {
+            // 如果当前正在处理其它用户的连麦申请, 将新的连麦申请拒绝掉， 避免连麦混乱
+            NSDictionary *signaling = [TUIPusherSignalingHelper rejectLinkMicSignaling:(int)TUIPusherRejectReasonBusy];
+            NSString *jsonStr = [self dic2JsonStr:signaling];
+            [[V2TIMManager sharedInstance] reject:inviteID data:jsonStr succ:^{
+                
+            } fail:^(int code, NSString *desc) {
+                
+            }];
+            return;
+        }
         self.currentLinkMicInviteId = inviteID;
         self.currentLinkMicUserId = inviter;
         if ([self.delegate respondsToSelector:@selector(onReceiveLinkMicInvite:cmd:streamId:)]) {

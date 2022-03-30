@@ -54,6 +54,17 @@
 
 /* Begin PBXFileReference section */
 		08BF26293E1BCA355B902D0C /* Pods-TUIPusherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIPusherApp.release.xcconfig"; path = "Target Support Files/Pods-TUIPusherApp/Pods-TUIPusherApp.release.xcconfig"; sourceTree = "<group>"; };
+		172D78F527DB575D0092F82C /* lut.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = lut.bundle; sourceTree = "<group>"; };
+		172D78F627DB575D0092F82C /* LightCore.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LightCore.bundle; sourceTree = "<group>"; };
+		172D78F727DB575D0092F82C /* LightHandPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LightHandPlugin.bundle; sourceTree = "<group>"; };
+		172D78F827DB575D0092F82C /* segmentMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = segmentMotionRes.bundle; sourceTree = "<group>"; };
+		172D78F927DB575D0092F82C /* 2dMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = 2dMotionRes.bundle; sourceTree = "<group>"; };
+		172D78FA27DB575D0092F82C /* ganMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ganMotionRes.bundle; sourceTree = "<group>"; };
+		172D78FB27DB575D0092F82C /* makeupMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = makeupMotionRes.bundle; sourceTree = "<group>"; };
+		172D78FC27DB575D0092F82C /* Light3DPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Light3DPlugin.bundle; sourceTree = "<group>"; };
+		172D78FD27DB575D0092F82C /* LightSegmentPlugin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LightSegmentPlugin.bundle; sourceTree = "<group>"; };
+		172D78FE27DB575D0092F82C /* handMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = handMotionRes.bundle; sourceTree = "<group>"; };
+		172D78FF27DB575D0092F82C /* 3dMotionRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = 3dMotionRes.bundle; sourceTree = "<group>"; };
 		3410B5E69E62E5D43E276105 /* Pods-TUIBeautyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIBeautyApp.release.xcconfig"; path = "Target Support Files/Pods-TUIBeautyApp/Pods-TUIBeautyApp.release.xcconfig"; sourceTree = "<group>"; };
 		470EB6F1266A49170072071F /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		470EB6F2266A49170072071F /* LaunchImage_en@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage_en@2x.png"; sourceTree = "<group>"; };
@@ -119,6 +130,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		172D78F427DB575C0092F82C /* XmagicBundle */ = {
+			isa = PBXGroup;
+			children = (
+				172D78F527DB575D0092F82C /* lut.bundle */,
+				172D78F627DB575D0092F82C /* LightCore.bundle */,
+				172D78F727DB575D0092F82C /* LightHandPlugin.bundle */,
+				172D78F827DB575D0092F82C /* segmentMotionRes.bundle */,
+				172D78F927DB575D0092F82C /* 2dMotionRes.bundle */,
+				172D78FA27DB575D0092F82C /* ganMotionRes.bundle */,
+				172D78FB27DB575D0092F82C /* makeupMotionRes.bundle */,
+				172D78FC27DB575D0092F82C /* Light3DPlugin.bundle */,
+				172D78FD27DB575D0092F82C /* LightSegmentPlugin.bundle */,
+				172D78FE27DB575D0092F82C /* handMotionRes.bundle */,
+				172D78FF27DB575D0092F82C /* 3dMotionRes.bundle */,
+			);
+			path = XmagicBundle;
+			sourceTree = "<group>";
+		};
 		45BC76B78942804520FA6869 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +159,7 @@
 		4739C7D32657507800CA7C45 /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				172D78F427DB575C0092F82C /* XmagicBundle */,
 				C61742D82701AA62001139E4 /* BeautyResource */,
 				4739C7D42657507800CA7C45 /* localized */,
 				4739C7D92657507900CA7C45 /* assets */,

@@ -108,6 +108,22 @@
     }
 }
 
+- (void)startCamera:(BOOL)frontCamera {
+    [self.streamService startCamera:frontCamera];
+}
+
+- (void)closeCamera {
+    [self.streamService closeCamara];
+}
+
+- (void)startVirtualCamera:(UIImage *)image {
+    [self.streamService startVirtualCamera:image];
+}
+
+- (void)stopVirtualCamera {
+    [self.streamService stopVirtualCamera];
+}
+
 - (BOOL)startPKWithUser:(NSString *)remoteUserId atView:(UIView *)view {
     self.isInPK = YES;
     return [self.streamService startPK:remoteUserId view:view];
@@ -188,6 +204,12 @@
         else {
             [self.pusherViewDelegate onPushEvent:self.pusherView event:TUIPUSHER_EVENT_FAILED message:msg];
         }
+    }
+}
+
+- (void)onProcessVideoFrame:(V2TXLiveVideoFrame *_Nonnull)srcFrame dstFrame:(V2TXLiveVideoFrame *_Nonnull)dstFrame {
+    if ([self.thirdBeautyPlugIn  respondsToSelector:@selector(onProcessVideoFrame:dstFrame:)]) {
+        [self.thirdBeautyPlugIn onProcessVideoFrame:srcFrame dstFrame:dstFrame];
     }
 }
 

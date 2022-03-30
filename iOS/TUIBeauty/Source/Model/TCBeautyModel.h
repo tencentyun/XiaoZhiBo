@@ -67,6 +67,16 @@ typedef NS_ENUM(NSUInteger, TCBeautyType) {
 
 @property (nonatomic, assign) int index;
 
+@property (nonatomic, assign) BOOL isXmagic;
+@property (nonatomic, strong) NSString *key;
+@property (copy, nonatomic) NSDictionary *extraConfig;
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic, strong) NSString *bundel;
+
+
+
+
+
 - (instancetype)initWithTitle:(NSString *)title normalIcon:(UIImage *)normalIcon selIcon:(UIImage * _Nullable)selIcon package:(TCBeautyBasePackage *)package isClear:(BOOL)isClear;
 
 - (void)setValue:(float)current min:(float)min max:(float)max;
@@ -132,7 +142,7 @@ typedef NS_ENUM(NSUInteger, TCBeautyType) {
 @interface TCBeautyMotionPackage : TCBeautyBasePackage
 
 - (void)decodeItems:(NSArray <NSDictionary *>*)array target:(id <TCBeautyPanelActionPerformer>)target;
-
+- (void)decodeItems:(NSDictionary *) packageInfo;
 @end
 
 #pragma mark - Green

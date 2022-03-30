@@ -165,6 +165,7 @@ class ShowLivePkAlert: ShowLiveAlertContentView {
         }
     }
 }
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension ShowLivePkAlert: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
@@ -255,6 +256,7 @@ class ShowLivePkAlertCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 13)
+        label.numberOfLines = 2
         return label
     }()
     
@@ -273,37 +275,203 @@ class ShowLivePkAlertCell: UITableViewCell {
         inviteLabel.layer.cornerRadius = inviteLabel.frame.height*0.5
     }
     
-    public func config(model: ShowLiveRoomInfo) {
-        
-        self.addSubview(coverImg)
-        coverImg.snp.remakeConstraints { (make) in
-            make.top.leading.equalTo(10)
-            make.left.equalTo(20)
-            make.bottom.equalTo(-10)
-            make.width.equalTo(40)
+    private var isViewReady = false
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        guard !isViewReady else {
+            return
         }
-        
-        self.addSubview(inviteLabel)
-        inviteLabel.snp.remakeConstraints { (make) in
-            make.top.equalTo(15)
-            make.bottom.equalTo(-15)
-            make.right.equalTo(-20)
+        isViewReady = true
+        constructViewHierarchy()
+        activateConstraints()
+    }
+    
+    private func constructViewHierarchy() {
+        contentView.addSubview(coverImg)
+        contentView.addSubview(inviteLabel)
+        contentView.addSubview(infoLabel)
+    }
+    
+    private func activateConstraints() {
+        coverImg.snp.makeConstraints { (make) in
+            make.leading.equalTo(20)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(40)
+        }
+        inviteLabel.snp.makeConstraints { (make) in
+            make.trailing.equalTo(-20)
             make.width.equalTo(75)
+            make.height.equalTo(30)
+            make.centerY.equalToSuperview()
         }
-        
+        infoLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(coverImg.snp.trailing).offset(10)
+            make.centerY.equalToSuperview()
+            make.trailing.lessThanOrEqualTo(inviteLabel.snp.leading).offset(-10)
+        }
+    }
+    
+    public func config(model: ShowLiveRoomInfo) {
         if let url = URL.init(string: model.coverUrl) {
             coverImg.kf.setImage(with: .network(url))
         }
-        
-        self.addSubview(infoLabel)
-        infoLabel.snp.remakeConstraints { (make) in
-            make.leading.equalTo(coverImg.snp.trailing).offset(5)
-            make.top.equalTo(5)
-            make.bottom.trailing.equalTo(-5)
-        }
         infoLabel.text = "\(model.ownerName)\n\(model.roomName)"
-        infoLabel.font = UIFont.systemFont(ofSize: 15)
-        infoLabel.numberOfLines = 2
+    }
+}
+
+// MARK: - PK View
+class ShowLivePkLiteAlert: ShowLiveAlertContentView {
+    
+    public var pkWithRoom: ((ShowLiveRoomInfo)->Void)? = nil
+    
+    override init(frame: CGRect = .zero, viewModel: ShowLiveAnchorViewModel) {
+        super.init(viewModel: viewModel)
+        titleLabel.text = .invitePKText
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIApplication.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private lazy var roomIdTextField: UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.backgroundColor = .white
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.textColor = UIColor("333333")
+        textField.keyboardType = .asciiCapableNumberPad
+        textField.attributedPlaceholder = NSAttributedString(string: .inputRoomId, attributes: [NSAttributedString.Key.font:  UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor("BBBBBB")])
+        textField.delegate = self
+        return textField
+    }()
+    
+    private lazy var textFieldSpacingLine: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor("EEEEEE")
+        return view
+    }()
+    
+    private lazy var pkButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setTitleColor(.white, for: .normal)
+        btn.setTitle(.pkText, for: .normal)
+        btn.adjustsImageWhenHighlighted = false
+        btn.setBackgroundImage(UIColor("006EFF").trans2Image(), for: .normal)
+        btn.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 18)
+        btn.layer.masksToBounds = true
+        return btn
+    }()
+    
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        pkButton.layer.cornerRadius = pkButton.frame.height * 0.5
+    }
+    
+    override func constructViewHierarchy() {
+        super.constructViewHierarchy()
+        contentView.addSubview(roomIdTextField)
+        contentView.addSubview(textFieldSpacingLine)
+        contentView.addSubview(pkButton)
+    }
+    
+    override func activateConstraints() {
+        super.activateConstraints()
+        roomIdTextField.snp.makeConstraints { (make) in
+            make.leading.equalTo(30)
+            make.trailing.equalTo(-30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.height.equalTo(50)
+        }
+        textFieldSpacingLine.snp.makeConstraints { (make) in
+            make.height.equalTo(1)
+            make.leading.trailing.equalTo(roomIdTextField)
+            make.top.equalTo(roomIdTextField.snp.bottom)
+        }
+        pkButton.snp.makeConstraints { (make) in
+            make.leading.trailing.equalToSuperview().inset(40)
+            make.top.equalTo(textFieldSpacingLine.snp.bottom).offset(20)
+            make.height.equalTo(52)
+            make.bottom.equalTo(-100)
+        }
+    }
+    
+    override func bindInteraction() {
+        super.bindInteraction()
+        pkButton.addTarget(self, action: #selector(pkAction), for: .touchUpInside)
+        contentView.addTapGesture(target: self, action: #selector(hiddenKeyboard))
+    }
+    
+    private func checkPKState(_ string: String? = nil) {
+        var isEnabled = false
+        if let text = string {
+            let scan: Scanner = Scanner(string: text)
+            var val:Int = 0
+            if scan.scanInt(&val) && scan.isAtEnd {
+                isEnabled = true
+            }
+        }
+        pkButton.isEnabled = isEnabled
+        let color = isEnabled ? UIColor("006EFF") : UIColor("DBDBDB")
+        pkButton.setBackgroundImage(color.trans2Image(), for: .normal)
+    }
+    
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        guard let rect = info[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        transform = CGAffineTransform(translationX: 0, y: -ScreenHeight + rect.minY)
+    }
+}
+
+// MARK: - Touch Action
+extension ShowLivePkLiteAlert {
+    
+    @objc private func pkAction() {
+        hiddenKeyboard()
+        guard let roomId = roomIdTextField.text, !roomId.isEmpty else {
+            return
+        }
+        IMRoomManager.sharedManager().getIMRoomInfoList(roomIds: [roomId]) { [weak self] (code, message, roomInfos) in
+            guard let self = self else { return }
+            if let roomInfo = roomInfos.first {
+                self.pkWithRoom?(roomInfo)
+            } else {
+                // 房间不存在
+                self.makeToast(message)
+            }
+        }
+    }
+    
+    @objc private func hiddenKeyboard() {
+        endEditing(true)
+    }
+}
+
+extension ShowLivePkLiteAlert: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        checkPKState(textField.text)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        hiddenKeyboard()
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) {
+            checkPKState(text)
+        } else {
+            checkPKState()
+        }
+        return true
     }
 }
 
@@ -349,6 +517,8 @@ class ShowLiveMoreAlert: ShowLiveAlertContentView {
         collectionView.register(ShowLiveMoreAlertCell.self, forCellWithReuseIdentifier: "ShowLiveMoreAlertCell")
     }
 }
+
+// MARK: - UICollectionViewDelegate
 extension ShowLiveMoreAlert : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == 0 {
@@ -360,6 +530,8 @@ extension ShowLiveMoreAlert : UICollectionViewDelegate {
         }
     }
 }
+
+// MARK: - UICollectionViewDataSource
 extension ShowLiveMoreAlert : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
@@ -374,6 +546,7 @@ extension ShowLiveMoreAlert : UICollectionViewDataSource {
         return cell
     }
 }
+
 class ShowLiveMoreAlertCell: UICollectionViewCell {
     
     public var model : (normal : UIImage?, selected : UIImage?)?
@@ -430,7 +603,7 @@ class ShowLiveMoreAlertCell: UICollectionViewCell {
     }
 }
 
-/// MARK: - internationalization string
+// MARK: - internationalization string
 fileprivate extension String {
     static let earMonitorText = ShowLiveLocalize("Scene.ShowLive.Anchor.switchcamera")
     static let toolText = ShowLiveLocalize("Scene.ShowLive.Anchor.tools")
@@ -441,4 +614,5 @@ fileprivate extension String {
     static let loadingText = ShowLiveLocalize("Scene.ShowLive.Anchor.loading")
     static let noAnchorText = ShowLiveLocalize("Scene.ShowLive.Anchor.noanchor")
     static let cancelText = ShowLiveLocalize("Scene.ShowLive.Anchor.cancel")
+    static let inputRoomId = ShowLiveLocalize("Scene.ShowLive.List.inputroomid")
 }

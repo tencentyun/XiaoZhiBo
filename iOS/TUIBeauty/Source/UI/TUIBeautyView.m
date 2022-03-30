@@ -16,7 +16,6 @@
 #import "TCBeautyPresenter.h"
 #import "NSString+TUIUtil.h"
 #import "BeautyLocalized.h"
-
 @interface TUIBeautyView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -38,10 +37,10 @@
 }
 
 #pragma mark - Interface
-- (instancetype)initWithFrame:(CGRect)frame beautyManager:(nonnull TXBeautyManager *)beautyManager {
+- (instancetype)initWithFrame:(CGRect)frame beautyManager:(nonnull TXBeautyManager *)beautyManager licenseUrl:(NSString *)licenseUrl  licenseKey:(NSString *)licenseKey {
     if (self = [super initWithFrame:frame]) {
         
-        self.presenter = [[TCBeautyPresenter alloc] initWithBeautyManager:beautyManager];
+        self.presenter = [[TCBeautyPresenter alloc] initWithBeautyManager:beautyManager licenseKey:licenseKey licenseUrl:licenseUrl];
         
         self.alpha = 0;
         self.contentView.transform = CGAffineTransformMakeTranslation(0, frame.size.height);
@@ -55,8 +54,13 @@
     return self;
 }
 
+- (id)getBeautyService{
+    return [self.presenter.xmagicBeautyManager videoFrameDelegate];
+}
+
 - (void)dealloc {
     [self.presenter applyDefaultSetting];
+    [self.presenter cleanXmagic];
 }
 
 - (void)setTheme:(TUIThemeConfig *)theme {
@@ -180,14 +184,19 @@
     self.intensityView.onSliderValueChanged = ^(float value) {
         @strongify(self)
         TCBeautyBaseItem *item = self.presenter.currentSelectItem;
-        switch (item.type) {
-            case TCBeautyTypeBeauty:
-                [self setBeautySlider:value item:(TCBeautyBeautyItem *)item];
-                break;
-            case TCBeautyTypeFilter:
-                [self setFilterSlider:value item:(TCBeautyFilterItem *)item];
-            default:
-                break;
+        if (item.isXmagic) {
+            item.currentValue = value;
+            [self.presenter.xmagicBeautyManager sliderValueChange:item];
+        } else {
+            switch (item.type) {
+                case TCBeautyTypeBeauty:
+                    [self setBeautySlider:value item:(TCBeautyBeautyItem *)item];
+                    break;
+                case TCBeautyTypeFilter:
+                    [self setFilterSlider:value item:(TCBeautyFilterItem *)item];
+                default:
+                    break;
+            }
         }
     };
 }
@@ -295,27 +304,40 @@
                 self.intensityView.hidden = NO;
                 [self.intensityView setSliderMinValue:item.minValue maxValue:item.maxValue];
                 [self.intensityView setSliderValue:item.currentValue];
-                if (item.index > 4) {
-                    [item sendAction:@[@(item.currentValue)]];
-                }
-                else {
-                    self.presenter.beautyStyle = item.index < 3 ? item.index : 2;
-                    [item sendAction:@[@(item.currentValue),
-                                     @(self.presenter.beautyStyle),
-                                     @(self.presenter.beautyLevel),
-                                     @(self.presenter.whiteLevel),
-                                     @(self.presenter.ruddyLevel)]];
+                if (item.isXmagic) {
+                    [self.presenter.xmagicBeautyManager  configPropertyWith:item];
+                } else {
+                    if (item.index > 4) {
+                        [item sendAction:@[@(item.currentValue)]];
+                    }
+                    else {
+                        self.presenter.beautyStyle = item.index < 3 ? item.index : 2;
+                        [item sendAction:@[@(item.currentValue),
+                                         @(self.presenter.beautyStyle),
+                                         @(self.presenter.beautyLevel),
+                                         @(self.presenter.whiteLevel),
+                                         @(self.presenter.ruddyLevel)]];
+                    }
+                    
                 }
             } break;
             case TCBeautyTypeFilter: {
                 if (item.isClear) {
                     self.intensityView.hidden = YES;
-                    [item sendAction:@[]];
+                    if (item.isXmagic) {
+                        [self.presenter.xmagicBeautyManager  configPropertyWith:item];
+                    }else {
+                        [item sendAction:@[]];
+                    }
                     return;
                 }
                 else {
                     TCBeautyFilterItem *filterItem = (TCBeautyFilterItem *)item;
-                    [filterItem setFilter];
+                    if (item.isXmagic) {
+                        [self.presenter.xmagicBeautyManager  configPropertyWith:item];
+                    } else {
+                        [filterItem setFilter];
+                    }
                     [filterItem setSlider:filterItem.currentValue];
                     self.intensityView.hidden = NO;
                     [self.intensityView setSliderMinValue:filterItem.minValue maxValue:filterItem.maxValue];
@@ -328,7 +350,11 @@
             case TCBeautyTypeGesture:
             case TCBeautyTypeGreen: {
                 self.intensityView.hidden = YES;
-                [item sendAction:@[]];
+                if (item.isXmagic) {
+                    [self.presenter.xmagicBeautyManager  configPropertyWith:item];
+                } else {
+                    [item sendAction:@[]];
+                }
             } break;
             default:
                 break;
@@ -424,4 +450,5 @@
     }
     return _titleLabel;
 }
+
 @end

@@ -12,7 +12,7 @@ import TUICore
 
 class TUIPusherViewController: UIViewController {
     lazy var pusherView: TUIPusherView = {
-        let view = TUIPusherView(frame: view.bounds)
+        let view = TUIPusherView.init(frame: view.bounds, licenseUrl: LICENSEURL, licenseKey: LICENSEURLKEY)
         return view
     }()
     

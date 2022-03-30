@@ -120,7 +120,9 @@ public class HttpJsonModel: NSObject {
                 roomInfo.coverUrl = defaultAvatar()
             }
             roomInfo.ownerName = String(ownerId)
-            
+            if let totalJoined = info["totalJoined"] as? Int {
+                roomInfo.totalJoined = totalJoined
+            }
             infos.append(roomInfo)
         }
         return infos
@@ -136,6 +138,26 @@ public class HttpJsonModel: NSObject {
             }
         }
         return usersResult
+    }()
+    
+    /// 获取Cos信息
+    lazy var cosInfo: ShowLiveCosInfo? = {
+        guard let result = data as? [String: Any] else { return nil }
+        guard let bucket = result["bucket"] as? String else { return nil }
+        guard let region = result["region"] as? String else { return nil }
+        guard let fileName = result["filename"] as? String else { return nil }
+        guard let preview = result["preview"] as? String else { return nil }
+        let cosInfo = ShowLiveCosInfo(bucket: bucket, region: region, fileName: fileName, preview: preview)
+        if let credential = result["credential"] as? [String: Any] {
+            cosInfo.startTime = (credential["startTime"] as? Int) ?? 0
+            cosInfo.expiredTime = (credential["expiredTime"] as? Int) ?? 0
+            if let credentials = credential["credentials"] as? [String: Any] {
+                cosInfo.sessionToken = (credentials["sessionToken"] as? String) ?? ""
+                cosInfo.tmpSecretId = (credentials["tmpSecretId"] as? String) ?? ""
+                cosInfo.tmpSecretKey = (credentials["tmpSecretKey"] as? String) ?? ""
+            }
+        }
+        return cosInfo
     }()
     
     private func defaultAvatar() -> String {

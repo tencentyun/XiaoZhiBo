@@ -11,14 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TUIPusherView;
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSInteger, TUIPusherEvent) {
     TUIPUSHER_EVENT_UNKNOWN = 0, // 未知错误，详细查询推流错误吗对照表
     TUIPUSHER_EVENT_SUCCESS = 1,
     TUIPUSHER_EVENT_FAILED = -1,
     TUIPUSHER_EVENT_INVALID_LICENSE = -2,
     TUIPUSHER_EVENT_URL_NOTSUPPORT = -3, // 不支持当前URL
     TUIPUSHER_EVENT_NOT_LOGIN = -4, // 用户状态没有登录
-} TUIPusherEvent;
+};
 
 // 响应回调
 typedef void(^Response)(BOOL isAgree);

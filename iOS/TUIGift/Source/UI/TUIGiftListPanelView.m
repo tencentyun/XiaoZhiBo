@@ -92,7 +92,7 @@
         __weak typeof(self) wealSelf = self;
         cell.sendBlock = ^(TUIGiftModel * _Nonnull giftModel) {
             __strong typeof(wealSelf) strongSelf = wealSelf;
-            [strongSelf onGiftSend:giftModel];
+            [strongSelf sendGift:giftModel];
         };
     }
     return cell;

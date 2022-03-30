@@ -38,8 +38,8 @@
 - (NSString *)showSignature
 {
     if (self.selfSignature == nil)
-        return NSLocalizedString(@"no_personal_signature", nil); ;
-    return self.selfSignature;
+        return TUIKitLocalizableString(TUIKitNoSelfSignature);
+    return [NSString stringWithFormat:TUIKitLocalizableString(TUIKitSelfSignatureFormat), self.selfSignature];
 }
 
 - (NSString *)showAllowType
@@ -1099,6 +1099,7 @@ NSString *kTopConversationListChangedNotification = @"kTopConversationListChange
     self.navigationBar.barTintColor = self.tintColor;
     self.navigationBar.shadowImage = [UIImage new];
     self.navigationBar.tintColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0];
+    self.delegate = self;
 }
 
 - (UIColor *)tintColor
@@ -1128,6 +1129,17 @@ NSString *kTopConversationListChangedNotification = @"kTopConversationListChange
         }
     }
     return [super popToRootViewControllerAnimated:animated];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        if (self.viewControllers.count == 1) {// 禁止首页的侧滑返回
+            navigationController.interactivePopGestureRecognizer.enabled = NO;
+        }else{
+            navigationController.interactivePopGestureRecognizer.enabled = YES;
+        }
+    }
 }
 
 @end

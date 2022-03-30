@@ -40,6 +40,7 @@
 "V2.Live.LoginMock.password" = "Password";
 "V2.Live.loginMock.registertip" = "No account, go to register";
 
+"Demo.TRTC.Home.useroverduemessage" = "The login status is invalid, please login again";
 "Demo.TRTC.Portal.privateandagreement" = "I have read and agree to the xxx and yyy";
 "Demo.TRTC.Portal.agreeprivatefirst" = "You must agree to the Privacy Policy and Terms of Use first.";
 "Demo.TRTC.Portal.<private>" = "Privacy Policy";
@@ -48,3 +49,10 @@
 "Demo.TRTC.Portal.agreement" = "Terms of Use";
 "Demo.TRTC.LoginMock.adduserinformationforfirstlogin" = "This is your first login. Please complete your profile.";
 "Demo.TRTC.Portal.privatealertdescription" = "Welcome to XiaoZhiBo. The Privacy Policy and Terms of Use agreements detail how we collect, use, and store your information, as well as the rights your are entitled to and how to exercise them. By tapping the button below, you agree to the content of the agreements.";
+
+"Demo.TRTC.Login.setupServiceTip" = "You can only experience some functions without configuring background services. If you want to experience all functions, please: ";
+"Demo.TRTC.Login.setupService" = "Configuring Background Services";
+"Demo.TRTC.Login.runWithService" = "I have finished configuring";
+"Demo.TRTC.Login.runWithoutService" = "Not configured yet";
+"Demo.TRTC.Login.inputUserId" = "Please input userId";
+"Demo.TRTC.Login.checkService" = "Please check SERVERLESSURL in Debug/GenerateGlobalConfig.swift";

@@ -12,7 +12,7 @@
 #import "TUIGiftListPanelPlugView.h"
 #import "TUIGiftPlayView.h"
 
-@interface TUIGiftExtension () <TUIExtensionProtocol>
+@interface TUIGiftExtension () <TUIExtensionProtocol, TUIServiceProtocol>
 
 @property(nonatomic, strong) NSMapTable *extensions;
 
@@ -22,8 +22,12 @@
 
 + (void)load {
     [TUICore registerExtension:TUICore_TUIGiftExtension_GetEnterBtn object:[TUIGiftExtension shareInstance]];
+    [TUICore registerExtension:TUICore_TUIGiftExtension_GetLikeBtn object:[TUIGiftExtension shareInstance]];
     [TUICore registerExtension:TUICore_TUIGiftExtension_GetTUIGiftListPanel object:[TUIGiftExtension shareInstance]];
     [TUICore registerExtension:TUICore_TUIGiftExtension_GetTUIGiftPlayView object:[TUIGiftExtension shareInstance]];
+    
+    // service注册
+    [TUICore registerService:TUICore_TUIGiftService object:[TUIGiftExtension shareInstance]];
 }
 
 + (TUIGiftExtension *)shareInstance {
@@ -43,6 +47,20 @@
     return self;
 }
 
+#pragma mark - TUIServiceProtocol
+- (id)onCall:(NSString *)method param:(NSDictionary *)param {
+    if ([method isEqualToString:TUICore_TUIGiftService_SendLikeMethod]) {
+        NSString *groupId = param[@"groupId"];
+        if (groupId && [groupId isKindOfClass:[NSString class]] && groupId.length > 0) {
+            TUIGiftListPanelPlugView *plugView = [TUIGiftExtension getPlugViewByGroupId:groupId];
+            if (plugView) {
+                [plugView sendLike];
+            }
+        }
+    }
+    return nil;
+}
+
 #pragma mark - TUIExtensionProtocol
 - (NSDictionary *)getExtensionInfo:(NSString *)key param:(nullable NSDictionary *)param {
     if ([key isEqualToString:TUICore_TUIGiftExtension_GetEnterBtn]) {
@@ -57,6 +75,7 @@
             }
             if([groupId isKindOfClass:[NSString class]]){
                 TUIGiftListPanelPlugView *plugView = [[TUIGiftListPanelPlugView alloc]initWithFrame:frame groupId:groupId];
+                [TUIGiftExtension setPlugViewByGroupId:plugView groupId:groupId];
                 return @{TUICore_TUIGiftExtension_GetTUIGiftListPanel:plugView};
             }
         }
@@ -74,23 +93,46 @@
                 return @{TUICore_TUIGiftExtension_GetTUIGiftPlayView:playView};
             }
         }
+    } else if ([key isEqualToString:TUICore_TUIGiftExtension_GetLikeBtn]) {
+        return @{TUICore_TUIGiftExtension_GetLikeBtn:[TUIGiftExtension getLikeButton]};
     }
     return nil;
 }
 
 + (TUIGiftPlayBaseView *)getPlayViewByGroupId:(NSString *)groupId {
-    return [[TUIGiftExtension shareInstance].extensions objectForKey:groupId];
+    NSString *playKey = [NSString stringWithFormat:@"%@_play", groupId];
+    return [[TUIGiftExtension shareInstance].extensions objectForKey:playKey];
 }
 
 + (void)setPlayViewByGroupId:(TUIGiftPlayBaseView *)playView groupId:(NSString *)groupId{
     if (playView && groupId) {
-        [[TUIGiftExtension shareInstance].extensions setObject:playView forKey:groupId];
+        NSString *playKey = [NSString stringWithFormat:@"%@_play", groupId];
+        [[TUIGiftExtension shareInstance].extensions setObject:playView forKey:playKey];
+    }
+}
+
++ (TUIGiftListPanelPlugView *)getPlugViewByGroupId:(NSString *)groupId {
+    NSString *plugKey = [NSString stringWithFormat:@"%@_plug", groupId];
+    return [[TUIGiftExtension shareInstance].extensions objectForKey:plugKey];
+}
+
++ (void)setPlugViewByGroupId:(TUIGiftListPanelPlugView *)plugView groupId:(NSString *)groupId{
+    if (plugView && groupId) {
+        NSString *plugKey = [NSString stringWithFormat:@"%@_plug", groupId];
+        [[TUIGiftExtension shareInstance].extensions setObject:plugView forKey:plugKey];
     }
 }
 
 + (UIButton *)getEnterButton {
     UIButton *enterButton = [[UIButton alloc] init];
     [enterButton setImage:[UIImage imageNamed:@"gift_enter_icon" inBundle:TUIGiftBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    [enterButton sizeToFit];
+    return enterButton;
+}
+
++ (UIButton *)getLikeButton {
+    UIButton *enterButton = [[UIButton alloc] init];
+    [enterButton setImage:[UIImage imageNamed:@"like_enter_icon" inBundle:TUIGiftBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [enterButton sizeToFit];
     return enterButton;
 }

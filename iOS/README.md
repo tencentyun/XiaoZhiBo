@@ -47,12 +47,27 @@ git clone https://github.com/tencentyun/XiaoZhiBo
 
 1. 使用`终端`，cd到工程文件`XiaoZhiBoApp.xcodeproj`的目录，执行命令 "pod install"。
 2. 使用 Xcode（11.0及以上的版本）打开源码工程`XiaoZhiBoApp.xcworkspace`。
-3. 找到并打开`XiaoZhiBo/iOS/APP/Debug/GenerateGlobalConfig.swift`文件，按照上述步骤中记录的关键信息，设置此文件中的相关参数：
-  - `SERVERLESSURL`：默认为 "PLACEHOLDER" , 请设置为后台服务部署成功后记录下的URL，例如：`https://service-xxxyyzzz-1001234567.gz.apigw.tencentcs.com`
-  - `LICENSEURL`：默认为 PLACEHOLDER ，请设置为实际的License Url信息；
-  - `LICENSEURLKEY`：默认为 PLACEHOLDER ，请设置为实际的License Key信息；
-  - `PLAY_DOMAIN`：默认为 PLACEHOLDER ，请设置为实际的拉流域名；
-4. 修改工程的 `Bundle identifier` 字段为License 信息所对应的包名；
+3. 找到并打开 `XiaoZhiBo/iOS/APP/Debug/GenerateGlobalConfig.swift` 文件，按照上述步骤中记录的关键信息，设置此文件中的相关参数：
+
+| 参数 | 说明 |
+|---------|---------|
+|SERVERLESSURL(可选)|默认为 "PLACEHOLDER" , 如需配置此项，请设置为[后台服务部署](https://cloud.tencent.com/document/product/454/38625) 成功后记录下的 URL，例如：<code>https://service-xxxyyzzz-1001234567.gz.apigw.tencentcs.com</code> |
+|LICENSEURL|默认为 PLACEHOLDER ，请设置为实际的 License URL 信息|
+|LICENSEURLKEY|默认为 PLACEHOLDER ，请设置为实际的 License Key 信息|
+|PLAY_DOMAIN|默认为 PLACEHOLDER ，请设置为实际的拉流域名|
+
+4. 找到并打开 `XiaoZhiBo/iOS/APP/Debug/GenerateTestUserSig.swift` 文件，按照上述步骤中记录的关键信息，设置此文件中的相关参数：
+
+| 参数 | 说明 |
+|---------|---------|
+|SDKAPPID|默认为 0 ，请设置为实际的 SDKAppID |
+|SECRETKEY|默认为 PLACEHOLDER ，请设置为实际的密钥信息|
+
+![](https://qcloudimg.tencent-cloud.cn/raw/e58a4ec175b62f329428366d1c1d6572.png)
+
+5. 修改工程的 `Bundle identifier` 字段为 License 信息所对应的包名；
+
+>? 关于TUIBeauty的美颜特效依赖库编译失败问题，请前往 [美颜特效-SDK集成指引iOS](https://cloud.tencent.com/document/product/454/9018)，下载并解压[Demo包](https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/iOS/2.4.0.vcube/MLVB-API-Example.zip)，将SDK目录中的 `libpag.framework、XMagic.framework、YTCommonXMagic.framework`导入到小直播TUIBeauty下的Frameworks目录，重新执行命令 "pod install"即可 。
 
 ### 编译运行
 用 Xcode 打开该项目，连上 iOS 设备，编译并运行。

@@ -48,3 +48,8 @@
 "Demo.TRTC.Calling.yournetworkpoor" = "Your network connection is poor";
 "Demo.TRTC.Salon.invitelimited" = "The request is being processed, please try again later";
 "Demo.TRTC.Login.countrycode" = "Country Code";
+/** TUIPlayer **/
+"TUIPlayer.Link.Request.timeout" = "The mic request timed out";
+/** 权限申请 **/
+"TUIPlayer.Link.Authorization.camera" = "Please turn on the camera";
+"TUIPlayer.Link.Authorization.microphone" = "Please turn on the microphone";

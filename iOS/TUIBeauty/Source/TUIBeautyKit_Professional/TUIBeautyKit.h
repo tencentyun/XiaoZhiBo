@@ -9,5 +9,5 @@
 #define TUIBeautyKit_h
 
 @import TXLiteAVSDK_Professional;
-
+#import "TELicenseCheck.h"
 #endif /* TUIBeautyKit_h */

@@ -142,6 +142,7 @@ class ShowLiveListRootView: UIView {
 
 }
 
+// MARK: - UICollectionViewDelegate
 extension ShowLiveListRootView: UICollectionViewDelegate {
     public func updateBaseCollectionOffsetY() -> Void {
         scrollviewBaseContentOffsetY = roomListCollection.contentOffset.y
@@ -170,6 +171,7 @@ extension ShowLiveListRootView: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension ShowLiveListRootView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -187,6 +189,7 @@ extension ShowLiveListRootView: UICollectionViewDataSource {
     
 }
 
+// MARK: - ShowLiveListViewResponder
 extension ShowLiveListRootView: ShowLiveListViewResponder {
     
     func showToast(message: String) {
@@ -211,7 +214,7 @@ extension ShowLiveListRootView: ShowLiveListViewResponder {
     
 }
 
-/// MARK: - internationalization string
+// MARK: - internationalization string
 fileprivate extension String {
     static let pullrefreshText = ShowLiveLocalize("Scene.ShowLive.List.pullrefresh")
     static let refreshingText = ShowLiveLocalize("Scene.ShowLive.List.refreshing")

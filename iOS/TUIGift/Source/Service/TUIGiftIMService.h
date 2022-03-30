@@ -8,27 +8,29 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TUIGiftModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+typedef void (^TUIGiftIMSendBlock)(NSInteger code, NSString *msg);
+
 /// Service 服务协议
 @protocol TUIGiftIMServiceDelegate<NSObject>
 @optional
 
 /**
-* 消息发送完成回调
-*
-* @param param 消息体
-* @param success YES发送成功，NO不发送失败
-* @param message 提示信息
+ * 收到礼物消息回调
+ *
+ * @param giftModel 礼物消息
 */
-- (void)didSend:(NSDictionary<NSString *,id> *)param isSuccess:(BOOL)success message:(NSString *)message;
+- (void)onReceiveGiftMessage:(TUIGiftModel *)giftModel;
 
 /**
-* 收到消息回调
-*
-* @param param 消息体
+ * 收到点赞消息回调
+ *
+ * @param likeModel 点赞消息
 */
-- (void)onReceive:(NSDictionary<NSString *,id> *)param;
+- (void)onReceiveLikeMessage:(TUIGiftModel *)likeModel;
+
 @end
 
 
@@ -43,9 +45,29 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TUIGiftIMService : NSObject
 
 + (instancetype)defaultCreate:(NSString *)groupID delegate:(id <TUIGiftIMServiceDelegate>)delegate;
-/// 发送Msg
-- (BOOL)onSendMsg:(NSDictionary<NSString *,id> *)param;
-///持有此对象，在dealloc时候调用此方法
+
+/**
+ * 发送礼物消息
+ * 
+ * @param giftModel 礼物消息
+ * @param callback 发送结果回调
+ *        - code: 0成功，其它失败
+ *        - msg: 错误信息
+ */
+- (void)sendGiftMessage:(TUIGiftModel *)giftModel callback:(TUIGiftIMSendBlock)callback;
+
+/**
+ * 发送点赞消息
+ *
+ * @param callback 发送结果回调
+ *        - code: 0成功，其它失败
+ *        - msg: 错误信息
+ */
+- (void)sendLikeMessageWithCallback:(TUIGiftIMSendBlock)callback;
+
+/**
+ * 持有此对象，在dealloc时候调用此方法
+ */
 - (void)releaseResources;
 
 @end

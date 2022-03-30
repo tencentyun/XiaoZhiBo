@@ -12,12 +12,18 @@
 #import "TUIGiftModel.h"
 #import "TUIGiftBulletView.h"
 #import "UIView+TUILayout.h"
-
+#import "TUIGiftLocalized.h"
+#import "TUIDefine.h"
+// 点赞动画播放限制，最多播放10组
+static NSInteger likeMaxAnimationCount = 10;
 @interface TUIGiftPlayView ()
 
 @property (nonatomic, strong) TUIGiftAnimationManager *animationManager;
 @property (nonatomic, strong) TUIGiftAnimationManager *lottieManager;
-
+/// 点赞动画颜色
+@property (nonatomic, strong) NSArray *likeColors;
+/// 动画播放限制
+@property (nonatomic, assign) NSInteger currentLikeAnimationCount;
 @end
 
 @implementation TUIGiftPlayView
@@ -33,6 +39,28 @@
     } else {
         [self.animationManager enqueue:giftModel];
     }
+}
+
+- (void)playLikeModel:(TUIGiftModel *)likeModel {
+    if (_currentLikeAnimationCount >= likeMaxAnimationCount) {
+        return;
+    }
+    CGRect startFrame = CGRectMake((Screen_Width*5)/6, Screen_Height-Bottom_SafeHeight-10-44, 44, 44);
+    UIImageView *heartImageView = [[UIImageView alloc] initWithFrame:startFrame];
+    UIImage *heartImage = [UIImage imageNamed:@"gift_like" inBundle:TUIGiftBundle() compatibleWithTraitCollection:nil];
+    heartImageView.image = [heartImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    heartImageView.tintColor = self.likeColors[arc4random()%self.likeColors.count];
+    [self addSubview:heartImageView];
+    heartImageView.alpha = 0;
+    [heartImageView.layer addAnimation:[self likeAnimationWithFrame:startFrame] forKey:nil];
+    _currentLikeAnimationCount += 1;
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [heartImageView removeFromSuperview];
+        if (weakSelf) {
+            weakSelf.currentLikeAnimationCount -= 1;
+        }
+    });
 }
 
 - (void)showViewAnim:(TUIGiftModel *)giftModel {
@@ -80,6 +108,54 @@
     }];
 }
 
+
+#pragma mark - Private: 点赞动画
+- (CAAnimation *)likeAnimationWithFrame:(CGRect)frame {
+    // 透明度
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    opacityAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    opacityAnimation.toValue = [NSNumber numberWithFloat:0];
+    opacityAnimation.removedOnCompletion = NO;
+    opacityAnimation.beginTime = 0.0;
+    opacityAnimation.duration = 3.0;
+    // 缩放
+    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    scaleAnimation.fromValue = [NSNumber numberWithFloat:0.0];
+    scaleAnimation.toValue = [NSNumber numberWithFloat:1.0];
+    scaleAnimation.removedOnCompletion = NO;
+    scaleAnimation.fillMode = kCAFillModeForwards;
+    scaleAnimation.duration = 0.5;
+    // 位置
+    CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    positionAnimation.beginTime = 0.5;
+    positionAnimation.duration = 2.5;
+    positionAnimation.fillMode = kCAFillModeForwards;
+    positionAnimation.calculationMode = kCAAnimationCubicPaced;
+    positionAnimation.path = [self likeAnimationPostionPathWithFrame:frame].CGPath;
+    // 动画组
+    CAAnimationGroup *animationGroup = [[CAAnimationGroup alloc] init];
+    animationGroup.animations = @[opacityAnimation, scaleAnimation, positionAnimation];
+    animationGroup.duration = 3.0;
+    return animationGroup;
+}
+
+- (UIBezierPath *)likeAnimationPostionPathWithFrame:(CGRect)frame {
+    UIBezierPath *path = [[UIBezierPath alloc] init];
+    
+    CGPoint point0 = CGPointMake(frame.origin.x + frame.size.width/2, frame.origin.y + frame.size.height/2);
+    CGPoint point1 = CGPointMake(point0.x - arc4random()%30 + 30.0, frame.origin.y - arc4random()%60);
+    CGPoint point2 = CGPointMake(point0.x - arc4random()%15 + 15, frame.origin.y - arc4random()%60 - 30);
+    CGFloat pointOffset3 = CGRectGetWidth([UIScreen mainScreen].bounds)*0.1;
+    CGFloat pointOffset4 = CGRectGetWidth([UIScreen mainScreen].bounds)*0.2;
+    CGPoint point4 = CGPointMake(point0.x - arc4random()%(uint32_t)pointOffset4 + pointOffset4, arc4random()%30 + 240);
+    CGPoint point3 = CGPointMake(point0.x - arc4random()%(uint32_t)pointOffset3 + pointOffset3, (point4.y + point2.y)/2 + arc4random()%30 - 30);
+    [path moveToPoint:point0];
+    [path addQuadCurveToPoint:point2 controlPoint:point1];
+    [path addQuadCurveToPoint:point4 controlPoint:point3];
+    return path;
+}
+
+
 #pragma mark set/get
 - (TUIGiftAnimationManager *)animationManager {
     if (!_animationManager) {
@@ -105,4 +181,20 @@
     return _lottieManager;
 }
 
+- (NSArray *)likeColors {
+    if (!_likeColors) {
+        _likeColors = @[
+            [UIColor redColor],
+            [UIColor purpleColor],
+            [UIColor orangeColor],
+            [UIColor yellowColor],
+            [UIColor greenColor],
+            [UIColor blueColor],
+            [UIColor grayColor],
+            [UIColor cyanColor],
+            [UIColor brownColor]
+        ];
+    }
+    return _likeColors;
+}
 @end

@@ -29,7 +29,7 @@ class ShowLiveAnchorRootView: UIView {
     }()
     
     lazy var pusherView: TUIPusherView = {
-        let view = TUIPusherView.init(frame: .zero)
+        let view = TUIPusherView.init(frame: .zero, licenseUrl: LICENSEURL, licenseKey: LICENSEURLKEY)
         view.setDelegate(self)
         view.backgroundColor = .lightGray
         return view
@@ -59,6 +59,29 @@ class ShowLiveAnchorRootView: UIView {
     
     lazy var roomInfoView: ShowLiveRoomInfoView = {
         let view = ShowLiveRoomInfoView(type: .anchor)
+        view.isHidden = true
+        return view
+    }()
+    
+    /// 在线用户
+    lazy var onlineUsersView: ShowLiveOnlineUsersView = {
+        let view = ShowLiveOnlineUsersView(delegate: self)
+        view.isHidden = true
+        return view
+    }()
+    /// 人气榜
+    lazy var hotRankingView: ShowLiveHotRankingView = {
+        let view = ShowLiveHotRankingView(frame: .zero)
+        view.isHidden = true
+        return view
+    }()
+    
+    /// 广告外链视图
+    lazy var adImageView: UIImageView = {
+        let view = UIImageView(frame: .zero)
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "ad_default")
+        view.clipsToBounds = true
         view.isHidden = true
         return view
     }()
@@ -109,6 +132,9 @@ class ShowLiveAnchorRootView: UIView {
         addSubview(roomMsgView)
         addSubview(exitButton)
         addSubview(roomInfoView)
+        addSubview(onlineUsersView)
+        addSubview(adImageView)
+        addSubview(hotRankingView)
         pusherView.addSubview(pkButton)
         pusherView.addSubview(closeButton)
         pusherView.addSubview(moreButton)
@@ -154,7 +180,22 @@ class ShowLiveAnchorRootView: UIView {
         roomInfoView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
-            make.size.equalTo(CGSize(width: ScreenWidth*0.5, height: 50))
+            make.trailing.lessThanOrEqualTo(onlineUsersView.snp.leading).offset(-10)
+            make.height.equalTo(36)
+        }
+        onlineUsersView.snp.makeConstraints { make in
+            make.trailing.equalTo(-16)
+            make.centerY.equalTo(roomInfoView)
+        }
+        adImageView.snp.makeConstraints { make in
+            make.trailing.equalTo(-16)
+            make.size.equalTo(CGSize(width: 150, height: 44))
+            make.top.equalTo(roomInfoView.snp.bottom).offset(40)
+        }
+        hotRankingView.snp.makeConstraints { make in
+            make.leading.equalTo(16)
+            make.height.equalTo(22)
+            make.top.equalTo(roomInfoView.snp.bottom).offset(10)
         }
     }
     
@@ -167,6 +208,8 @@ class ShowLiveAnchorRootView: UIView {
         closeButton.addTarget(self, action: #selector(closeButtonClick(sender:)), for: .touchUpInside)
         moreButton.addTarget(self, action: #selector(moreButtonClick(sender:)), for: .touchUpInside)
         exitButton.addTarget(self, action: #selector(closeButtonClick(sender:)), for: .touchUpInside)
+        adImageView.addTapGesture(target: self, action: #selector(adImageViewClick))
+        hotRankingView.addTapGesture(target: self, action: #selector(hotRankingClick))
     }
     
     func setBottomMenuBtn(_ isHidden: Bool) {
@@ -216,43 +259,59 @@ extension ShowLiveAnchorRootView {
                 alert.addAction(confirm)
                 alert.addAction(cancel)
                 viewModel.showAlert(viewController: alert)
+            } else {
+                pusherView.cancelPKRequest()
+                pkButton.isSelected = false
             }
-            else {
-                self.pusherView.cancelPKRequest()
-                self.pkButton.isSelected = false
-            }
-        }
-        else {
+        } else {
             if isInLinkMic {
-                showToast(message: "正在忙线中，无法发起PK")
-            }
-            else {
-                let alert = ShowLivePkAlert(viewModel: viewModel)
-                alert.pkWithRoom = { [weak self] room in
-                    guard let `self` = self else { return }
-                    self.pusherView.sendPKRequest(room.ownerId)
-                    self.pkButton.isSelected = true
-                }
-                alert.loadRoomsInfo()
-                addSubview(alert)
-                alert.snp.makeConstraints { (make) in
-                    make.edges.equalToSuperview()
-                }
-                alert.layoutIfNeeded()
-                alert.show()
+                showToast(message: .busyPKTitle)
+            } else {
+                showPKAlert()
             }
         }
     }
     
+    private func showPKAlert() {
+        if MLVBConfigManager.shared.isSetupService {
+            let alert = ShowLivePkAlert(viewModel: viewModel)
+            alert.pkWithRoom = { [weak self] room in
+                guard let `self` = self else { return }
+                self.pusherView.sendPKRequest(room.ownerId)
+                self.pkButton.isSelected = true
+            }
+            alert.loadRoomsInfo()
+            addSubview(alert)
+            alert.snp.makeConstraints { (make) in
+                make.edges.equalToSuperview()
+            }
+            alert.layoutIfNeeded()
+            alert.show()
+        } else {
+            let alert = ShowLivePkLiteAlert(viewModel: viewModel)
+            alert.pkWithRoom = { [weak self] room in
+                guard let `self` = self else { return }
+                self.pusherView.sendPKRequest(room.ownerId)
+                self.pkButton.isSelected = true
+            }
+            addSubview(alert)
+            alert.snp.makeConstraints { (make) in
+                make.edges.equalToSuperview()
+            }
+            alert.layoutIfNeeded()
+            alert.show()
+        }
+    }
+    
     @objc func closeButtonClick(sender: UIButton) {
-        let closeAlertViewController = UIAlertController.init(title: "确认退出房间吗？", message: "", preferredStyle: .alert)
-        let closeAction = UIAlertAction.init(title: "确认", style: .default) { [weak self] _ in
+        let closeAlertViewController = UIAlertController.init(title: .exitAlertTitle, message: "", preferredStyle: .alert)
+        let closeAction = UIAlertAction.init(title: .exitAlertConfirmTitle, style: .default) { [weak self] _ in
             guard let `self` = self else { return }
             
             self.pusherView.stop()
             self.viewModel.stopPush()
         }
-        let cancelAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction.init(title: .exitAlertWaitTitle, style: .cancel, handler: nil)
         closeAlertViewController.addAction(closeAction)
         closeAlertViewController.addAction(cancelAction)
         viewModel.showAlert(viewController: closeAlertViewController)
@@ -268,19 +327,57 @@ extension ShowLiveAnchorRootView {
         alert.show()
     }
     
+    /// 广告图片点击
+    @objc
+    private func adImageViewClick() {
+        let discoverController = DiscoverViewController()
+        let discoverNav = MainNavigationController(rootViewController: discoverController)
+        // 修复iOS 15导航栏显示异常
+        discoverNav.navigationBar.backgroundColor = .white
+        discoverNav.modalPresentationStyle = .popover
+        viewModel.viewNavigator?.present(viewController: discoverNav)
+    }
+    
+    /// 点击人气榜
+    @objc
+    private func hotRankingClick() {
+        let viewController = ShowLiveHotRankingAlert(roomInfo: viewModel.roomInfo)
+        viewModel.viewNavigator?.present(viewController: viewController)
+    }
 }
 
+// MARK: - ShowLiveOnlineUsersDelegate
+extension ShowLiveAnchorRootView: ShowLiveOnlineUsersDelegate {
+    
+    func showLiveOnlineUsersDidClickMore() {
+        let alert = ShowLiveOnlineUsersAlertController(roomId: viewModel.groupId, userDataSource: viewModel.onlineUsers, delegate: nil)
+        let alertNav = UINavigationController(rootViewController: alert)
+        alertNav.modalPresentationStyle = .custom
+        viewModel.viewNavigator?.present(viewController: alertNav)
+    }
+    
+}
+
+// MARK: - ShowLiveAnchorViewResponder
 extension ShowLiveAnchorRootView: ShowLiveAnchorViewResponder {
+    
+    func refreshOnlineUsersView() {
+        onlineUsersView.updateUI(userDataSource: viewModel.onlineUsers, userCount: viewModel.onlineUsersCount)
+    }
+    
     func switchCamera(isFront: Bool) {
         pusherView.switchCamera(isFront)
     }
 }
 
-//MARK: - TUIPusherViewDelegate
+// MARK: - TUIPusherViewDelegate
 extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
     func onPushStarted(_ pusherView: TUIPusherView, url: String) {
         setBottomMenuBtn(false)
         roomInfoView.isHidden = false
+        onlineUsersView.isHidden = false
+        adImageView.isHidden = !MLVBConfigManager.enableLiveRoomAdLink()
+        hotRankingView.isHidden = false
         roomInfoView.start()
     }
     
@@ -320,11 +417,11 @@ extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
     // MARK: - PK delegate
     func onReceivePKRequest(_ pusherView: TUIPusherView, userId: String, responseCallback completion: @escaping Response) {
         TRTCLog.out("onReceivePKRequest userId: \(userId)")
-        let alert = UIAlertController.init(title: "收到PK邀请，是否接受？", message: "", preferredStyle: .alert)
-        let closeAction = UIAlertAction.init(title: "接受", style: .default) { action in
+        let alert = UIAlertController.init(title: String(format: .receivePKRequestTitle, userId), message: "", preferredStyle: .alert)
+        let closeAction = UIAlertAction.init(title: .acceptPKTitle, style: .default) { action in
             completion(true)
         }
-        let cancelAction = UIAlertAction.init(title: "拒绝", style: .cancel) { action in
+        let cancelAction = UIAlertAction.init(title: .refusePKTitle, style: .cancel) { action in
             completion(false)
         }
         alert.addAction(closeAction)
@@ -335,9 +432,9 @@ extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
     func onRejectPKResponse(_ pusherView: TUIPusherView, reason: Int32) {
         switch reason {
         case 1:
-            showToast(message: "对方拒绝")
+            showToast(message: .rejectPKRequestTitle)
         case 2:
-            showToast(message: "对方正忙")
+            showToast(message: .busyPKTitle)
         default:
             break
         }
@@ -365,11 +462,14 @@ extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
     
     // MARK: - JoinAnchor delegate
     func onReceiveJoinAnchorRequest(_ pusherView: TUIPusherView, userId: String, responseCallback completion: @escaping Response) {
-        let alert = UIAlertController.init(title: "收到来自\(userId)的连麦邀请，是否接受？", message: "", preferredStyle: .alert)
-        let confirm = UIAlertAction.init(title: "确认", style: .default) { _ in
+        
+        let alert = UIAlertController.init(title: String(format: .receiveLinkMicRequestTitle, userId), message: "", preferredStyle: .alert)
+        let confirm = UIAlertAction.init(title: .acceptLinkMicTitle,
+                                         style: .default) { _ in
             completion(true)
         }
-        let cancel = UIAlertAction.init(title: "取消", style: .cancel) { _ in
+        let cancel = UIAlertAction.init(title: .refuseLinkMicTitle,
+                                        style: .cancel) { _ in
             completion(false)
         }
         alert.addAction(confirm)
@@ -398,6 +498,20 @@ extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
     }
 }
 
+// MARK: - internationalization string
 fileprivate extension String {
     static let authorizationText = ShowLiveLocalize("Scene.ShowLive.Authorization")
+    static let receiveLinkMicRequestTitle = ShowLiveLocalize("Scene.ShowLive.LinkMic.requestreceive")
+    static let acceptLinkMicTitle = ShowLiveLocalize("Scene.ShowLive.LinkMic.requestaccept")
+    static let refuseLinkMicTitle = ShowLiveLocalize("Scene.ShowLive.LinkMic.requestrefuse")
+    
+    static let receivePKRequestTitle = ShowLiveLocalize("Scene.ShowLive.PK.requestreceive")
+    static let acceptPKTitle = ShowLiveLocalize("Scene.ShowLive.LinkMic.requestaccept")
+    static let refusePKTitle = ShowLiveLocalize("Scene.ShowLive.LinkMic.requestrefuse")
+    static let rejectPKRequestTitle =  ShowLiveLocalize("Scene.ShowLive.PK.requestreject")
+    static let busyPKTitle = ShowLiveLocalize("Scene.ShowLive.PK.busy")
+    
+    static let exitAlertTitle = ShowLiveLocalize("Scene.ShowLive.Anchor.exit")
+    static let exitAlertWaitTitle = ShowLiveLocalize("Scene.ShowLive.Anchor.exitwait")
+    static let exitAlertConfirmTitle = ShowLiveLocalize("Scene.ShowLive.Anchor.exitconfirm")
 }

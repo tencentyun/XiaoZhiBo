@@ -8,7 +8,6 @@
 import UIKit
 
 class MainKaraokeCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = "MainKaraokeCollectionViewCell_Reuse_Identifier"
 
     private let containerView: UIView = {
         let view = UIView.init(frame: .zero)
@@ -132,7 +131,6 @@ class MainKaraokeCollectionViewCell: UICollectionViewCell {
 }
 
 class MainCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = "MainCollectionViewCell_Reuse_Identifier"
     
     private let containerView: UIView = {
         let view = UIView.init(frame: .zero)

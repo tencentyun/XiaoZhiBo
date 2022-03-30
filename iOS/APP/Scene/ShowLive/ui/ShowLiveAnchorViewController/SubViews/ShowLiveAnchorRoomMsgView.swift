@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Photos
+import CoreServices
+import Toast_Swift
 import Kingfisher
 
 class ShowLiveAnchorRoomMsgView: UIView {
@@ -94,7 +97,130 @@ class ShowLiveAnchorRoomMsgView: UIView {
     }
     
     private func bindInteraction() {
-        
+        roomImageView.addTapGesture(target: self, action: #selector(roomImageClick))
+    }
+}
+
+// MARK: - UIButton Touch Event
+extension ShowLiveAnchorRoomMsgView {
+    
+    @objc
+    private func roomImageClick() {
+        makeToastActivity(.center)
+        // 获取cos信息, 根据请求结果判断是否支持设置头像功能
+        viewModel.getRoomAvatarCosInfo { [weak self] cosInfo in
+            guard let self = self else { return }
+            self.hideToastActivity()
+            // 判断当前是否支持头像上传
+            guard let info = cosInfo, !info.bucket.isEmpty else { return }
+            self.viewModel.cosInfo = info
+            // 弹出图片选择Alert
+            self.presentAvatarPickerAlert()
+        }
+    }
+}
+
+// MARK: - 头像上传
+extension ShowLiveAnchorRoomMsgView {
+    /// 选取头像Alert
+    private func presentAvatarPickerAlert() {
+        let alert = UIAlertController(title: .selectPhotoText, message: nil, preferredStyle: .actionSheet)
+        // 拍照选取
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: .cameraTitleText, style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.presentImagePicker(sourceType: .camera)
+            }
+            alert.addAction(cameraAction)
+        }
+        // 相册选取
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: .photoLibraryText, style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.presentImagePicker(sourceType: .photoLibrary)
+            }
+            alert.addAction(photoLibraryAction)
+        }
+        let cancelAction = UIAlertAction(title: .cancelText, style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        viewModel.viewNavigator?.present(viewController: alert)
+    }
+
+    /// 检测相关权限
+    /// - Parameter sourceType: 需要检测的权限
+    /// - Returns: true 已授权 false 未授权
+    private func checkImagePickerAuth(sourceType: UIImagePickerController.SourceType) -> Bool {
+        if sourceType == .camera {
+            let status = AVCaptureDevice.authorizationStatus(for: .video)
+            if status == .notDetermined {
+                AVCaptureDevice.requestAccess(for: .video) { [weak self] status in
+                    guard let self = self, status == true else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.presentImagePicker(sourceType: .camera)
+                    }
+                }
+            } else if status == .denied || status == .restricted {
+                makeToast(.cameraAuthText)
+            }
+            return status == .authorized
+        }
+        if sourceType == .photoLibrary {
+            let status = PHPhotoLibrary.authorizationStatus()
+            if status == .notDetermined {
+                PHPhotoLibrary.requestAuthorization { [weak self] status in
+                    guard let self = self, status == .authorized else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.presentImagePicker(sourceType: .photoLibrary)
+                    }
+                }
+            } else if status == .denied || status == .restricted{
+                makeToast(.photoLibraryAuthText)
+            }
+            return status == .authorized
+        }
+        return false
+    }
+    
+    /// 打开ImagePicker
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+        // 检测权限
+        guard checkImagePickerAuth(sourceType: sourceType) else {
+            return
+        }
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        imagePicker.allowsEditing = true
+        if sourceType == .camera {
+            imagePicker.cameraCaptureMode = .photo
+        }
+        viewModel.viewNavigator?.present(viewController: imagePicker)
+    }
+    
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension ShowLiveAnchorRoomMsgView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let mediaType = info[.mediaType] as? String, mediaType == (kUTTypeImage as String) {
+            if let editedImage = info[.editedImage] as? UIImage {
+                makeToastActivity(.center)
+                // 上传头像
+                viewModel.uploadAvatar(image: editedImage) { [weak self] (imageURL, msg) in
+                    guard let self = self else { return }
+                    self.hideToastActivity()
+                    if let coverUrl = imageURL, let url = URL.init(string: coverUrl) {
+                        self.roomImageView.kf.setImage(with: .network(url), placeholder: editedImage)
+                    } else {
+                        self.makeToast(msg)
+                    }
+                }
+            }
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -119,4 +245,14 @@ extension ShowLiveAnchorRoomMsgView: UITextFieldDelegate {
         super.touchesBegan(touches, with: event)
         roomNameTextField.resignFirstResponder()
     }
+}
+
+// MARK: - internationalization string
+fileprivate extension String {
+    static let selectPhotoText = ShowLiveLocalize("Scene.ShowLive.Anchor.selectPhoto")
+    static let cameraTitleText = ShowLiveLocalize("Scene.ShowLive.Anchor.camera")
+    static let photoLibraryText = ShowLiveLocalize("Scene.ShowLive.Anchor.photolibrary")
+    static let cameraAuthText = ShowLiveLocalize("Scene.ShowLive.Authorization.camera")
+    static let photoLibraryAuthText = ShowLiveLocalize("Scene.ShowLive.Authorization.photolibrary")
+    static let cancelText = ShowLiveLocalize("Scene.ShowLive.Anchor.cancel")
 }

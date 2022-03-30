@@ -1,175 +1,336 @@
 {
-"package" : "beauty",
-"item" : [
-    {
-        "title" : "TC.BeautySettingPanel.BeautySmooth",
-        "normalIcon" : "smooth_nor",
-        "selIcon" : "smooth_sel",
-        "currentValue" : 6
-    },
-    {
-        "title" : "TC.BeautySettingPanel.Beauty-Natural",
-        "normalIcon" : "natural_nor",
-        "selIcon" : "natural_sel",
-        "currentValue" : 6
-    },
-    {
-        "title" : "TC.BeautySettingPanel.Beauty-P",
-        "normalIcon" : "ps_nor",
-        "selIcon" : "ps_sel",
-        "currentValue" : 6
-    },
-    {
-        "title" : "TC.BeautySettingPanel.White",
-        "normalIcon" : "whitness_nor",
-        "selIcon" : "whitness_sel",
-        "currentValue" : 6
-    },
-    {
-        "title" : "TC.BeautySettingPanel.Ruddy",
-        "normalIcon" : "ruddy_nor",
-        "selIcon" : "ruddy_sel",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.BigEyes",
-        "normalIcon" : "bigeye_nor",
-        "selIcon" : "bigeye_sel",
-        "selector" : "setEyeScaleLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.ThinFace",
-        "normalIcon" : "thinface_nor",
-        "selIcon" : "thinface_sel",
-        "selector" : "setFaceSlimLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.VFace",
-        "normalIcon" : "vface_nor",
-        "selIcon" : "vface_sel",
-        "selector" : "setFaceVLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.Chin",
-        "normalIcon" : "chin_nor",
-        "selIcon" : "chin_sel",
-        "selector" : "setChinLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.ShortFace",
-        "normalIcon" : "shortface_nor",
-        "selIcon" : "shortface_sel",
-        "selector" : "setFaceShortLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.ThinNose",
-        "normalIcon" : "thinnose_nor",
-        "selIcon" : "thinnose_sel",
-        "selector" : "setNoseSlimLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.EyeLighten",
-        "normalIcon" : "eyelighten_nor",
-        "selIcon" : "eyelighten_sel",
-        "selector" : "setEyeLightenLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.ToothWhiten",
-        "normalIcon" : "toothwhiten_nor",
-        "selIcon" : "toothwhiten_sel",
-        "selector" : "setToothWhitenLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.WrinkleRemove",
-        "normalIcon" : "wrinkle_nor",
-        "selIcon" : "wrinkle_sel",
-        "selector" : "setWrinkleRemoveLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.PounchRemove",
-        "normalIcon" : "pounch_nor",
-        "selIcon" : "pounch_sel",
-        "selector" : "setPounchRemoveLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.SmileLinesRemove",
-        "normalIcon" : "smilelines_nor",
-        "selIcon" : "smilelines_sel",
-        "selector" : "setSmileLinesRemoveLevel:",
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.Forehead",
-        "normalIcon" : "forehead_nor",
-        "selIcon" : "forehead_sel",
-        "selector" : "setForeheadLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.EyeDistance",
-        "normalIcon" : "eyedistance_nor",
-        "selIcon" : "eyedistance_sel",
-        "selector" : "setEyeDistanceLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.EyeAngle",
-        "normalIcon" : "eyeangle_nor",
-        "selIcon" : "eyeangle_sel",
-        "selector" : "setEyeAngleLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.MouthShape",
-        "normalIcon" : "mouthshape_nor",
-        "selIcon" : "mouthshape_sel",
-        "selector" : "setMouthShapeLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.NoseWing",
-        "normalIcon" : "nosewing_nor",
-        "selIcon" : "nosewing_sel",
-        "selector" : "setNoseWingLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.NosePosition",
-        "normalIcon" : "noseposition_nor",
-        "selIcon" : "noseposition_sel",
-        "selector" : "setNosePositionLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.LipsThickness",
-        "normalIcon" : "lipsthickness_nor",
-        "selIcon" : "lipsthickness_sel",
-        "selector" : "setLipsThicknessLevel:",
-        "minValue" : -10.0,
-        "currentValue" : 0
-    },
-    {
-        "title" : "TC.BeautySettingPanel.FaceBeauty",
-        "normalIcon" : "facebeauty_nor",
-        "selIcon" : "facebeauty_sel",
-        "selector" : "setFaceBeautyLevel:",
-        "currentValue" : 0
-    },
-]
+    "package": "beauty",
+    "item": [{
+            "title": "TC.BeautySettingPanel.BeautySmooth",
+            "normalIcon": "smooth_nor",
+            "selIcon": "smooth_sel",
+            "currentValue": 6,
+            "isXmagic": 0
+          },
+          {
+            "title": "TC.BeautySettingPanel.Beauty-Natural",
+            "normalIcon": "natural_nor",
+            "selIcon": "natural_sel",
+            "currentValue": 6,
+            "isXmagic": 0
+          },
+          {
+            "title": "TC.BeautySettingPanel.Beauty-P",
+            "normalIcon": "ps_nor",
+            "selIcon": "ps_sel",
+            "currentValue": 6,
+            "isXmagic": 0
+          },
+          {
+            "title": "TC.BeautySettingPanel.White",
+            "normalIcon": "whitness_nor",
+            "selIcon": "whitness_sel",
+            "currentValue": 6,
+            "isXmagic": 0
+          },
+          {
+            "title": "TC.BeautySettingPanel.Ruddy",
+            "normalIcon": "ruddy_nor",
+            "selIcon": "ruddy_sel",
+            "currentValue": 0,
+            "isXmagic": 0
+         },
+        {
+            "title": "对比度",
+            "key": "image.contrast",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "饱和度",
+            "key": "image.saturation",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "清晰度",
+            "key": "image.sharpen",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "大眼",
+            "key": "beauty.enlarge.eye",
+            "beautyValue": 20,
+            "isXmagic": 1
+        },
+        {
+          "title" : "瘦脸·自然",
+          "key" : "beauty.thin.face1",
+          "beautyValue" : 30,
+          "extraConfig" : {
+            "reshape.basicFaceSubType" : "nature"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "瘦脸·女神",
+          "key" : "beauty.thin.face2",
+          "beautyValue" : 0,
+          "extraConfig" : {
+            "reshape.basicFaceSubType" : "femaleGod"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "瘦脸·英俊",
+          "key" : "beauty.thin.face3",
+          "beautyValue" : 0,
+          "extraConfig" : {
+            "reshape.basicFaceSubType" : "maleGod"
+          },
+          "isXmagic": 1
+        },
+        {
+            "title": "V脸",
+            "key": "beauty.v.face",
+            "beautyValue": 30,
+            "isXmagic": 1
+        },
+        {
+            "title": "窄脸",
+            "key": "beauty.narrow.face",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "短脸",
+            "key": "beauty.short.face",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "脸型",
+            "key": "beauty.basic.face",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+          "title" : "复古红",
+          "key" : "beauty.lips",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.lips.lipsType" : "2",
+            "beauty.lips.lipsMask" : "images\/beauty\/lips_fuguhong.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "蜜桃色",
+          "key" : "beauty.lips",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.lips.lipsType" : "2",
+            "beauty.lips.lipsMask" : "images\/beauty\/lips_mitaose.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "珊瑚橘",
+          "key" : "beauty.lips",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.lips.lipsType" : "2",
+            "beauty.lips.lipsMask" : "images\/beauty\/lips_shanhuju.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "温柔粉",
+          "key" : "beauty.lips",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.lips.lipsType" : "2",
+            "beauty.lips.lipsMask" : "images\/beauty\/lips_wenroufen.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "活力橙",
+          "key" : "beauty.lips",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.lips.lipsType" : "2",
+            "beauty.lips.lipsMask" : "images\/beauty\/lips_huolicheng.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "简约",
+          "key" : "beauty.redcheeks",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.makeupMultiply.multiplyMask" : "images\/beauty\/saihong_jianyue.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "盛夏",
+          "key" : "beauty.redcheeks",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.makeupMultiply.multiplyMask" : "images\/beauty\/saihong_shengxia.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "害羞",
+          "key" : "beauty.redcheeks",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.makeupMultiply.multiplyMask" : "images\/beauty\/saihong_haixiu.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "成熟",
+          "key" : "beauty.redcheeks",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.makeupMultiply.multiplyMask" : "images\/beauty\/saihong_chengshu.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "雀斑",
+          "key" : "beauty.redcheeks",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.makeupMultiply.multiplyMask" : "images\/beauty\/saihong_queban.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "自然",
+          "key" : "beauty.liti",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.softLight.softLightMask" : "images\/beauty\/liti_junlang.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "俊朗",
+          "key" : "beauty.liti",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.softLight.softLightMask" : "images\/beauty\/liti_ziran.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "光芒",
+          "key" : "beauty.liti",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.softLight.softLightMask" : "images\/beauty\/liti_guangmang.png"
+          },
+          "isXmagic": 1
+        },
+        {
+          "title" : "清新",
+          "key" : "beauty.liti",
+          "beautyValue" : 50,
+          "extraConfig" : {
+            "beauty.softLight.softLightMask" : "images\/beauty\/liti_qingxin.png"
+          },
+          "isXmagic": 1
+        },
+        {
+            "title": "瘦颧骨",
+            "key": "beauty.thin.cheek",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "下巴",
+            "key": "beauty.chin",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "额头",
+            "key": "beauty.forehead",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "亮眼",
+            "key": "beauty.eye.lighten",
+            "beautyValue": 30,
+            "isXmagic": 1
+        },
+        {
+            "title": "眼距",
+            "key": "beauty.eye.distance",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "眼角",
+            "key": "beauty.eye.angle",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "瘦鼻",
+            "key": "beauty.thin.nose",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "鼻翼",
+            "key": "beauty.nose.wing",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "鼻子位置",
+            "key": "beauty.nose.position",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "白牙",
+            "key": "beauty.tooth.beauty",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "祛皱",
+            "key": "beauty.remove.pounch",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "祛法令纹",
+            "key": "beauty.wrinkle.smooth",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "祛眼袋",
+            "key": "beauty.remove.eye.pouch",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "嘴型",
+            "key": "beauty.mouth.size",
+            "beautyValue": 0,
+            "isXmagic": 1
+        },
+        {
+            "title": "嘴唇厚度",
+            "key": "beauty.mouth.height",
+            "beautyValue": 0,
+            "isXmagic": 1
+        }
+
+    ]
 }

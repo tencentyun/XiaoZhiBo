@@ -41,6 +41,7 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
 {
     NSDictionary<TCFilterIdentifier, TCFilter*> *_filterDictionary;
 }
+
 + (instancetype)defaultManager
 {
     static TCFilterManager *defaultManager = nil;
@@ -55,6 +56,7 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
 {
     self = [super init];
     if (self) {
+//        _xMagicfilterItems = [self getFilterItems];
         NSBundle *bundle = BeautyBundle();
         NSString *path = [bundle pathForResource:@"FilterResource" ofType:@"bundle"];
         NSFileManager *manager = [[NSFileManager alloc] init];
@@ -99,5 +101,58 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
 - (TCFilter *)filterWithIdentifier:(TCFilterIdentifier)identifier;
 {
     return _filterDictionary[identifier];
+}
+
+- (NSMutableArray *)getFilterItems {
+    NSMutableArray *filterItems = [[NSMutableArray alloc]init];
+    NSString *filterpath = [BeautyBundle() pathForResource:@"TCFilter" ofType:@"json"];
+    if (!filterpath) {
+        return nil;
+    }
+    NSData *data = [NSData dataWithContentsOfFile:filterpath];
+    if (!data) {
+        return nil;
+    }
+    NSError *error;
+    NSDictionary *root = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+    if (error || ![root isKindOfClass:[NSDictionary class]]) {
+        return nil;
+    }
+    
+    if (![root.allKeys containsObject:@"package"]) {
+        return nil;
+    }
+    
+    NSArray *arr = root[@"items"];
+    if (![arr isKindOfClass:[NSArray class]]) {
+        return nil;
+    }
+    
+    for (NSDictionary *item in arr) {
+        NSString *bundleStr = [item objectForKey:@"bundle"];
+        NSBundle *bundle = BeautyBundle();
+        NSString *iconPath = [bundle pathForResource:bundleStr ofType:@"bundle"];
+        if (iconPath == nil) {
+            continue;
+        }
+       NSArray *lutIDS = [item objectForKey:@"lutIDS"];
+        for (NSDictionary *lutID in lutIDS) {
+            NSString *path = [lutID objectForKey:@"path"];
+            NSString *key = [lutID objectForKey:@"key"];
+            NSNumber *strength = [lutID objectForKey:@"strength"];
+
+            NSString *itemPath = [iconPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",path]];
+            NSFileManager *manager = [[NSFileManager alloc] init];
+            if ([manager fileExistsAtPath:itemPath]) {
+                TCFilter *filter = [[TCFilter alloc] initWithIdentifier:key lookupImagePath:itemPath];
+                filter.title = [lutID objectForKey:@"title"];
+                filter.isXmagic = YES;
+                filter.path = path;
+                filter.strength = strength;
+                [filterItems addObject:filter];
+            }
+        }
+    }
+    return filterItems;
 }
 @end

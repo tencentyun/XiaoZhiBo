@@ -11,6 +11,7 @@
 @implementation TUIBeautyExtensionView
 
 + (__kindof UIView *)getExtensionView {
+    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:@"BeautyTouchIcon" inBundle:BeautyBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     return btn;

@@ -18,16 +18,18 @@
 @property (nonatomic, strong) UIView   *barrageView;
 
 @property (nonatomic, strong) UIButton *giftBtn;
+@property (nonatomic, strong) UIButton *likeBtn;
 @property (nonatomic, strong) UIView   *giftView;
 @property (nonatomic, strong) UIView   *giftPlayView;
 
+@property (nonatomic, strong) NSString *groupId;
 @end
 
 @implementation TUIPlayerContainerView
 
 - (instancetype)initWithFrame:(CGRect)frame groupId:(NSString * _Nullable)groupId {
     if (self = [super initWithFrame:frame]) {
-        
+        self.groupId = groupId;
         CGFloat width = UIScreen.mainScreen.bounds.size.width;
         
         UIView *bottomMenuView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -36,13 +38,12 @@
         self.bottomMenuView = bottomMenuView;
         [bottomMenuView mas_makeConstraints:^(MASConstraintMaker *make) {
             if (@available(iOS 11.0, *)) {
-                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom);
+                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
             } else {
-                make.bottom.equalTo(self);
+                make.bottom.equalTo(self).offset(-10);
             }
             make.leading.equalTo(self);
-            make.trailing.equalTo(self.mas_centerX);
-            make.height.mas_equalTo(55);
+            make.height.mas_equalTo(44);
         }];
         
         if ([self loadBarrageView:groupId]) {
@@ -66,9 +67,18 @@
             [bottomMenuView addSubview:self.giftBtn];
             [self.giftBtn addTarget:self action:@selector(giftBtnClick) forControlEvents:UIControlEventTouchUpInside];
             [self.giftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(bottomMenuView.mas_trailing).offset(-width * 0.5 * (1.0/6.0));
+                make.centerX.equalTo(bottomMenuView.mas_leading).offset(width * 0.5 * (5.0/6.0));
                 make.width.height.equalTo(bottomMenuView.mas_height);
                 make.top.bottom.equalTo(bottomMenuView);
+            }];
+            
+            [bottomMenuView addSubview:self.likeBtn];
+            [self.likeBtn addTarget:self action:@selector(likeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+            [self.likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(bottomMenuView.mas_leading).offset(width * 0.5 * (7.0/6.0));
+                make.width.height.equalTo(bottomMenuView.mas_height);
+                make.top.bottom.equalTo(bottomMenuView);
+                make.trailing.equalTo(bottomMenuView.mas_trailing);
             }];
             
             [self addSubview:self.giftView];
@@ -83,9 +93,10 @@
 }
 
 - (void)setLinkMicBtn:(UIButton *)btn {
+    CGFloat width = UIScreen.mainScreen.bounds.size.width;
     [self.bottomMenuView addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.bottomMenuView);
+        make.centerX.equalTo(self.bottomMenuView.mas_leading).offset(width * 0.5 * (3.0/6.0));
         make.width.height.equalTo(self.bottomMenuView.mas_height);
         make.centerY.equalTo(self.bottomMenuView);
     }];
@@ -118,6 +129,14 @@
         UIButton *btn = giftBtnInfo[TUICore_TUIGiftExtension_GetEnterBtn];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
             self.giftBtn = btn;
+        }
+    }
+    
+    NSDictionary *likeBtnInfo = [TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetLikeBtn param:nil];
+    if (likeBtnInfo != nil && [likeBtnInfo isKindOfClass:[NSDictionary class]]) {
+        UIButton *btn = likeBtnInfo[TUICore_TUIGiftExtension_GetLikeBtn];
+        if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
+            self.likeBtn = btn;
         }
     }
     
@@ -186,5 +205,11 @@
 
 - (void)giftBtnClick {
     self.giftView.hidden = NO;
+}
+
+- (void)likeBtnClick {
+    if (self.groupId && [self.groupId isKindOfClass:[NSString class]]) {
+        [TUICore callService:TUICore_TUIGiftService method:TUICore_TUIGiftService_SendLikeMethod param:@{@"groupId": self.groupId}];
+    }
 }
 @end

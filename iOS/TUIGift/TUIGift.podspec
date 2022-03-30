@@ -46,5 +46,4 @@ TODO: Add long description of the pod here.
   spec.dependency 'Masonry'
   spec.dependency 'SDWebImage'
   spec.dependency 'lottie-ios', '~> 2.5.3'
-  spec.dependency 'MJExtension'
 end

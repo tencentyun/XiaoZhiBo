@@ -48,3 +48,8 @@
 "Demo.TRTC.Calling.yournetworkpoor" = "己方网络不佳";
 "Demo.TRTC.Salon.invitelimited" = "请求正在处理，请稍后再试";
 "Demo.TRTC.Login.countrycode" = "国际电话区号";
+/** TUIPlayer **/
+"TUIPlayer.Link.Request.timeout" = "连麦请求超时";
+/** 权限申请 **/
+"TUIPlayer.Link.Authorization.camera" = "请先打开摄像头权限";
+"TUIPlayer.Link.Authorization.microphone" = "请先打开麦克风权限";

@@ -20,9 +20,10 @@
 
 @implementation TCBeautyPresenter
 
-- (instancetype)initWithBeautyManager:(id)beautyManager {
+- (instancetype)initWithBeautyManager:(id)beautyManager licenseKey:(NSString *)licenseKey licenseUrl:(NSString *)licenseUrl{
     if (self = [super init]) {
         self.actionPerformer = [TCBeautyPanelActionProxy proxyWithBeautyManager:beautyManager];
+        self.xmagicBeautyManager = [[XmagicBeautyManager alloc]initXmagicSDKWith:licenseKey licenseUrl:licenseUrl];
         self.beautyStyle = 2;
         self.beautyLevel = 6;
         self.whiteLevel = 0;
@@ -39,6 +40,11 @@
 - (void)applyDefaultSetting {
     [self reset];
 }
+
+- (void)cleanXmagic {
+    [self.xmagicBeautyManager cleanXmagic];
+}
+
 
 - (void)reset {
     LOGD("【Beauty】reset to default");
@@ -101,9 +107,6 @@
         NSArray <TCBeautyBasePackage *>*motionPkgs = [self getMotionPackages];
         [_dataSource addObjectsFromArray:motionPkgs];
         
-        TCBeautyBasePackage *greenPkg = [self getGreenPackage];
-        [_dataSource addObject:greenPkg];
-        
         self.currentShowIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];
         
         if (_dataSource.count > 0) {
@@ -117,7 +120,6 @@
 #pragma mark - Green
 - (TCBeautyBasePackage *)getGreenPackage {
     TCBeautyGreenPackage *pkg = [[TCBeautyGreenPackage alloc] initWithType:TCBeautyTypeGreen title:BeautyLocalize(@"TC.BeautyPanel.Menu.GreenScreen") enableClearBtn:YES enableSlider:NO];
-    
     NSString *path = [BeautyBundle() pathForResource:@"goodluck" ofType:@"mp4"];
     if (path) {
         TCBeautyGreenItem *item = [[TCBeautyGreenItem alloc] initWithUrl:path title:BeautyLocalize(@"TC.BeautySettingPanel.GoodLuck") normalIcon:@"beautyPanelGoodLuckIcon" package:pkg target:self.actionPerformer];
@@ -136,20 +138,17 @@
 #pragma mark - Motion
 - (NSArray <TCBeautyBasePackage *>*)getMotionPackages {
     NSMutableArray <TCBeautyBasePackage *>*pkgs = [NSMutableArray array];
-    
     NSDictionary *root = [self readMotionJson];
+    NSDictionary *xmagic = [self readXMagicConfig];
     
     if ([root.allKeys containsObject:@"motion"]) {
         NSArray *arr = root[@"motion"];
         if ([arr isKindOfClass:[NSArray class]]) {
             TCBeautyMotionPackage *pkg = [[TCBeautyMotionPackage alloc] initWithType:TCBeautyTypeMotion title:BeautyLocalize(@"TC.BeautyPanel.Menu.VideoEffect") enableClearBtn:YES enableSlider:NO];
             [pkg decodeItems:arr target:self.actionPerformer];
-            
-            TCBeautyBaseItem *clearItem = pkg.clearItem;
-            if (clearItem) {
-                [clearItem addTarget:self.actionPerformer action:@selector(setMotionTmpl:inDir:)];
-                [pkg.items insertObject:clearItem atIndex:0];
-            }
+            [pkg decodeItems:[xmagic objectForKey:@"motion2DMenu"]];
+            [pkg decodeItems:[xmagic objectForKey:@"motion3DMenu"]];
+            [pkg decodeItems:[xmagic objectForKey:@"motionGanMenu"]];
             
             [pkgs addObject:pkg];
         }
@@ -160,49 +159,19 @@
         if ([arr isKindOfClass:[NSArray class]]) {
             TCBeautyMotionPackage *pkg = [[TCBeautyMotionPackage alloc] initWithType:TCBeautyTypeKoubei title:BeautyLocalize(@"TC.BeautyPanel.Menu.Cosmetic") enableClearBtn:YES enableSlider:NO];
             [pkg decodeItems:arr target:self.actionPerformer];
-            
-            TCBeautyBaseItem *clearItem = pkg.clearItem;
-            if (clearItem) {
-                [clearItem addTarget:self.actionPerformer action:@selector(setMotionTmpl:inDir:)];
-                [pkg.items insertObject:clearItem atIndex:0];
-            }
-            
+            [pkg decodeItems:[xmagic objectForKey:@"makeup"]];
             [pkgs addObject:pkg];
         }
     }
-    
-    if ([root.allKeys containsObject:@"gesture"]) {
-        NSArray *arr = root[@"gesture"];
-        if ([arr isKindOfClass:[NSArray class]]) {
-            TCBeautyMotionPackage *pkg = [[TCBeautyMotionPackage alloc] initWithType:TCBeautyTypeKoubei title:BeautyLocalize(@"TC.BeautyPanel.Menu.Gesture") enableClearBtn:YES enableSlider:NO];
-            [pkg decodeItems:arr target:self.actionPerformer];
-            
-            TCBeautyBaseItem *clearItem = pkg.clearItem;
-            if (clearItem) {
-                [clearItem addTarget:self.actionPerformer action:@selector(setMotionTmpl:inDir:)];
-                [pkg.items insertObject:clearItem atIndex:0];
-            }
-            
-            [pkgs addObject:pkg];
-        }
-    }
-    
     if ([root.allKeys containsObject:@"bgremove"]) {
         NSArray *arr = root[@"bgremove"];
         if ([arr isKindOfClass:[NSArray class]]) {
             TCBeautyMotionPackage *pkg = [[TCBeautyMotionPackage alloc] initWithType:TCBeautyTypeGesture title:BeautyLocalize(@"TC.BeautyPanel.Menu.BlendPic") enableClearBtn:YES enableSlider:NO];
             [pkg decodeItems:arr target:self.actionPerformer];
-            
-            TCBeautyBaseItem *clearItem = pkg.clearItem;
-            if (clearItem) {
-                [clearItem addTarget:self.actionPerformer action:@selector(setMotionTmpl:inDir:)];
-                [pkg.items insertObject:clearItem atIndex:0];
-            }
-            
+            [pkg decodeItems:[xmagic objectForKey:@"beautySeg"]];
             [pkgs addObject:pkg];
         }
     }
-    
     return pkgs;
 }
 
@@ -245,12 +214,33 @@
     return packages;
 }
 
+- (NSDictionary *)readXMagicConfig {
+    NSString *path = [BeautyBundle() pathForResource:@"TCXmagic" ofType:@"json"];
+    if (path == nil) {
+        return @{};
+    }
+    
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) {
+        return @{};
+    }
+    
+    NSError *error;
+    NSDictionary *root = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+    if (error) {
+        return @{};
+    }
+    if (![root isKindOfClass:[NSDictionary class]]) {
+        return @{};
+    }
+    return [root objectForKey:@"beauty"];
+}
+
+
 #pragma mark - Filter
 - (TCBeautyBasePackage *)getFilterPackage {
     TCBeautyFilterPackage *pkg = [[TCBeautyFilterPackage alloc] initWithType:TCBeautyTypeFilter title:BeautyLocalize(@"TC.BeautyPanel.Menu.Filter") enableClearBtn:YES enableSlider:YES];
-    
     NSArray *defaultValue = TCBeautyFilterPackage.defaultFilterValue;
-    
     NSArray *allFilters = [TCFilterManager defaultManager].allFilters;
     
     for (int i = 0; i < allFilters.count; i++) {
@@ -265,7 +255,17 @@
         item.index = i;
         [pkg.items addObject:item];
     }
-    
+    NSArray *xMagicfilterItems = [TCFilterManager defaultManager].xMagicfilterItems;
+    for (TCFilter *filter in xMagicfilterItems) {
+        
+        NSString *iconPath = [NSString stringWithFormat:@"%@/%@.png", [[NSBundle mainBundle] pathForResource:@"TUIBeautyKitBundle" ofType:@"bundle"] , filter.identifier];
+        NSData *data = [NSData dataWithContentsOfFile:iconPath];
+        UIImage *icon = [UIImage imageWithData:data];
+        TCBeautyFilterItem *item = [[TCBeautyFilterItem alloc] initWithTitle:filter.title normalIcon:icon package:pkg lookupImagePath:filter.lookupImagePath target:self currentValue:[filter.strength floatValue] minValue:0 maxValue:100 identifier:filter.identifier];
+        item.isXmagic = YES;
+        item.path = filter.path;
+        [pkg.items addObject:item];
+    }
     TCBeautyBaseItem *clearItem = pkg.clearItem;
     if (clearItem != nil) {
         [clearItem addTarget:self action:@selector(setFilter:)];
@@ -273,6 +273,11 @@
     }
     
     return pkg;
+}
+
+- (void)setFilter:(UIImage *)filterImage {
+    [self.actionPerformer setFilter:filterImage];
+    [self.actionPerformer setFilterStrength:0];
 }
 
 #pragma mark - Beauty

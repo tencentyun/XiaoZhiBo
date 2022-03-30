@@ -30,11 +30,19 @@ extern TCFilterIdentifier const TCFilterIdentifierRixi;
 @interface TCFilter : NSObject
 @property (readonly, nonatomic) TCFilterIdentifier identifier;
 @property (readonly, nonatomic) NSString *lookupImagePath;
+@property (strong, nonatomic) NSString *title;
+@property (nonatomic, assign) BOOL isXmagic;
+@property (strong, nonatomic) NSNumber *strength;
+@property (strong, nonatomic) NSString *path;
+
+
+
 @end
 
 @interface TCFilterManager : NSObject
 + (instancetype)defaultManager;
 @property (readonly, nonatomic) NSArray<TCFilter *> *allFilters;
+@property (nonatomic, strong) NSArray *xMagicfilterItems;
 - (TCFilter *)filterWithIdentifier:(TCFilterIdentifier)identifier;
 @end
 

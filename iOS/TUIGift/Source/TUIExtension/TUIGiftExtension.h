@@ -13,25 +13,32 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TUIGiftExtension : NSObject
 
 /**
-* 获取实例view
-*
-* @param groupId 群组id
+ * 获取实例view
+ *
+ * @param groupId 群组id
 */
 + (TUIGiftPlayBaseView *)getPlayViewByGroupId:(NSString *)groupId;
 
 /**
-* 设置实例view
-*
-* @param playView TUIGiftPlayBaseView对象
-* @param groupId 群组id
+ * 设置实例view
+ *
+ * @param playView TUIGiftPlayBaseView对象
+ * @param groupId 群组id
 */
 + (void)setPlayViewByGroupId:(TUIGiftPlayBaseView *)playView groupId:(NSString *)groupId;
 
 /**
-* 获取实例view
-*
+ * 获取礼物按钮实例view
+ *
 */
 + (UIButton *)getEnterButton;
+
+/**
+ * 获取点赞按钮实例view
+ *
+*/
++ (UIButton *)getLikeButton;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)onStreamServiceError:(V2TXLiveCode)code msg:(NSString * _Nullable)msg
 NS_SWIFT_NAME(onStreamServiceError(code:msg:));
 
+///第三方美颜接口
+- (void)onProcessVideoFrame:(V2TXLiveVideoFrame *_Nonnull)srcFrame dstFrame:(V2TXLiveVideoFrame *_Nonnull)dstFrame;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -51,3 +51,10 @@
 "Demo.TRTC.Portal.privatealertdescription" = "欢迎您使用小直播(腾讯云视立方小直播)，我们将通过xxx和yyy帮助您了解我们收集、使用、存储个人信息的情况，此外您还可以了解到您所享有的相关权利和实现途径，如您同意请点击下方按钮开始接受我们的服务；";
 "Demo.TRTC.Home.useroverduemessage" = "登录状态失效，请重新登录";
 "Demo.TRTC.http.syserror"= "系统错误";
+
+"Demo.TRTC.Login.setupServiceTip" = "不配置后台服务只可体验部分功能，若需体验全部功能请：";
+"Demo.TRTC.Login.setupService" = "搭建后台服务";
+"Demo.TRTC.Login.runWithService" = "我已完成配置";
+"Demo.TRTC.Login.runWithoutService" = "暂不配置";
+"Demo.TRTC.Login.inputUserId" = "请输入用户名 userId";
+"Demo.TRTC.Login.checkService" = "请检查\"Debug/GenerateGlobalConfig.swift\" 是否已配置后台服务域名SERVERLESSURL";

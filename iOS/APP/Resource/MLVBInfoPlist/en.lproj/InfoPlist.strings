@@ -12,6 +12,6 @@ NSAppleMusicUsageDescription = "XiaoZhiBo needs access to your media library to 
 NSCameraUsageDescription = "XiaoZhiBo needs access to your camera to capture video";
 NSMicrophoneUsageDescription = "XiaoZhiBo needs access to your mic to capture audio";
 NSPhotoLibraryAddUsageDescription = "XiaoZhiBo needs access your photo library to save edited files";
-NSPhotoLibraryUsageDescription = "XiaoZhiBo needs access to your photo library to edit videos";
+NSPhotoLibraryUsageDescription = "XiaoZhiBo needs access to your photo library to edit profile photo and videos";
 
 

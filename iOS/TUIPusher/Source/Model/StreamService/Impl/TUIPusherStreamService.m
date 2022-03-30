@@ -11,6 +11,9 @@
 #import "TUILogin.h"
 #import "TUIPusherLinkURLUtils.h"
 
+static const int kTC_COMPONENT_PUSHER = 11;
+static const int kTC_FRAMEWORK_LIVE   = 4;
+
 @interface TUIPusherStreamService () <V2TXLivePusherObserver, V2TXLivePlayerObserver>
 
 @property (nonatomic, assign) BOOL isOpenedCamera;
@@ -29,6 +32,7 @@
     if (self) {
         self.isFrontCamera = YES;
         self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:mode];
+        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
         [self.pusher setObserver:self];
     }
     return self;
@@ -49,19 +53,44 @@
     return res == V2TXLIVE_OK;
 }
 
+- (void)startCamera:(BOOL)frontCamera {
+    LOGD("【Pusher】start camera");
+    [self.pusher startCamera:frontCamera];
+}
+
 - (void)closeCamara {
     LOGD("【Pusher】close camera");
     [self.pusher stopCamera];
 }
 
+- (void)startVirtualCamera:(TXImage *)image {
+    LOGD("【Pusher】start virtual camera");
+    [self.pusher startVirtualCamera:image];
+}
+
+- (void)stopVirtualCamera {
+    LOGD("【Pusher】stop virtual camera");
+    [self.pusher stopVirtualCamera];
+}
+
 - (BOOL)startPush:(NSString *)url {
     V2TXLiveCode res = [self.pusher startMicrophone];
+    [self setFramework];
     res += [self.pusher startPush:url];
     
     LOGD("【Pusher】start push: %d url:%s", res, url.UTF8String);
     
     [self.pusher setMixTranscodingConfig:nil];
     return res == V2TXLIVE_OK;
+}
+
+- (void)setFramework {
+    NSDictionary *jsonDic = @{@"api": @"setFramework",
+                              @"params":@{@"framework": @(kTC_FRAMEWORK_LIVE),
+                                          @"component": @(kTC_COMPONENT_PUSHER)}};
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [self.pusher setProperty:@"setFramework" value:jsonString];
 }
 
 - (void)stopPush {
@@ -242,4 +271,16 @@
 - (void)onPushStatusUpdate:(V2TXLivePushStatus)status message:(NSString *)msg extraInfo:(NSDictionary *)extraInfo {
     
 }
+- (void)onProcessVideoFrame:(V2TXLiveVideoFrame *_Nonnull)srcFrame dstFrame:(V2TXLiveVideoFrame *_Nonnull)dstFrame {
+    if ([self.delegate respondsToSelector:@selector(onProcessVideoFrame:dstFrame:)]) {
+        [self.delegate onProcessVideoFrame:srcFrame dstFrame:dstFrame];
+    }
+    
+}
+
+#pragma mark - V2TXLivePlayerObserver
+- (void)onConnected:(id<V2TXLivePlayer>)player extraInfo:(NSDictionary *)extraInfo {
+    
+}
+
 @end

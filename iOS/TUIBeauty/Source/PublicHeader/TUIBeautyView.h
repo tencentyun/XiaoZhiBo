@@ -17,11 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 初始化时需要传入 BeautyManager 对象
 /// @param beautyManager 通过 SDK 对象 -getBeautyManager 方法获取
-- (instancetype)initWithFrame:(CGRect)frame beautyManager:(TXBeautyManager *)beautyManager;
-
+/// @param licenseKey XmagicSDK所需licenseKey
+/// @param licenseUrl XmagicSDK所需licenseKey
+- (instancetype)initWithFrame:(CGRect)frame beautyManager:(TXBeautyManager *)beautyManager  licenseUrl:(NSString *)licenseUrl licenseKey:(NSString *)licenseKey;
+/// 获取videoFrame处理代理单例
+- (id)getBeautyService;
 /// 弹出美颜面板
 - (void)show;
-
 /// 关闭美颜面板
 - (void)dismiss;
 

@@ -33,7 +33,6 @@ class ShowLiveListCell: UICollectionViewCell {
         label.text = ""
         label.font = UIFont(name: "PingFangSC-Regular", size: 14)
         label.textColor = .white
-        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -43,7 +42,6 @@ class ShowLiveListCell: UICollectionViewCell {
         label.font = UIFont(name: "PingFangSC-Regular", size: 12)
         label.textColor = .white
         label.textAlignment = .left
-        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -117,12 +115,12 @@ class ShowLiveListCell: UICollectionViewCell {
         roomNameLabel.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().offset(-10)
-            make.trailing.greaterThanOrEqualToSuperview().offset(-10)
+            make.trailing.lessThanOrEqualToSuperview().offset(-10)
         }
         anchorNameLabel.snp.makeConstraints { (make) in
             make.leading.equalTo(roomNameLabel)
             make.bottom.equalTo(roomNameLabel.snp.top)
-            make.trailing.greaterThanOrEqualToSuperview().offset(-10)
+            make.trailing.lessThanOrEqualToSuperview().offset(-10)
         }
         memberContainerView.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(10)
@@ -145,7 +143,7 @@ class ShowLiveListCell: UICollectionViewCell {
     }
 }
 
-/// MARK: - internationalization string
+// MARK: - internationalization string
 fileprivate extension String {
     static let onlinexxText = ShowLiveLocalize("Scene.ShowLive.List.xxissinging")
 }

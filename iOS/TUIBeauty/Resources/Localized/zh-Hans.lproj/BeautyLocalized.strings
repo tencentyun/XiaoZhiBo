@@ -6,13 +6,13 @@
   
 */
 
-"TC.Common.Clear" = "清除";
+"TC.Common.Clear" = "无";
 "TC.BeautyPanel.Menu.VideoEffect" = "动效";
 "TC.BeautyPanel.Menu.GreenScreen" = "绿幕";
 "TC.BeautySettingPanel.GoodLuck" = "Good Luck";
 "TC.BeautyPanel.Menu.Cosmetic" = "美妆";
 "TC.BeautyPanel.Menu.Gesture" = "手势";
-"TC.BeautyPanel.Menu.BlendPic" = "AI抠背";
+"TC.BeautyPanel.Menu.BlendPic" = "分割";
 "TC.BeautyPanel.Menu.Filter" = "滤镜";
 "TC.BeautyPanel.Menu.Beauty" = "美颜";
 // from beauty
@@ -86,7 +86,7 @@
 "TC.BeautySettingPanel.rainbow cloud" = "彩虹云";
 "TC.BeautySettingPanel.Star ear" = "星耳";
 "TC.BeautySettingPanel.Face change" = "变脸";
-"TC.BeautySettingPanel.AI Scratch" = "AI抠背";
+"TC.BeautySettingPanel.AI Scratch" = "分割";
 "TC.BeautySettingPanel.Good luck" = "Good luck";
 "TC.BeautySettingPanel.PikaQiu" = "皮卡丘";
 "TC.BeautySettingPanel.Meteor Shower" = "流星雨";

@@ -33,6 +33,11 @@
     return service;
 }
 
+-(void )onGetExtensionInfo:(NSDictionary *)param {
+      
+   
+}
+
 #pragma mark - TUIExtensionProtocol
 - (NSDictionary *)getExtensionInfo:(NSString *)key param:(NSDictionary *)param {
     if (!key || ![param isKindOfClass:[NSDictionary class]]) {
@@ -43,10 +48,12 @@
         if (!beautyManager || ![beautyManager isKindOfClass:NSClassFromString(@"TXBeautyManager")]) {
             return nil;
         }
-        TUIBeautyView *beautyView = [[TUIBeautyView alloc] initWithFrame:CGRectZero beautyManager:beautyManager];
-        return @{TUICore_TUIBeautyExtension_BeautyView_View : beautyView};
-    }
-    else if ([key isEqualToString:TUICore_TUIBeautyExtension_Extension]) {
+        NSString *licenseUrl = [param tui_objectForKey:TUICore_TUIBeautyExtension_BeautyView_LicenseUrl asClass:[NSString class]];
+        NSString *licenseKey = [param tui_objectForKey:TUICore_TUIBeautyExtension_BeautyView_LicenseKey asClass:[NSString class]];
+        TUIBeautyView *beautyView = [[TUIBeautyView alloc] initWithFrame:CGRectZero beautyManager:beautyManager licenseUrl:licenseUrl licenseKey:licenseKey];
+        id videoFrameDelegate = [beautyView getBeautyService];
+        return @{TUICore_TUIBeautyExtension_BeautyView_View : beautyView,TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate :videoFrameDelegate};
+    } else if ([key isEqualToString:TUICore_TUIBeautyExtension_Extension]) {
         return @{TUICore_TUIBeautyExtension_Extension_View : [TUIBeautyExtensionView getExtensionView]};
     }
     return nil;

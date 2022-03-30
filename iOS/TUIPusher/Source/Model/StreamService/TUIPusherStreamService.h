@@ -50,8 +50,23 @@ NS_SWIFT_NAME(stopRemoteView(userId:));
 - (BOOL)openCamera:(BOOL)frontCamera view:(UIView *)view
 NS_SWIFT_NAME(openCamera(frontCamera:view:));
 
-///关闭摄像头
+/// 打开本地摄像头。
+/// @note startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+/// @param frontCamera 是否为前置摄像头
+///         - YES 【默认值】: 切换到前置摄像头
+///         - NO: 切换到后置摄像头
+- (void)startCamera:(BOOL)frontCamera NS_SWIFT_NAME(startCamera(frontCamera:));
+
+/// 关闭摄像头
 - (void)closeCamara NS_SWIFT_NAME(closeCamara());
+
+/// 开启图片推流。
+/// @note startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+/// @param image UIImage图片
+- (void)startVirtualCamera:(TXImage *)image NS_SWIFT_NAME(startVirtualCamera(image:));
+
+/// 关闭图片推流
+- (void)stopVirtualCamera NS_SWIFT_NAME(stopVirtualCamera());
 
 /// 开始推流
 - (BOOL)startPush:(NSString *)url

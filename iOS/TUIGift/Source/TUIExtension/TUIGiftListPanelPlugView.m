@@ -142,6 +142,10 @@
     }];
 }
 
+- (void)sendLike {
+    [self.giftListPanelView sendLike];
+}
+
 #pragma mark Gesture
 
 - (void)tapClickAction:(UITapGestureRecognizer *)tap {
@@ -175,6 +179,11 @@
     } else {
         [self.superview makeToast:message];
     }
+}
+
+- (void)onLikeDidSend:(TUIGiftPanelBaseView *)gitView like:(TUIGiftModel *)model isSuccess:(BOOL)success message:(NSString *)message {
+    TUIGiftPlayBaseView *playView = [TUIGiftExtension getPlayViewByGroupId:self.groupId];
+    [playView playLikeModel:model];
 }
 
 #pragma mark - set/get

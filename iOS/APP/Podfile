@@ -4,7 +4,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # 业务库
 def professional
-  pod 'TXIMSDK_Plus_iOS', '5.5.897'
+  pod 'TXIMSDK_Plus_iOS', '5.7.1435'
 end
 
 # UI库
@@ -13,11 +13,13 @@ def ui
   pod 'Kingfisher'
   pod 'MJRefresh'
   pod 'Toast-Swift'
+  
 end
 
 # 工具库
 def tool
   pod 'Alamofire'
+  pod 'TXIMSDK_Plus_iOS', '5.7.1435'
   pod 'TXCopyrightedMedia', :podspec => 'https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec'
 end
 

@@ -8,12 +8,16 @@
 #ifndef TUIPlayerViewDelegate_h
 #define TUIPlayerViewDelegate_h
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSInteger, TUIPlayerEvent) {
     TUIPLAYER_EVENT_SUCCESS = 1,
     TUIPLAYER_EVENT_FAILED = -1,
     TUIPLAYER_EVENT_INVALID_LICENSE = -2,
     TUIPLAYER_EVENT_URL_NOTSUPPORT = -3, // 不合法的URL
-} TUIPlayerEvent;
+    
+    /// 连麦相关的事件
+    TUIPLAYER_EVENT_LINKMIC_START = 10001, // 开始连麦
+    TUIPLAYER_EVENT_LINKMIC_STOP = 10002,   // 结束连麦
+};
 
 @class TUIPlayerView;
 

@@ -31,10 +31,15 @@ public class HttpLogicRequest {
             if _sdkAppId > 0 {
                 return _sdkAppId
             }
-            if let appid = UserDefaults.standard.object(forKey: SDK_APP_ID_KEY) as? String {
-                _sdkAppId = Int32(appid) ?? 0
+            if MLVBConfigManager.shared.isSetupService {
+                if let appid = UserDefaults.standard.object(forKey: SDK_APP_ID_KEY) as? String {
+                    _sdkAppId = Int32(appid) ?? 0
+                }
+                return _sdkAppId
+            } else {
+                // GenerateTestUserSig
+                return Int32(SDKAPPID)
             }
-            return _sdkAppId
         }
     }
 
@@ -59,11 +64,17 @@ public class HttpLogicRequest {
     ///   - success: 成功回调
     ///   - failed: 失败回调
     public static func userLoginToken(userId: String, token: String, success: HttpUserLoginRequestSuccessCallBack?, failed: HttpLogicRequestFailedCallBack?) {
-        let baseUrl = appLoginBaseUrl + "auth_users/user_login_token"
-        let params = ["userId": userId, "token": token]
-        logicRequest(baseUrl: baseUrl, params: params, success: { model in
-            IMLogicRequest.imUserLogin(currentUserModel: model.currentUserModel, success: success, failed: failed)
-        }, failed: failed)
+        if MLVBConfigManager.shared.isSetupService {
+            let baseUrl = appLoginBaseUrl + "auth_users/user_login_token"
+            let params = ["userId": userId, "token": token]
+            logicRequest(baseUrl: baseUrl, params: params, success: { model in
+                IMLogicRequest.imUserLogin(currentUserModel: model.currentUserModel, success: success, failed: failed)
+            }, failed: failed)
+        } else {
+            IMLogicRequest.imUserLogin(currentUserModel: ProfileManager.sharedManager().currentUserModel,
+                                       success: success,
+                                       failed: failed)
+        }
     }
     
     /// 用户签名注册
@@ -175,6 +186,13 @@ public class HttpLogicRequest {
     ///   - success: 成功回调
     ///   - failed: 失败回调
     private static func logicRequest(baseUrl: URLConvertible, params: Parameters? = nil, success: HttpLogicRequestSuccessCallBack?, failed: HttpLogicRequestFailedCallBack?) {
+        guard MLVBConfigManager.shared.isSetupService else {
+            let model = HttpJsonModel()
+            model.errorCode = 0
+            model.errorMessage = "no service"
+            success?(model)
+            return
+        }
         HttpBaseRequest.trtcRequest(baseUrl, method: .post, parameters: params, encoding: JSONEncoding.default, completionHandler: { (model: HttpJsonModel) in
             if model.errorCode == 0 {
                 success?(model)

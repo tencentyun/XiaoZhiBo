@@ -15,6 +15,9 @@ public class ShowLiveRoomInfo: NSObject {
     var ownerName: String = ""
     var memberCount: UInt32 = 0
     var needRequest: Bool = false
+    var totalJoined: Int = 0
+    // isFollow 是否关注
+    var isFollow: Bool = false
     
     init(roomID: String, ownerId: String, memberCount: UInt32) {
         self.roomID = roomID

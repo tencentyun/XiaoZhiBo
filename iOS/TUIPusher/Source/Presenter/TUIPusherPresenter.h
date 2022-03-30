@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, null_resettable) NSString *pushUrl;
 @property (nonatomic, weak) id <TUIPusherPresenterDelegate> delegate;
 @property (nonatomic, weak) id <TUIPusherViewDelegate> pusherViewDelegate;
+@property (nonatomic, weak) id <TUIPusherStreamServiceDelegate> thirdBeautyPlugIn;
 @property (nonatomic, weak) TUIPusherView *pusherView;
 @property (nonatomic, copy) NSString *remoteStreamId;
 
@@ -65,6 +66,24 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)startPush:(NSString *)url;
 
 - (void)stopPush;
+
+/// 打开本地摄像头。
+/// @note startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+/// @param frontCamera 是否为前置摄像头
+///         - YES 【默认值】: 切换到前置摄像头
+///         - NO: 切换到后置摄像头
+- (void)startCamera:(BOOL)frontCamera;
+
+/// 关闭摄像头
+- (void)closeCamera;
+
+/// 开启图片推流。
+/// @note startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+/// @param image UIImage图片
+- (void)startVirtualCamera:(UIImage *)image;
+
+/// 关闭图片推流
+- (void)stopVirtualCamera;
 
 - (void)switchCamera:(BOOL)isFrontCamera;
 
