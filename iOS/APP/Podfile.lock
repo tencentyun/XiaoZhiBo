@@ -1,9 +1,6 @@
 PODS:
   - Alamofire (5.5.0)
   - Kingfisher (6.3.1)
-  - LiteAVPrivacy (1.0.0):
-    - Masonry
-    - SDWebImage
   - lottie-ios (2.5.3)
   - Masonry (1.1.0)
   - MJExtension (3.4.1)
@@ -50,12 +47,13 @@ PODS:
     - TXLiteAVSDK_Live
   - TXCopyrightedMedia (1.0.2)
   - TXIMSDK_Plus_iOS (5.7.1435)
-  - TXLiteAVSDK_Live (8.5.10017)
+  - TXLiteAVSDK_Live (9.5.11346):
+    - TXLiteAVSDK_Live/Live (= 9.5.11346)
+  - TXLiteAVSDK_Live/Live (9.5.11346)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
-  - LiteAVPrivacy (from `../../LiteAVPrivacy/LiteAVPrivacy.podspec`)
   - MJRefresh
   - SnapKit
   - Toast-Swift
@@ -68,7 +66,7 @@ DEPENDENCIES:
   - TUIPusher/Live (from `../TUIPusher/`)
   - TXCopyrightedMedia (from `https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec`)
   - TXIMSDK_Plus_iOS (= 5.7.1435)
-  - TXLiteAVSDK_Live (from `../../SDK/`)
+  - TXLiteAVSDK_Live
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -84,10 +82,9 @@ SPEC REPOS:
     - SSZipArchive
     - Toast-Swift
     - TXIMSDK_Plus_iOS
+    - TXLiteAVSDK_Live
 
 EXTERNAL SOURCES:
-  LiteAVPrivacy:
-    :path: "../../LiteAVPrivacy/LiteAVPrivacy.podspec"
   TUIAudioEffect:
     :path: "../TUIAudioEffect/"
   TUIBarrage:
@@ -104,13 +101,10 @@ EXTERNAL SOURCES:
     :path: "../TUIPusher/"
   TXCopyrightedMedia:
     :podspec: https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec
-  TXLiteAVSDK_Live:
-    :path: "../../SDK/"
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
-  LiteAVPrivacy: e7294cbe473da84b53f949dc2e5ec5105307a69f
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJExtension: 21c5f6f8c4d5d8844b7ae8fbae08fed0b501f961
@@ -129,8 +123,8 @@ SPEC CHECKSUMS:
   TUIPusher: 3687ab16a21502a56e8d6b6888e20a4957fdd227
   TXCopyrightedMedia: b8bb83beb43413ac0cb11d7e1efdd015ed976a8a
   TXIMSDK_Plus_iOS: 4b7c1097ea9899f7bf95fa90e2cb4471389f93dd
-  TXLiteAVSDK_Live: 2af77dc7048f7981ac92afbba98ce8a74760951f
+  TXLiteAVSDK_Live: cae30145d70254bdd35838569fcdfefd3a369aa0
 
-PODFILE CHECKSUM: 429008b727687952aafaff3b85c9051dc9d720b9
+PODFILE CHECKSUM: 3434a91ae4671fbbdcb96091130b94de69717151
 
 COCOAPODS: 1.11.2
