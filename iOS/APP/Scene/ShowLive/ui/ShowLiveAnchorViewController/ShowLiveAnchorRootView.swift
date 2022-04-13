@@ -29,7 +29,7 @@ class ShowLiveAnchorRootView: UIView {
     }()
     
     lazy var pusherView: TUIPusherView = {
-        let view = TUIPusherView.init(frame: .zero, licenseUrl: LICENSEURL, licenseKey: LICENSEURLKEY)
+        let view = TUIPusherView.init(frame: .zero, licenseUrl: XMagicLicenseURL, licenseKey: XMagicLicenseKey)
         view.setDelegate(self)
         view.backgroundColor = .lightGray
         return view
