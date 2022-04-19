@@ -32,7 +32,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     if (self) {
         self.isFrontCamera = YES;
         self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:mode];
-        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
+//        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
         [self.pusher setObserver:self];
     }
     return self;
