@@ -119,7 +119,7 @@ class MineRootView: UIView {
     func activateConstraints() {
         titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(kDeviceSafeTopHeight + 20)
+            make.top.equalToSuperview().offset(kDeviceSafeTopHeight+20)
         }
         bgView.snp.makeConstraints { (make) in
             make.top.centerX.equalToSuperview()
@@ -277,6 +277,15 @@ extension MineRootView : UITableViewDelegate {
             let vc = MineAboutViewController()
             vc.hidesBottomBarWhenPushed = true
             rootVC?.navigationController?.pushViewController(vc, animated: true)
+            
+        case .privacy:
+            guard let url = URL(string: WEBURL_Privacy) else {
+                return
+            }
+            let vc = TRTCWebViewController(url: url, title: model.title)
+            vc.hidesBottomBarWhenPushed = true
+            rootVC?.navigationController?.pushViewController(vc, animated: true)
+            
         case .agreement:
             guard let url = URL(string: WEBURL_Agreement) else {
                 return
@@ -290,8 +299,6 @@ extension MineRootView : UITableViewDelegate {
             let action = UIAlertAction(title: .doneText, style: .default, handler: nil)
             alert.addAction(action)
             rootVC?.present(alert, animated: true, completion: nil)
-        case .privacy:
-            break
         }
     }
 }

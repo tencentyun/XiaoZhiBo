@@ -76,7 +76,7 @@
             TUIAudioEffectSongModel *model = [[TUIAudioEffectSongModel alloc] init];
             model.ID = 1000 + i;
             model.path = bgmURLs[i];
-            model.name = AudioEffectLocalize(bgmNames[i]);
+            model.name = TUIAudioEffectLocalize(bgmNames[i]);
             [datas addObject:model];
         }
         self.bgmDataSource = datas;

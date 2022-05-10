@@ -12,7 +12,7 @@ import TUIPusher
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func setLicence() {
-        TXLiveBase.setLicenceURL(LICENSEURL, key: LICENSEURLKEY)
+        V2TXLivePremier.setLicence(LICENSEURL, key: LICENSEURLKEY)
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

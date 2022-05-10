@@ -10,16 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, TUIPusherVideoResolution) {
     TUIPUSHER_VIDEO_RES_360 = 1, // 360p
     TUIPUSHER_VIDEO_RES_540,     // 540p
     TUIPUSHER_VIDEO_RES_720,     // 720p
     TUIPUSHER_VIDEO_RES_1080,    // 1080p
-} TUIPusherVideoResolution;
+};
 
 @interface TUIPusherView : UIView
-/// 初始化方法设置 licenseUrl & licensekey
-- (instancetype)initWithFrame:(CGRect)frame LicenseUrl:(NSString *)licenseUrl LicenseKey:(NSString *)licensekey;
 
 /// 设置代理对象，抛出的事件在 TUIPusherViewDelegate.h 中定义
 - (void)setDelegate:(id <TUIPusherViewDelegate>)delegate;

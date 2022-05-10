@@ -3,6 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/21.
+//  Copyright © 2022 Tencent. All rights reserved.
 //  人气榜单直播间展示View
 
 import UIKit

@@ -3,7 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by adams on 2021/9/28.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TUIPusher
@@ -29,7 +29,7 @@ class ShowLiveAnchorRootView: UIView {
     }()
     
     lazy var pusherView: TUIPusherView = {
-        let view = TUIPusherView.init(frame: .zero, licenseUrl: XMagicLicenseURL, licenseKey: XMagicLicenseKey)
+        let view = TUIPusherView(frame: .zero)
         view.setDelegate(self)
         view.backgroundColor = .lightGray
         return view
@@ -99,6 +99,7 @@ class ShowLiveAnchorRootView: UIView {
         self.viewModel = viewModel
         super.init(frame: frame)
         backgroundColor = .white
+        setXMagicLicense()
     }
     
     deinit {
@@ -210,6 +211,13 @@ class ShowLiveAnchorRootView: UIView {
         exitButton.addTarget(self, action: #selector(closeButtonClick(sender:)), for: .touchUpInside)
         adImageView.addTapGesture(target: self, action: #selector(adImageViewClick))
         hotRankingView.addTapGesture(target: self, action: #selector(hotRankingClick))
+    }
+    
+    private func setXMagicLicense() {
+        TUICore.callService(TUICore_TUIBeautyService,
+                            method: TUICore_TUIBeautyService_SetLicense,
+                            param: [TUICore_TUIBeautyExtension_BeautyView_LicenseUrl: XMagicLicenseURL,
+                                    TUICore_TUIBeautyExtension_BeautyView_LicenseKey: XMagicLicenseKey])
     }
     
     func setBottomMenuBtn(_ isHidden: Bool) {
@@ -381,7 +389,7 @@ extension ShowLiveAnchorRootView: TUIPusherViewDelegate {
         roomInfoView.start()
     }
     
-    func onPushStoped(_ pusherView: TUIPusherView, url: String) {
+    func onPushStopped(_ pusherView: TUIPusherView, url: String) {
         setBottomMenuBtn(true)
         roomMsgView.isHidden = false
         exitButton.isHidden = false

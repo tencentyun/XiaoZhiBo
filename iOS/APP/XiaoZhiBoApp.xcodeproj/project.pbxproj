@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0420E523279561FE006094EE /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0420E522279561FE006094EE /* Config.plist */; };
-		0420E52527956266006094EE /* MLVBConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420E52427956266006094EE /* MLVBConfigManager.swift */; };
 		042E9D192770CFF000F4D28E /* ShowLiveRoomInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E9D182770CFF000F4D28E /* ShowLiveRoomInfoAlert.swift */; };
 		042E9D1B27718F4500F4D28E /* ShowLiveFloatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E9D1A27718F4500F4D28E /* ShowLiveFloatingView.swift */; };
 		042E9D202772162B00F4D28E /* ShowLiveHotRankingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E9D1F2772162B00F4D28E /* ShowLiveHotRankingAlert.swift */; };
@@ -16,6 +15,7 @@
 		042E9D2427721A3800F4D28E /* ShowLiveHotRankingTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E9D2327721A3800F4D28E /* ShowLiveHotRankingTableCell.swift */; };
 		045BFFD627B65E4500D0839F /* Privacy.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045BFFD527B65E4500D0839F /* Privacy.plist */; };
 		04691EC6276C2E43002A5EB8 /* ShowLiveScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04691EC5276C2E43002A5EB8 /* ShowLiveScrollViewController.swift */; };
+		0469F99D27FEE53500C37B39 /* ConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0469F99C27FEE53500C37B39 /* ConfigManager.swift */; };
 		0486045C274245110026FE64 /* GenerateGlobalConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486045B274245110026FE64 /* GenerateGlobalConfig.swift */; };
 		049A5B512767484900B80C0A /* ShowLiveOnlineUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A5B502767484900B80C0A /* ShowLiveOnlineUsersView.swift */; };
 		049A5B5727675CB200B80C0A /* ShowLiveOnlineUsersAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A5B5627675CB200B80C0A /* ShowLiveOnlineUsersAlertController.swift */; };
@@ -30,7 +30,6 @@
 		049A5B72276A31EF00B80C0A /* ShowLiveMoreCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A5B71276A31EF00B80C0A /* ShowLiveMoreCollectionCell.swift */; };
 		049A5B74276A37B800B80C0A /* UIScrollView+refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A5B73276A37B800B80C0A /* UIScrollView+refresh.swift */; };
 		04A0BFE5277E0009000E9072 /* ShowLiveScrollEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0BFE4277E0009000E9072 /* ShowLiveScrollEffectView.swift */; };
-		04A0BFE727854038000E9072 /* ShowLiveCosInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0BFE627854038000E9072 /* ShowLiveCosInfo.swift */; };
 		04D6732B27EDA51C00E5415F /* TRTCStartLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6732A27EDA51C00E5415F /* TRTCStartLoginViewController.swift */; };
 		04D6732D27EDBFA200E5415F /* TRTCLoginLiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6732C27EDBFA100E5415F /* TRTCLoginLiteViewController.swift */; };
 		04D6733527F1537C00E5415F /* ShowLiveListLiteRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6733427F1537C00E5415F /* ShowLiveListLiteRootView.swift */; };
@@ -155,7 +154,6 @@
 
 /* Begin PBXFileReference section */
 		0420E522279561FE006094EE /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
-		0420E52427956266006094EE /* MLVBConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLVBConfigManager.swift; sourceTree = "<group>"; };
 		042E9D182770CFF000F4D28E /* ShowLiveRoomInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveRoomInfoAlert.swift; sourceTree = "<group>"; };
 		042E9D1A27718F4500F4D28E /* ShowLiveFloatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveFloatingView.swift; sourceTree = "<group>"; };
 		042E9D1F2772162B00F4D28E /* ShowLiveHotRankingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveHotRankingAlert.swift; sourceTree = "<group>"; };
@@ -163,6 +161,7 @@
 		042E9D2327721A3800F4D28E /* ShowLiveHotRankingTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveHotRankingTableCell.swift; sourceTree = "<group>"; };
 		045BFFD527B65E4500D0839F /* Privacy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Privacy.plist; sourceTree = "<group>"; };
 		04691EC5276C2E43002A5EB8 /* ShowLiveScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveScrollViewController.swift; sourceTree = "<group>"; };
+		0469F99C27FEE53500C37B39 /* ConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigManager.swift; sourceTree = "<group>"; };
 		0486045B274245110026FE64 /* GenerateGlobalConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateGlobalConfig.swift; sourceTree = "<group>"; };
 		049A5B502767484900B80C0A /* ShowLiveOnlineUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveOnlineUsersView.swift; sourceTree = "<group>"; };
 		049A5B5627675CB200B80C0A /* ShowLiveOnlineUsersAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveOnlineUsersAlertController.swift; sourceTree = "<group>"; };
@@ -177,7 +176,6 @@
 		049A5B71276A31EF00B80C0A /* ShowLiveMoreCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveMoreCollectionCell.swift; sourceTree = "<group>"; };
 		049A5B73276A37B800B80C0A /* UIScrollView+refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+refresh.swift"; sourceTree = "<group>"; };
 		04A0BFE4277E0009000E9072 /* ShowLiveScrollEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveScrollEffectView.swift; sourceTree = "<group>"; };
-		04A0BFE627854038000E9072 /* ShowLiveCosInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveCosInfo.swift; sourceTree = "<group>"; };
 		04D6732A27EDA51C00E5415F /* TRTCStartLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCStartLoginViewController.swift; sourceTree = "<group>"; };
 		04D6732C27EDBFA100E5415F /* TRTCLoginLiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRTCLoginLiteViewController.swift; sourceTree = "<group>"; };
 		04D6733427F1537C00E5415F /* ShowLiveListLiteRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLiveListLiteRootView.swift; sourceTree = "<group>"; };
@@ -451,7 +449,6 @@
 				C632FFD9272168BD00D0C16F /* URLUtils.swift */,
 				474EC8532701B29100014730 /* ShowLiveRoomInfo.swift */,
 				049A5B6027686E1D00B80C0A /* ShowLiveUserInfo.swift */,
-				04A0BFE627854038000E9072 /* ShowLiveCosInfo.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -600,7 +597,7 @@
 				47BDEB4F2701A239008A7C4B /* BridgeHeader */,
 				47BDEB522701A239008A7C4B /* AppDelegate.swift */,
 				47BDEB532701A239008A7C4B /* main.swift */,
-				0420E52427956266006094EE /* MLVBConfigManager.swift */,
+				0469F99C27FEE53500C37B39 /* ConfigManager.swift */,
 				045BFFD527B65E4500D0839F /* Privacy.plist */,
 				47BDEB542701A239008A7C4B /* Info.plist */,
 				0420E522279561FE006094EE /* Config.plist */,
@@ -1149,7 +1146,6 @@
 				042E9D22277216F100F4D28E /* ShowLiveHotRankingView.swift in Sources */,
 				47BDEC242701A239008A7C4B /* MainCollectionViewCell.swift in Sources */,
 				47F91E302711949700EA5289 /* String+byteLength.swift in Sources */,
-				0420E52527956266006094EE /* MLVBConfigManager.swift in Sources */,
 				47BDEC322701A239008A7C4B /* TRTCAlerts.swift in Sources */,
 				049A5B72276A31EF00B80C0A /* ShowLiveMoreCollectionCell.swift in Sources */,
 				049A5B5727675CB200B80C0A /* ShowLiveOnlineUsersAlertController.swift in Sources */,
@@ -1170,7 +1166,6 @@
 				47BDEC372701A239008A7C4B /* TRTCAlertViewModel.swift in Sources */,
 				479520A527040599005C9253 /* ShowLiveAlertContentView.swift in Sources */,
 				479520AF2704539B005C9253 /* ShowLiveAudienceViewModel.swift in Sources */,
-				04A0BFE727854038000E9072 /* ShowLiveCosInfo.swift in Sources */,
 				474EC83F2701A60800014730 /* AppUtils.swift in Sources */,
 				47BDEC312701A239008A7C4B /* TRTCPrivacyAlertView.swift in Sources */,
 				47BDEC1E2701A239008A7C4B /* MineAlertContentView.swift in Sources */,
@@ -1190,6 +1185,7 @@
 				474EC84E2701AD7600014730 /* ShowLiveListRootView.swift in Sources */,
 				049A5B6127686E1D00B80C0A /* ShowLiveUserInfo.swift in Sources */,
 				47BDEC602701A239008A7C4B /* HttpJsonModel.swift in Sources */,
+				0469F99D27FEE53500C37B39 /* ConfigManager.swift in Sources */,
 				479520A827041216005C9253 /* IMRoomManager.swift in Sources */,
 				C6FBDA4127103CEE00AEFC55 /* ShowLiveRoomInfoView.swift in Sources */,
 				042E9D202772162B00F4D28E /* ShowLiveHotRankingAlert.swift in Sources */,

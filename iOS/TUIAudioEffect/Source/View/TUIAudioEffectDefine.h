@@ -24,7 +24,7 @@
 
 #import "txg_log_audio.h"
 
-#define TUIAudioEffectBundle          AudioEffectBundle()
+#define TUIAudioEffectBundle          TUIAudioEffectBundle()
 #define TUIAEImageNamed(imageName) [UIImage imageNamed:imageName inBundle:TUIAudioEffectBundle compatibleWithTraitCollection:nil]
 
 #define TUIAEMakeColorHexString(hexString) [UIColor colorWithHex:hexString]

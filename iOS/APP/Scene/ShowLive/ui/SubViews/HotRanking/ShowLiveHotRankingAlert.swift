@@ -3,6 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/21.
+//  Copyright © 2022 Tencent. All rights reserved.
 //  人气榜单弹框视图
 
 import UIKit
@@ -20,7 +21,6 @@ class ShowLiveHotRankingAlert: ShowLiveAlertViewController {
         view.backgroundColor = .white
         view.separatorStyle = .none
         view.contentInset = .zero
-        view.automaticallyAdjustsScrollIndicatorInsets = false
         view.delegate = self
         view.dataSource = self
         view.tableFooterView = UIView()

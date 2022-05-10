@@ -6,7 +6,3 @@
 //
 
 #include "txg_log_audio.h"
-
-void txf_log_swift(TXELogLevel level, const char *file, int line, const char *func, const char *content) {
-	txf_log(level, file, line, func, content);
-}

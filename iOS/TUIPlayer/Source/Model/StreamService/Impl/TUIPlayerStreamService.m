@@ -57,9 +57,8 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
 }
 
 - (void)setFramework {
-    NSDictionary *jsonDic = @{@"api": @"setFramework",
-                              @"params":@{@"framework": @(kTC_FRAMEWORK_LIVE),
-                                          @"component": @(kTC_COMPONENT_PLAYER)}};
+    NSDictionary *jsonDic = @{@"framework": @(kTC_FRAMEWORK_LIVE),
+                              @"component": @(kTC_COMPONENT_PLAYER)};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     [self.player setProperty:@"setFramework" value:jsonString];

@@ -12,7 +12,7 @@ import TUICore
 
 class TUIPusherViewController: UIViewController {
     lazy var pusherView: TUIPusherView = {
-        let view = TUIPusherView.init(frame: view.bounds, licenseUrl: LICENSEURL, licenseKey: LICENSEURLKEY)
+        let view = TUIPusherView(frame: view.bounds)
         return view
     }()
     
@@ -136,8 +136,9 @@ class TUIPusherViewController: UIViewController {
                 self.isMirror = !self.isMirror
                 self.pusherView.setMirror(self.isMirror)
             default:
-                let resolution = TUIPusherVideoResolution(UInt(index - 1))
-                self.pusherView.setVideoResolution(resolution)
+                if let resolution = TUIPusherVideoResolution(rawValue: UInt(index - 1)) {
+                    self.pusherView.setVideoResolution(resolution)
+                }
             }
         }
     }
@@ -152,7 +153,7 @@ extension TUIPusherViewController: TUIPusherViewDelegate {
         pkView.isHidden = false
         bottomView.isHidden = false
     }
-    func onPushStoped(_ pusherView: TUIPusherView, url: String) {
+    func onPushStopped(_ pusherView: TUIPusherView, url: String) {
         debugPrint("pusher stop push")
     }
     

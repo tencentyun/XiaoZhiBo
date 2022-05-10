@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>9.6.0</string>
+	<string>9.5.0</string>
 	<key>CFBundleVersion</key>
-	<string>1546</string>
+	<string>1587</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -31,8 +31,6 @@
 	<string>腾讯云视立方小直播需要访问你的相机权限，以便能正常使用秀场直播画面预览，美颜等功能</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>腾讯云视立方小直播需要访问你的麦克风权限，以便能正常使用秀场直播声音采集功能</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>腾讯云视立方小直播需要访问你的相册权限，开启后才能上传头像、编辑视频文件</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

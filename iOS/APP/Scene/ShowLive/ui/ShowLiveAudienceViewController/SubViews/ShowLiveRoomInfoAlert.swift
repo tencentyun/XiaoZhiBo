@@ -3,6 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/20.
+//  Copyright © 2022 Tencent. All rights reserved.
 //  房间关注弹框Alert
 
 import UIKit

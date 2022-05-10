@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, TUIPlayerEvent) {
 - (void)onPlayStarted:(TUIPlayerView *)playerView url:(NSString *)url;
 
 /// 结束拉流
-- (void)onPlayStoped:(TUIPlayerView *)playerView url:(NSString *)url;
+- (void)onPlayStopped:(TUIPlayerView *)playerView url:(NSString *)url;
 
 /// 事件发生时调用
 - (void)onPlayEvent:(TUIPlayerView *)playerView event:(TUIPlayerEvent)event message:(NSString *)message;

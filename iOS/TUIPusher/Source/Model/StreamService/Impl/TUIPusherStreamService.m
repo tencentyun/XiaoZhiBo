@@ -32,7 +32,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     if (self) {
         self.isFrontCamera = YES;
         self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:mode];
-//        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
+        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
         [self.pusher setObserver:self];
     }
     return self;
@@ -85,9 +85,8 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
 }
 
 - (void)setFramework {
-    NSDictionary *jsonDic = @{@"api": @"setFramework",
-                              @"params":@{@"framework": @(kTC_FRAMEWORK_LIVE),
-                                          @"component": @(kTC_COMPONENT_PUSHER)}};
+    NSDictionary *jsonDic = @{@"framework": @(kTC_FRAMEWORK_LIVE),
+                              @"component": @(kTC_COMPONENT_PUSHER)};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     [self.pusher setProperty:@"setFramework" value:jsonString];

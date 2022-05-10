@@ -52,9 +52,6 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIView   *audioEffectView;
 
 @property (nonatomic, strong) UIView   *giftPlayView;
-
-@property (nonatomic, strong) NSString *licenseUrl;
-@property (nonatomic, strong) NSString *licensekey;
 @end
 
 @implementation TUIPusherView {
@@ -62,15 +59,6 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Interface
-- (instancetype)initWithFrame:(CGRect)frame LicenseUrl:(NSString *)licenseUrl LicenseKey:(NSString *)licensekey {
-    self = [super init];
-    if (self) {
-        _licenseUrl = licenseUrl;
-        _licensekey = licensekey;
-    }
-    return self;
-}
-
 - (void)setDelegate:(id<TUIPusherViewDelegate>)delegate {
     _delegate = delegate;
     [self.renderView setDelegate:delegate];
@@ -249,7 +237,7 @@ typedef enum : NSUInteger {
     
     UIButton *switchCameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     switchCameraBtn.hidden = YES;
-    [switchCameraBtn setImage:[UIImage imageNamed:@"pusher_camera" inBundle:PusherBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    [switchCameraBtn setImage:[UIImage imageNamed:@"pusher_camera" inBundle:TUIPusherBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [switchCameraBtn addTarget:self action:@selector(switchCameraBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:switchCameraBtn];
     self.switchCameraBtn = switchCameraBtn;
@@ -455,18 +443,11 @@ typedef enum : NSUInteger {
         }
     }
     NSDictionary *beautyViewInfo = [TUICore getExtensionInfo:TUICore_TUIBeautyExtension_BeautyView
-                                                       param:@{TUICore_TUIBeautyExtension_BeautyView_BeautyManager : beautyManager,
-                                                               TUICore_TUIBeautyExtension_BeautyView_LicenseUrl: _licenseUrl ?: @"",
-                                                               TUICore_TUIBeautyExtension_BeautyView_LicenseKey: _licensekey ?: @""}];
-    
+                                                       param:@{TUICore_TUIBeautyExtension_BeautyView_BeautyManager: beautyManager}];
     if (beautyViewInfo != nil && [beautyViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *beautyView = beautyViewInfo[TUICore_TUIBeautyExtension_BeautyView_View];
         if (beautyView != nil && [beautyView isKindOfClass:[UIView class]]) {
             self.beautyView = beautyView;
-        }
-        id dataProcessDelegate = beautyViewInfo[TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate];
-        if (dataProcessDelegate) {
-            self.presenter.thirdBeautyPlugIn = dataProcessDelegate;
         }
     }
     return self.beautyBtn != nil;
@@ -566,7 +547,7 @@ typedef enum : NSUInteger {
 
 /// app进入后台-开启图片推流
 - (void)appDidEnterBackground {
-    TXImage *image = [TXImage imageNamed:@"pusher_placeholder" inBundle:PusherBundle() compatibleWithTraitCollection:nil];
+    TXImage *image = [TXImage imageNamed:@"pusher_placeholder" inBundle:TUIPusherBundle() compatibleWithTraitCollection:nil];
     // startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
     [self.presenter startVirtualCamera:image];
 }
