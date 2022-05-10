@@ -3,6 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/13.
+//  Copyright © 2022 Tencent. All rights reserved.
 //  直播间在线用户列表弹框
 
 import UIKit
@@ -20,7 +21,6 @@ class ShowLiveOnlineUsersAlertController: ShowLiveAlertViewController {
         view.backgroundColor = .white
         view.separatorStyle = .none
         view.contentInset = .zero
-        view.automaticallyAdjustsScrollIndicatorInsets = false
         view.delegate = self
         view.dataSource = self
         view.register(ShowLiveOnlineUserTitleHeaderView.self, forHeaderFooterViewReuseIdentifier: "titleHeader")

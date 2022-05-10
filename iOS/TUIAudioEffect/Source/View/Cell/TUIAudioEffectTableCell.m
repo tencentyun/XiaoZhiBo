@@ -53,25 +53,25 @@
     _effectModel = data;
     _effectType = type;
     if (type == TUIAudioEffectTypeVoiceChange) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceChange.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceChange.title");
     }
     if (type == TUIAudioEffectTypeVoiceReverb) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceReverb.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceReverb.title");
     }
     if (type == TUIAudioEffectTypeMusicBackground) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.earMonitor");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.earMonitor");
     }
     if (type == TUIAudioEffectTypeCopyrightLibrary) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.copyrights");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.copyrights");
     }
     if (type == TUIAudioEffectTypeMusicVolume) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicVolum.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicVolum.title");
     }
     if (type == TUIAudioEffectTypeVoiceVolume) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceVolum.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.VoiceVolum.title");
     }
     if (type == TUIAudioEffectTypeMusicRiseFall) {
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicRiseFall.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicRiseFall.title");
     }
 }
 
@@ -182,7 +182,7 @@
         [_selectContentView setHidden:NO]; 
         [_playContentView setHidden:YES];
         
-        self.titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.copyrights");
+        self.titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.copyrights");
         _timeLabel.text = @"00/00";
     }
 }
@@ -224,7 +224,7 @@
         _selectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _selectLabel.font = [UIFont systemFontOfSize:16];
         _selectLabel.textColor = TUIAEMakeColorHexString(@"#999999");
-        _selectLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.select");
+        _selectLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicSelect.select");
     }
     return _selectLabel;
 }
@@ -295,7 +295,7 @@
     [_switchView setOnTintColor:themeConfig.themeColor];
     
     _descLabel.textColor = themeConfig.textPlaceholderColor;
-    _descLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.useEarphones");
+    _descLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.useEarphones");
 }
 
 - (void)updateUIWithData:(TUIAudioEffectModel *)data type:(TUIAudioEffectType)type{

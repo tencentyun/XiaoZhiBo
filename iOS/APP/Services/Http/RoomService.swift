@@ -23,6 +23,11 @@ private let leaveRoomUrl = "base/v1/rooms/leave_room"
 private let destroyRoomUrl = "base/v1/rooms/destroy_room"
 
 public enum RoomType: String {
+    case voiceRoom = "voiceRoom"
+    case liveRoom = "liveRoom"
+    case chatSalon = "chatSalon"
+    case ktv = "ktv"
+    case chorus = "chorus"
     case showLive = "mlvb-show-live"
     case shoppingLive = "mlvb-shopping-live"
     case other = "other"
@@ -192,68 +197,6 @@ public class RoomService: NSObject {
         })
     }
     
-    /// 获取头像上传Cos信息
-    /// - Parameters:
-    ///   - cosType: cos 上传类型
-    ///   - success: 请求成功回调
-    ///   - failed: 请求失败回调
-    public func getRoomCosInfo(cosType: RoomCosType,
-                           success: @escaping (_ cosInfo: ShowLiveCosInfo) -> Void,
-                           failed: @escaping (_ code: Int32, _ error: String) -> Void) {
-        guard MLVBConfigManager.shared.isSetupService else {
-            failed(-1, "no services")
-            return
-        }
-        let params = ["category": cosType.rawValue] as [String: Any]
-        HttpBaseRequest.trtcRequest(roomBaseUrl + cosRoomUrl, method: .get, parameters: params) { (model: HttpJsonModel) in
-            TRTCLog.out("get room cosInfo. code: \(model.errorCode), message:\(model.errorMessage)")
-            if model.errorCode == 0, let cosInfo = model.cosInfo {
-                success(cosInfo)
-            } else {
-                failed(model.errorCode, model.errorMessage)
-            }
-        }
-    }
-    
-    /// 上传房间头像
-    /// - Parameters:
-    ///   - image: 需要上传的图片
-    ///   - url: 上传的Cos地址
-    ///   - fileName: 文件名
-    ///   - headers: 请求Header
-    ///   - parameters: 请求参数 parmas
-    ///   - success: 上传成功回调
-    ///   - failed: 上传失败回调
-    public func uploadRoomAvatar(image: UIImage,
-                                 url: String,
-                                 fileName: String? = nil,
-                                 headers: [String: String]? = nil,
-                                 parameters: Parameters? = nil,
-                                 success: @escaping () -> Void,
-                                 failed: @escaping (_ code: Int32, _ error: String) -> Void) {
-        guard MLVBConfigManager.shared.isSetupService else {
-            failed(-1, "no services")
-            return
-        }
-        // 图片处理
-        guard let imageData = image.jpegData(compressionQuality: 1.0) else {
-            failed(-1, "upload error: file to data failed")
-            return
-        }
-        // 拼接上传地址: - Alamofire upload 不支持参数设置，需要额外处理下请求地址
-        var uploadURL = url
-        if let paramsString = parameters?.map({ "\($0.key)=\($0.value)" }).joined(separator: "&") {
-            uploadURL += "?\(paramsString)"
-        }
-        HttpBaseRequest.trtcUpload(uploadURL, data: imageData, mimeType: "image/jpeg", fileName: fileName, headers: headers) { model in
-            TRTCLog.out("upload avatar. code: \(model.errorCode), message:\(model.errorMessage)")
-            if model.errorCode == 0 {
-                success()
-            } else {
-                failed(model.errorCode, model.errorMessage)
-            }
-        }
-    }
 }
 
 // MARK: - 关注

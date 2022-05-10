@@ -3,7 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by adams on 2021/9/29.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 

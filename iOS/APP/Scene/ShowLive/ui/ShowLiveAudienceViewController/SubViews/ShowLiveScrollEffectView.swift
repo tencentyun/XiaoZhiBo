@@ -3,6 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/30.
+//  Copyright © 2022 Tencent. All rights reserved.
 //  滑动播放遮罩视图
 
 import UIKit

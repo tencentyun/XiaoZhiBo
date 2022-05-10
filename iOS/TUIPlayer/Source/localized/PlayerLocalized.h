@@ -11,16 +11,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Base
 
-extern NSBundle *PlayerBundle(void);
+extern NSBundle *TUIPlayerBundle(void);
 
 #pragma mark - Replace String
 
-extern NSString *LocalizeReplaceXX(NSString *origin, NSString *xxx_replace);
-extern NSString *LocalizeReplace(NSString *origin, NSString *xxx_replace, NSString *yyy_replace);
+extern NSString *TUIPlayerLocalizeReplaceXX(NSString *origin, NSString *xxx_replace);
+extern NSString *TUIPlayerLocalizeReplace(NSString *origin, NSString *xxx_replace, NSString *yyy_replace);
 
 #pragma mark - Player
 
-extern NSString *const Player_Localize_TableName;
-extern NSString *PlayerLocalize(NSString *key);
+extern NSString *const TUIPlayer_Localize_TableName;
+extern NSString *TUIPlayerLocalize(NSString *key);
 
 NS_ASSUME_NONNULL_END

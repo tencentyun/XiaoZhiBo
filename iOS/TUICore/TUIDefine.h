@@ -10,8 +10,10 @@
 #import "UIView+TUILayout.h"
 #import "UIView+TUIToast.h"
 #import "NSDictionary+TUISafe.h"
+#import "UIColor+TUIHexColor.h"
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <SDWebImage/SDWebImage.h>
+#import "TUIThemeManager.h"
 
 @import ImSDK_Plus;
 
@@ -84,6 +86,14 @@
 #define TUIKitLocalizableBundle_Key_Class  @"TUICore"
 
 #define TUIBundlePath(bundleName, bundleKeyClass) [[NSBundle mainBundle] pathForResource:bundleName ofType:@"bundle"].length > 0 ? [[NSBundle mainBundle] pathForResource:bundleName ofType:@"bundle"] : [[NSBundle bundleForClass:NSClassFromString(bundleKeyClass)] pathForResource:bundleName ofType:@"bundle"]
+
+// 主题包存储路径
+#define TUICoreThemePath TUIBundlePath(@"TUICoreTheme",TUICoreBundle_Key_Class)
+#define TUIChatThemePath TUIBundlePath(@"TUIChatTheme",TUIChatBundle_Key_Class)
+#define TUIConversationThemePath TUIBundlePath(@"TUIConversationTheme",TUIConversationBundle_Key_Class)
+#define TUIContactThemePath TUIBundlePath(@"TUIContactTheme",TUIContactBundle_Key_Class)
+#define TUIGroupThemePath TUIBundlePath(@"TUIGroupTheme",TUIGroupBundle_Key_Class)
+#define TUISearchThemePath TUIBundlePath(@"TUISearchTheme",TUISearchBundle_Key_Class)
 
 #define TUIKitLocalizable(bundleName) [NSBundle bundleWithPath:TUIBundlePath(bundleName, TUIKitLocalizableBundle_Key_Class)]
 
@@ -396,7 +406,8 @@
 /////////////////////////////////////////////////////////////////////////////////
 //消息状态变更通知
 #define TUIKitNotification_onMessageStatusChanged @"TUIKitNotification_onMessageStatusChanged"
-
+//收到套餐包不支持接口的错误通知
+#define TUIKitNotification_onReceivedUnsupportInterfaceError @"TUIKitNotification_onReceivedUnsupportInterfaceError"
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -462,8 +473,22 @@
 #define TUICore_TUIContactService_GetContactControllerMethod @"TUICore_TUIContactService_GetContactControllerMethod"
 // 获取联系人选择 VC
 #define TUICore_TUIContactService_GetContactSelectControllerMethod @"TUICore_TUIContactService_GetContactSelectControllerMethod"
-// TFriendProfileController
-
+#define TUICore_TUIContactService_GetContactSelectControllerMethod_TitleKey @"TUICore_TUIContactService_GetContactSelectControllerMethod_TitleKey"
+#define TUICore_TUIContactService_GetContactSelectControllerMethod_SourceIdsKey @"TUICore_TUIContactService_GetContactSelectControllerMethod_SourceIdsKey"
+#define TUICore_TUIContactService_GetContactSelectControllerMethod_DisableIdsKey @"TUICore_TUIContactService_GetContactSelectControllerMethod_DisableIdsKey"
+// 获取好友资料 VC
+#define TUICore_TUIContactService_GetFriendProfileControllerMethod @"TUICore_TUIContactService_GetFriendProfileControllerMethod"
+#define TUICore_TUIContactService_GetFriendProfileControllerMethod_FriendProfileKey @"TUICore_TUIContactService_GetFriendProfileControllerMethod_FriendProfileKey"
+// 获取用户资料 VC
+#define TUICore_TUIContactService_GetUserProfileControllerMethod @"TUICore_TUIContactService_GetUserProfileControllerMethod"
+#define TUICore_TUIContactService_GetUserProfileControllerMethod_UserProfileKey @"TUICore_TUIContactService_GetUserProfileControllerMethod_UserProfileKey"
+#define TUICore_TUIContactService_GetUserProfileControllerMethod_PendencyDataKey @"TUICore_TUIContactService_GetUserProfileControllerMethod_PendencyDataKey"
+#define TUICore_TUIContactService_GetUserProfileControllerMethod_ActionTypeKey @"TUICore_TUIContactService_GetUserProfileControllerMethod_ActionTypeKey"
+// 根据 userID 获取好友或用户资料 VC
+#define TUICore_TUIContactService_GetUserOrFriendProfileVCMethod @"TUICore_TUIContactService_GetUserOrFriendProfileVCMethod"
+#define TUICore_TUIContactService_GetUserOrFriendProfileVCMethod_UserIDKey @"TUICore_TUIContactService_etUserOrFriendProfileVCMethod_UserIDKey"
+#define TUICore_TUIContactService_GetUserOrFriendProfileVCMethod_SuccKey @"TUICore_TUIContactService_GetUserOrFriendProfileVCMethod_SuccKey"
+#define TUICore_TUIContactService_GetUserOrFriendProfileVCMethod_FailKey @"TUICore_TUIContactService_GetUserOrFriendProfileVCMethod_FailKey"
 
 #pragma mark - TUICore_TUIContactNotify
 #define TUICore_TUIContactNotify @"TUICore_TUIContactNotify"
@@ -472,17 +497,29 @@
 
 #pragma mark - TUICore_TUIGroupService
 #define TUICore_TUIGroupService @"TUICore_TUIGroupService"
+// 获取群资料 VC
+#define TUICore_TUIGroupService_GetGroupInfoControllerMethod @"TUICore_TUIGroupService_GetGroupInfoControllerMethod"
+#define TUICore_TUIGroupService_GetGroupInfoControllerMethod_GroupIDKey @"TUICore_TUIGroupService_GetGroupInfoControllerMethod_GroupIDKey"
 // 获取选择群成员 VC
 #define TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod @"TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod"
 #define TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod_GroupIDKey @"TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod"
 #define TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod_NameKey @"TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod_NameKey"
 #define TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod_OptionalStyleKey @"TUICore_TUIGroupService_GetSelectGroupMemberViewControllerMethod_optionalStyleKey"
+// 新建群
+#define TUICore_TUIGroupService_CreateGroupMethod @"TUICore_TUIGroupService_CreateGroupMethod"
+#define TUICore_TUIGroupService_CreateGroupMethod_GroupTypeKey @"TUICore_TUIGroupService_CreateGroupMethod_GroupTypeKey"
+#define TUICore_TUIGroupService_CreateGroupMethod_OptionKey @"TUICore_TUIGroupService_CreateGroupMethod_OptionKey"
+#define TUICore_TUIGroupService_CreateGroupMethod_ContactsKey @"TUICore_TUIGroupService_CreateGroupMethod_ContactsKey"
+#define TUICore_TUIGroupService_CreateGroupMethod_CompletionKey @"TUICore_TUIGroupService_CreateGroupMethod_CompletionKey"
 
 #pragma mark - TUICore_TUIGroupNotify
 #define TUICore_TUIGroupNotify @"TUICore_TUIContactNotify"
 // 选择群成员VC, 选择完成后的回调
 #define TUICore_TUIGroupNotify_SelectGroupMemberSubKey @"TUICore_TUIGroupNotify_SelectGroupMemberSubKey"
 #define TUICore_TUIGroupNotify_SelectGroupMemberSubKey_UserListKey @"TUICore_TUIGroupNotify_SelectGroupMemberSubKey_UserListKey" // 对应的value是NSMutableArray<TUIUserModel *>
+// 新建群，成功后的回调
+#define TUICore_TUIGroupNotify_CreateGroupSubKey @"TUICore_TUIGroupNotify_CreateGroupSubKey"
+#define TUICore_TUIGroupNotify_CreateGroupSubKey_ConversationDataKey @"TUICore_TUIGroupNotify_CreateGroupSubKey_ConversationDataKey" // value 是 TUIChatConversationModel *
 
 #pragma mark - TUICore_TUICallingService
 #define TUICore_TUICallingService @"TUICore_TUICallingService"
@@ -526,8 +563,13 @@
 #define TUICore_TUIBeautyExtension_BeautyView_LicenseKey @"TUICore_TUIBeautyExtension_BeautyView_LicenseKey"
 #define TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate @"TUICore_TUIBeautyExtension_BeautyView_DataProcessDelegate"
 
-
-
+#pragma mark - TUICore_TUIBeautyService
+#define TUICore_TUIBeautyService @"TUICore_TUIBeautyService"
+#define TUICore_TUIBeautyService_SetLicense @"TUICore_TUIBeautyService_SetLicense"
+#define TUICore_TUIBeautyService_ProcessVideoFrame @"TUICore_TUIBeautyService_ProcessVideoFrame"
+#define TUICore_TUIBeautyService_ProcessVideoFrame_SRCTextureIdKey @"TUICore_TUIBeautyService_ProcessVideoFrame_SRCTextureIdKey"
+#define TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameWidthKey @"TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameWidthKey"
+#define TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameHeightKey @"TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameHeightKey"
 
 #pragma mark - TUICore_TUIAudioEffectViewExtension
 #define TUICore_TUIAudioEffectViewExtension_AudioEffectView @"TUICore_TUIAudioEffectViewExtension_AudioEffectView"

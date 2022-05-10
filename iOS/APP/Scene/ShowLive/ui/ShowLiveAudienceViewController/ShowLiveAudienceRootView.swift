@@ -3,7 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by adams on 2021/9/29.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TUIPlayer
@@ -290,7 +290,7 @@ extension ShowLiveAudienceRootView: TUIPlayerViewDelegate {
         endEditing(true)
     }
     
-    func onPlayStoped(_ playerView: TUIPlayerView!, url: String!) {
+    func onPlayStopped(_ playerView: TUIPlayerView!, url: String!) {
         debugPrint("recv player stop")
         viewModel.isPlaying = false
         // 房主结束直播文本提示

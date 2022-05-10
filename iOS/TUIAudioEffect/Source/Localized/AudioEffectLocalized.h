@@ -10,17 +10,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Base
-
-extern NSBundle *AudioEffectBundle(void);
-
-#pragma mark - Replace String
-
-extern NSString *LocalizeReplaceXX(NSString *origin, NSString *xxx_replace);
-extern NSString *LocalizeReplace(NSString *origin, NSString *xxx_replace, NSString *yyy_replace);
+extern NSBundle *TUIAudioEffectBundle(void);
 
 #pragma mark - AudioEffect String
 
-extern NSString *const AudioEffect_Localize_TableName;
-extern NSString *AudioEffectLocalize(NSString *key);
+extern NSString *const TUIAudioEffect_Localize_TableName;
+extern NSString *TUIAudioEffectLocalize(NSString *key);
 
 NS_ASSUME_NONNULL_END

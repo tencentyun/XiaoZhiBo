@@ -34,7 +34,7 @@ typedef void(^Response)(BOOL isAgree);
 
 /// 结束推流后回调
 /// @param url 之前推流地址
-- (void)onPushStoped:(TUIPusherView *)pusherView url:(NSString *)url;
+- (void)onPushStopped:(TUIPusherView *)pusherView url:(NSString *)url;
 
 /// 有异常时从这里抛出
 /// @param event 事件类型

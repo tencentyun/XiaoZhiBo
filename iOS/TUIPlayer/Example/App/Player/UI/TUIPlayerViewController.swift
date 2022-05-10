@@ -11,7 +11,7 @@ import SnapKit
 import TUICore
 
 class TUIPlayerViewController: UIViewController {
-    lazy var pusherView: TUIPlayerView = {
+    lazy var playerView: TUIPlayerView = {
         let view = TUIPlayerView()
         return view
     }()
@@ -19,12 +19,12 @@ class TUIPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(pusherView)
-        pusherView.snp.makeConstraints { make in
+        view.addSubview(playerView)
+        playerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         /// user id 为测试代码
-        pusherView.startPlay(URLUtils.generatePlayUrl("688", type: .WEBRTC))
+        playerView.startPlay(URLUtils.generatePlayUrl("688", type: .WEBRTC))
     }
     
     override func viewWillAppear(_ animated: Bool) {

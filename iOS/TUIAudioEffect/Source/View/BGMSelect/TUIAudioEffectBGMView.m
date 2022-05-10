@@ -146,7 +146,7 @@
 - (UIButton *)backBtn{
     if (!_backBtn) {
         _backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_backBtn setTitle:AudioEffectLocalize(@"TUIKit.AudioEffectView.Back") forState:UIControlStateNormal];
+        [_backBtn setTitle:TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.Back") forState:UIControlStateNormal];
         [_backBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     }
     return _backBtn;
@@ -157,7 +157,7 @@
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textColor = UIColor.blackColor;
         _titleLabel.font = [UIFont systemFontOfSize:24 weight:UIFontWeightMedium];
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.MusicBackground.title");
     }
     return _titleLabel;
 }

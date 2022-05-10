@@ -64,7 +64,7 @@ typedef enum : NSUInteger {
 - (BOOL)start:(NSString *)url {
     self.pushUrl = url;
     if (![self authorization]) {
-        [[self getTopiestWindow] makeToast:PusherLocalize(@"Demo.Pusher.Authorization")];
+        [[self getTopiestWindow] makeToast:TUIPusherLocalize(@"Demo.Pusher.Authorization")];
         return NO;
     }
     return [self.presenter start:url view:self.previewView];
@@ -209,7 +209,7 @@ typedef enum : NSUInteger {
     }];
     
     UIButton *closeLinkMicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [closeLinkMicBtn setImage:[UIImage imageNamed:@"pusher_close" inBundle:PusherBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    [closeLinkMicBtn setImage:[UIImage imageNamed:@"pusher_close" inBundle:TUIPusherBundle() compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     closeLinkMicBtn.hidden = YES;
     [closeLinkMicBtn addTarget:self action:@selector(closeLinkMicBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:closeLinkMicBtn];
@@ -219,7 +219,7 @@ typedef enum : NSUInteger {
         make.centerY.equalTo(remoteView.mas_top);
     }];
     
-    UIImageView *pkImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pusher_pk" inBundle:PusherBundle() compatibleWithTraitCollection:nil]];
+    UIImageView *pkImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pusher_pk" inBundle:TUIPusherBundle() compatibleWithTraitCollection:nil]];
     [self addSubview:pkImageView];
     pkImageView.hidden = YES;
     self.pkImageView = pkImageView;

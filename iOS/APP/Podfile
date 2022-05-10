@@ -2,43 +2,43 @@
 platform :ios, '11.0'
 source 'https://github.com/CocoaPods/Specs.git'
 
-# 业务库
-def professional
-  pod 'TXIMSDK_Plus_iOS', '5.7.1435'
-end
-
 # UI库
 def ui
   pod 'SnapKit'
   pod 'Kingfisher'
   pod 'MJRefresh'
   pod 'Toast-Swift'
-  
 end
 
 # 工具库
 def tool
   pod 'Alamofire'
-  pod 'TXIMSDK_Plus_iOS', '5.7.1435'
-  pod 'TXCopyrightedMedia', :podspec => 'https://mediacloud-76607.gzc.vod.tencent-cloud.com/Podspec/TXCopyrightedMedia/1.0.2/TXCopyrightedMedia.podspec'
+  pod 'TXIMSDK_Plus_iOS', '~> 5.7.1435'
+  pod 'TXCopyrightedMedia', '1.0.3'
 end
 
 def pod_local(type)
   pod "TXLiteAVSDK_#{type}"
-  loadLocalPodWithSubspec('TUIPusher', type)
-#  loadLocalPodWithSubspec('TUIBeauty', type)
-  loadLocalPodWithSubspec('TUIAudioEffect', type)
-  loadLocalPodWithSubspec('TUIPlayer', type)
-  loadLocalPod('TUIBarrage')
-  loadLocalPod('TUIGift')
-  loadLocalPod('TUICore')
+  pod "TUICore", :path => "../TUICore"
+  pod "TUIBeauty", :path => "../TUIBeauty"
+  loadLocalTUIComponent('TUIPusher', type)
+  loadLocalTUIComponent('TUIPlayer', type)
+  
+  loadLocalTUIWidgetWithSubspec('TUIAudioEffect', type)
+  loadLocalTUIWidget('TUIBarrage')
+  loadLocalTUIWidget('TUIGift')
+  
 end
 
-def loadLocalPod(name)
+def loadLocalTUIComponent(name, type)
+  pod "#{name}/#{type}", :path => "../#{name}/"
+end
+
+def loadLocalTUIWidget(name)
   pod "#{name}", :path => "../#{name}/"
 end
 
-def loadLocalPodWithSubspec(name, type)
+def loadLocalTUIWidgetWithSubspec(name, type)
   pod "#{name}/#{type}", :path => "../#{name}/"
 end
 

@@ -14,6 +14,7 @@ iOS
 │   └── Services    // 服务类文件
 ├─ TUIAudioEffect   // 音效组件
 ├─ TUIBarrage       // 弹幕组件
+├─ TUIBeauty        // 美颜组件
 ├─ TUIGift          // 礼物组件
 ├─ TUIPlayer        // 拉流组件
 └─ TUIPusher        // 推流组件
@@ -65,6 +66,8 @@ git clone https://github.com/tencentyun/XiaoZhiBo
 ![](https://qcloudimg.tencent-cloud.cn/raw/e58a4ec175b62f329428366d1c1d6572.png)
 
 5. 修改工程的 `Bundle identifier` 字段为 License 信息所对应的包名；
+
+>? 关于TUIBeauty的美颜特效依赖库编译失败问题，请前往 [美颜特效-SDK集成指引iOS](https://cloud.tencent.com/document/product/454/9018)，下载并解压[Demo包](https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/iOS/2.4.0.vcube/MLVB-API-Example.zip)，将SDK目录中的 `libpag.framework、XMagic.framework、YTCommonXMagic.framework`导入到小直播TUIBeauty下的Frameworks目录，重新执行命令 "pod install"即可 。
 
 ### 编译运行
 用 Xcode 打开该项目，连上 iOS 设备，编译并运行。

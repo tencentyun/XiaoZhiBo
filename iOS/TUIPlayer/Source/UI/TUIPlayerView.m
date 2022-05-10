@@ -172,14 +172,14 @@ typedef NS_ENUM(NSUInteger, LinkMicBtnType) {
     }
 }
 - (void)onLinkMicInviteTimeout {
-    [self makeToast:PlayerLocalize(@"TUIPlayer.Link.Request.timeout")];
+    [self makeToast:TUIPlayerLocalize(@"TUIPlayer.Link.Request.timeout")];
     [self setRequestLinkMicBtnStatus:LinkMicBtnTypeNormal];
 }
 
 - (void)onRemoteStopPush {
     [self stopPlay];
-    if ([self.delegate respondsToSelector:@selector(onPlayStoped:url:)]) {
-        [self.delegate onPlayStoped:self url:self.playUrl];
+    if ([self.delegate respondsToSelector:@selector(onPlayStopped:url:)]) {
+        [self.delegate onPlayStopped:self url:self.playUrl];
     }
 }
 
@@ -198,9 +198,9 @@ typedef NS_ENUM(NSUInteger, LinkMicBtnType) {
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         isViewReady = NO;
-        _requestJoinAnchorImage = [UIImage imageNamed:@"player_linkmic" inBundle:PlayerBundle() compatibleWithTraitCollection:nil];
-        _cancelJoinAnchorImage = [UIImage imageNamed:@"player_cancelLinkmic" inBundle:PlayerBundle() compatibleWithTraitCollection:nil];
-        _stopJoinAnchorImage = [UIImage imageNamed:@"player_cancelLinkmic" inBundle:PlayerBundle() compatibleWithTraitCollection:nil];
+        _requestJoinAnchorImage = [UIImage imageNamed:@"player_linkmic" inBundle:TUIPlayerBundle() compatibleWithTraitCollection:nil];
+        _cancelJoinAnchorImage = [UIImage imageNamed:@"player_cancelLinkmic" inBundle:TUIPlayerBundle() compatibleWithTraitCollection:nil];
+        _stopJoinAnchorImage = [UIImage imageNamed:@"player_cancelLinkmic" inBundle:TUIPlayerBundle() compatibleWithTraitCollection:nil];
         [self setupUI];
         [[TUIConfig defaultConfig] setSceneOptimizParams:@"TUIPlayer"];
     }
@@ -328,10 +328,10 @@ typedef NS_ENUM(NSUInteger, LinkMicBtnType) {
         }];
     } else if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
         if (mediaType == AVMediaTypeVideo) {
-            [self makeToast:PlayerLocalize(@"TUIPlayer.Link.Authorization.camera")];
+            [self makeToast:TUIPlayerLocalize(@"TUIPlayer.Link.Authorization.camera")];
         }
         if (mediaType == AVMediaTypeAudio) {
-            [self makeToast:PlayerLocalize(@"TUIPlayer.Link.Authorization.microphone")];
+            [self makeToast:TUIPlayerLocalize(@"TUIPlayer.Link.Authorization.microphone")];
         }
     }
     return status == AVAuthorizationStatusAuthorized;

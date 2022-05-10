@@ -9,6 +9,8 @@
 #import "TUIPusherViewDelegate.h"
 #import <TUICore/TUILogin.h>
 #import "TUIPusherHeader.h"
+#import "TUIDefine.h"
+#import "TUICore.h"
 
 @interface TUIPusherPresenter () <TUIPusherStreamServiceDelegate, TUIPusherSignalingServiceDelegate>
 
@@ -103,8 +105,8 @@
 
 - (void)stopPush {
     [self.streamService stopPush];
-    if ([self.pusherViewDelegate respondsToSelector:@selector(onPushStoped:url:)]) {
-        [self.pusherViewDelegate onPushStoped:self.pusherView url:self.pushUrl];
+    if ([self.pusherViewDelegate respondsToSelector:@selector(onPushStopped:url:)]) {
+        [self.pusherViewDelegate onPushStopped:self.pusherView url:self.pushUrl];
     }
 }
 
@@ -208,9 +210,14 @@
 }
 
 - (void)onProcessVideoFrame:(V2TXLiveVideoFrame *_Nonnull)srcFrame dstFrame:(V2TXLiveVideoFrame *_Nonnull)dstFrame {
-    if ([self.thirdBeautyPlugIn  respondsToSelector:@selector(onProcessVideoFrame:dstFrame:)]) {
-        [self.thirdBeautyPlugIn onProcessVideoFrame:srcFrame dstFrame:dstFrame];
-    }
+#ifdef TUICore_TUIBeautyService_ProcessVideoFrame
+    NSNumber *dstTextureId = [TUICore callService:TUICore_TUIBeautyService method:TUICore_TUIBeautyService_ProcessVideoFrame param:@{
+        TUICore_TUIBeautyService_ProcessVideoFrame_SRCTextureIdKey:@(srcFrame.textureId),
+        TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameWidthKey:@(srcFrame.width),
+        TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameHeightKey:@(srcFrame.height)
+    }];
+    dstFrame.textureId = dstTextureId.intValue;
+#endif
 }
 
 #pragma mark - TUIPusherSignalingServiceDelegate

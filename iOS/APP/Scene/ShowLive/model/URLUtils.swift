@@ -3,7 +3,7 @@
 //  TUIPusherApp
 //
 //  Created by gg on 2021/10/21.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import Foundation
 import ImSDK_Plus

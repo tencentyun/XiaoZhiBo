@@ -3,7 +3,7 @@
 //  XiaoZhiBoApp
 //
 //  Created by jack on 2021/12/15.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import MJRefresh
@@ -55,7 +55,6 @@ class ShowLiveMoreViewController: UIViewController {
         view.register(ShowLiveLiteCollectionCell.self, forCellWithReuseIdentifier: ShowLiveLiteCollectionCell.reuseIdentifier)
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
-        view.automaticallyAdjustsScrollIndicatorInsets = false
         view.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: kDeviceSafeBottomHeight, right: 10)
         view.delegate = self
         view.dataSource = self

@@ -236,7 +236,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textColor = UIColor.blackColor;
-        _titleLabel.text = AudioEffectLocalize(@"TUIKit.AudioEffectView.title");
+        _titleLabel.text = TUIAudioEffectLocalize(@"TUIKit.AudioEffectView.title");
     }
     return _titleLabel;
 }
