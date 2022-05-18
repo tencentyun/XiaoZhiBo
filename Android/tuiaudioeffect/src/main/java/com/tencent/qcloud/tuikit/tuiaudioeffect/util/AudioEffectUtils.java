@@ -35,9 +35,9 @@ public class AudioEffectUtils {
     public static final int AUDIO_REVERB_TYPE_7 = 7;
 
     /*******************  歌曲地址  *****************/
-    public static final String ONLINE_BGM_FIRST  = "https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/PositiveHappyAdvertising.mp3";
-    public static final String ONLINE_BGM_SECOND = "https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/SadCinematicPiano.mp3";
-    public static final String ONLINE_BGM_THIRD  = "https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/WonderWorld.mp3";
+    public static final String ONLINE_BGM_FIRST  = "https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/PositiveHappyAdvertising.mp3";
+    public static final String ONLINE_BGM_SECOND = "https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/SadCinematicPiano.mp3";
+    public static final String ONLINE_BGM_THIRD  = "https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/WonderWorld.mp3";
 
 
     public static TXAudioEffectManager.TXVoiceReverbType translateReverbType(int type) {
