@@ -61,9 +61,9 @@
         self.currentVoiceReverbType = TXVoiceReverbType_0;
         
         NSArray *bgmURLs = @[
-        @"https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/PositiveHappyAdvertising.mp3",
-        @"https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/SadCinematicPiano.mp3",
-        @"https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/WonderWorld.mp3"
+        @"https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/PositiveHappyAdvertising.mp3",
+        @"https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/SadCinematicPiano.mp3",
+        @"https://dldir1.qq.com/hudongzhibo/TUIKit/resource/music/WonderWorld.mp3"
         ];
         NSArray *bgmNames = @[
         @"TUIKit.AudioEffectView.MusicSelect.musicname1",
