@@ -25,6 +25,13 @@ class ShowLiveAudienceRootView: UIView {
         return button
     }()
     
+    lazy var reportButton: UIButton = {
+        let button = UIButton.init(frame: .zero)
+        button.setBackgroundImage(UIImage(named: "showlive_report"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFill
+        return button
+    }()
+    
     lazy var roomInfoView: ShowLiveRoomInfoView = {
         let view = ShowLiveRoomInfoView(type: .audience)
         return view
@@ -95,6 +102,9 @@ class ShowLiveAudienceRootView: UIView {
         addSubview(moreLiveView)
         addSubview(adImageView)
         addSubview(hotRankingView)
+#if RTCube_APPSTORE
+        addSubview(reportButton)
+#endif
     }
     
     private func activateConstraints() {
@@ -134,11 +144,19 @@ class ShowLiveAudienceRootView: UIView {
             make.height.equalTo(22)
             make.top.equalTo(roomInfoView.snp.bottom).offset(10)
         }
+        if reportButton.superview != nil {
+            reportButton.snp.makeConstraints { make in
+                make.trailing.equalTo(exitButton.snp.leading).offset(-10)
+                make.centerY.equalTo(exitButton)
+                make.width.height.equalTo(exitButton)
+            }
+        }
     }
     
     private func bindInteraction() {
         viewModel.viewResponder = self
         exitButton.addTarget(self, action: #selector(exitButtonClick(sender:)), for: .touchUpInside)
+        reportButton.addTarget(self, action: #selector(reportClick), for: .touchUpInside)
         moreLiveView.addTapGesture(target: self, action: #selector(moreLiveRoomClick))
         adImageView.addTapGesture(target: self, action: #selector(adImageViewClick))
         // 设置预加载模糊背景图片
@@ -278,6 +296,13 @@ extension ShowLiveAudienceRootView {
     private func hotRankingClick() {
         let viewController = ShowLiveHotRankingAlert(roomInfo: viewModel.roomInfo)
         viewModel.viewNavigator?.present(viewController: viewController)
+    }
+    
+    @objc func reportClick() {
+        let selector = NSSelectorFromString("showReportAlertWithRoomId:ownerId:")
+        if responds(to: selector) {
+            perform(selector, with: viewModel.roomInfo.roomID.description, with: viewModel.roomInfo.ownerId)
+        }
     }
 }
 

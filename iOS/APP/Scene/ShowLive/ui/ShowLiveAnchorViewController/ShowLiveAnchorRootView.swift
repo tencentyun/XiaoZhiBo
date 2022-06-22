@@ -376,6 +376,11 @@ extension ShowLiveAnchorRootView: ShowLiveAnchorViewResponder {
     func switchCamera(isFront: Bool) {
         pusherView.switchCamera(isFront)
     }
+    
+    func exitRoom() {
+        pusherView.stop()
+        viewModel.stopPush()
+    }
 }
 
 // MARK: - TUIPusherViewDelegate

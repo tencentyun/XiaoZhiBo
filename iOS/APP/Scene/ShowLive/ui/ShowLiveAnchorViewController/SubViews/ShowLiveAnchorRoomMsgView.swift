@@ -35,9 +35,12 @@ class ShowLiveAnchorRoomMsgView: UIView {
         let textField = UITextField(frame: .zero)
         textField.font = UIFont(name: "PingFangSC-Regular", size: 16)
         textField.textColor = .white
-        textField.attributedPlaceholder = NSAttributedString(string: "直播间的描述", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        textField.text = ShowLiveLocalizeReplaceOneCharacter(origin: "Scene.ShowLive.Create.xxxsroom", xxx_replace: viewModel.roomInfo.ownerName)
         textField.backgroundColor = .clear
         textField.delegate = self
+#if RTCube_APPSTORE
+        textField.isUserInteractionEnabled = false
+#endif
         return textField
     }()
     

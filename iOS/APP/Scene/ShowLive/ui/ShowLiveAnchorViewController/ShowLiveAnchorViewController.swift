@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
+import TUICore
 
 class ShowLiveAnchorViewController: UIViewController {
    
@@ -25,6 +26,13 @@ class ShowLiveAnchorViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+#if RTCube_APPSTORE
+        let selector = NSSelectorFromString("showAlertUserLiveTips")
+        if responds(to: selector) {
+            perform(selector)
+        }
+#endif
+        TUILogin.add(self)
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +52,28 @@ class ShowLiveAnchorViewController: UIViewController {
     }
 }
 
+extension ShowLiveAnchorViewController: TUILoginListener {
+    func onConnecting() {
+        
+    }
+    
+    func onConnectSuccess() {
+        
+    }
+    
+    func onConnectFailed(_ code: Int32, err: String!) {
+        
+    }
+    
+    func onKickedOffline() {
+        (view as? ShowLiveAnchorRootView)?.pusherView.stop()
+        viewModel.stopPush()
+    }
+    
+    func onUserSigExpired() {
+        
+    }
+}
 
 extension ShowLiveAnchorViewController: ShowLiveAnchorViewNavigator {
     func pop() {

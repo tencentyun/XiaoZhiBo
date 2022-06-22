@@ -6,6 +6,7 @@
 //  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
+import TUICore
 
 typealias ShowLiveRoomLinkStateChangedBlock = (_ isLinking: Bool) -> Void
 class ShowLiveAudienceViewController: UIViewController {
@@ -30,11 +31,13 @@ class ShowLiveAudienceViewController: UIViewController {
     }
     
     deinit {
+        TUILogin.remove(self)
         TRTCLog.out("deinit \(type(of: self))")
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        TUILogin.add(self)
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +54,34 @@ class ShowLiveAudienceViewController: UIViewController {
     /// 取消
     @objc func cancel() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - TUILoginListener
+extension ShowLiveAudienceViewController: TUILoginListener {
+    func onConnecting() {
+        
+    }
+    
+    func onConnectSuccess() {
+        
+    }
+    
+    func onConnectFailed(_ code: Int32, err: String!) {
+        
+    }
+    
+    func onKickedOffline() {
+        if ShowLiveFloatingManager.shared.isFloating {
+            ShowLiveFloatingManager.shared.closeWindowAndExitRoom()
+        } else {
+            (view as? ShowLiveAudienceRootView)?.playerView.stopPlay()
+            viewModel.exitRoom(success: nil, failed: nil)
+        }
+    }
+    
+    func onUserSigExpired() {
+        
     }
 }
 

@@ -12,3 +12,14 @@ let ShowLiveLocalizeTableName = "ShowLiveLocalized"
 func ShowLiveLocalize(_ key: String) -> String {
     return localizeFromTable(key: key, table: ShowLiveLocalizeTableName)
 }
+
+func ShowLiveLocalizeReplaceOneCharacter(origin: String, xxx_replace: String) -> String {
+    return ShowLiveLocalize(origin).replacingOccurrences(of: "xxx", with: xxx_replace)
+}
+
+//let ShowLiveBundle: Bundle? = {
+//    guard let url = Bundle.main.url(forResource: "ShowLiveAssets", withExtension: "bundle") else {
+//        return nil
+//    }
+//    return Bundle(url: url)
+//}()

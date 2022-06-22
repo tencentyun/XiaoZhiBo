@@ -11,11 +11,7 @@ Pod::Spec.new do |spec|
   spec.version          = '1.0.0'
   spec.platform     = :ios
   spec.ios.deployment_target = '9.0'
-  spec.license      = { :type => 'Proprietary',
-        :text => <<-LICENSE
-          copyright 2017 tencent Ltd. All rights reserved.
-          LICENSE
-         }
+  spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   
   spec.homepage     = 'https://cloud.tencent.com/document/product/269/3794'
   spec.documentation_url = 'https://cloud.tencent.com/document/product/269/9147'
@@ -38,10 +34,6 @@ Pod::Spec.new do |spec|
   
   spec.subspec 'Live' do |live|
     live.dependency 'TXLiteAVSDK_Live'
-    framework_path="../../SDK/TXLiteAVSDK_Live.framework"
-    live.pod_target_xcconfig={
-      'HEADER_SEARCH_PATHS'=>["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
-    }
     live.xcconfig = { 'HEADER_SEARCH_PATHS' => '${SRCROOT}/../SDK/TXLiteAVSDK_Live.framework/Headers/'}
     live.ios.framework = ['AVFoundation', 'Accelerate', 'AssetsLibrary']
     live.library = 'c++', 'resolv', 'sqlite3'
@@ -51,13 +43,21 @@ Pod::Spec.new do |spec|
       'TUIAudioEffectKitBundle' => ['Resource/Localized/**/*.strings', 'Resource/*.xcassets']
     }
   end
+
+  spec.subspec 'TRTC' do |trtc|
+    trtc.dependency 'TXLiteAVSDK_TRTC'
+    trtc.xcconfig = { 'HEADER_SEARCH_PATHS' => '${SRCROOT}/../SDK/TXLiteAVSDK_TRTC.framework/Headers/'}
+    trtc.ios.framework = ['AVFoundation', 'Accelerate', 'AssetsLibrary']
+    trtc.library = 'c++', 'resolv', 'sqlite3'
+    
+    trtc.source_files = 'Source/Localized/**/*.{h,m,mm}', 'Source/TUIExtension/**/*.{h,m,mm}', 'Source/Model/**/*.{h,m,mm,c}', 'Source/View/**/*.{h,m,mm}', 'Source/Presenter/**/*.{h,m,mm}', 'Source/TUIAudioEffectViewKit_TRTC/*.{h,m,mm}'
+    trtc.resource_bundles = {
+      'TUIAudioEffectKitBundle' => ['Resource/Localized/**/*.strings', 'Resource/*.xcassets']
+    }
+  end
   
   spec.subspec 'Professional' do |professional|
     professional.dependency 'TXLiteAVSDK_Professional'
-    framework_path="../../SDK/TXLiteAVSDK_Professional.framework"
-    professional.pod_target_xcconfig={
-      'HEADER_SEARCH_PATHS'=>["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
-    }
     professional.xcconfig = { 'HEADER_SEARCH_PATHS' => '${SRCROOT}/../SDK/TXLiteAVSDK_Professional.framework/Headers/'}
     professional.ios.framework = ['AVFoundation', 'Accelerate', 'AssetsLibrary']
     professional.library = 'c++', 'resolv', 'sqlite3'
@@ -70,10 +70,6 @@ Pod::Spec.new do |spec|
   
   spec.subspec 'Enterprise' do |enterprise|
     enterprise.dependency 'TXLiteAVSDK_Enterprise'
-    framework_path="../../SDK/TXLiteAVSDK_Enterprise.framework"
-    enterprise.pod_target_xcconfig={
-      'HEADER_SEARCH_PATHS'=>["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
-    }
     enterprise.xcconfig = { 'HEADER_SEARCH_PATHS' => '${SRCROOT}/../SDK/TXLiteAVSDK_Enterprise.framework/Headers/'}
     enterprise.ios.framework = ['AVFoundation', 'Accelerate', 'AssetsLibrary']
     enterprise.library = 'c++', 'resolv', 'sqlite3'
