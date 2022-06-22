@@ -1,6 +1,7 @@
 
 #import "TUILogin.h"
 #import "TUICore.h"
+#import "TUIDefine.h"
 
 @import ImSDK_Plus;
 
@@ -269,6 +270,7 @@
                 [listener onConnecting];
             }
         }
+        [TUICore notifyEvent:TUICore_NetworkConnection_EVENT_CONNECTION_STATE_CHANGED subKey:TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECTING object:nil param:nil];
     }];
 }
 
@@ -281,6 +283,7 @@
                 [listener onConnectSuccess];
             }
         }
+        [TUICore notifyEvent:TUICore_NetworkConnection_EVENT_CONNECTION_STATE_CHANGED subKey:TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECT_SUCCESS object:nil param:nil];
     }];
 }
 
@@ -293,6 +296,7 @@
                 [listener onConnectFailed:code err:err];
             }
         }
+        [TUICore notifyEvent:TUICore_NetworkConnection_EVENT_CONNECTION_STATE_CHANGED subKey:TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECT_FAILED object:nil param:nil];
     }];
 }
 

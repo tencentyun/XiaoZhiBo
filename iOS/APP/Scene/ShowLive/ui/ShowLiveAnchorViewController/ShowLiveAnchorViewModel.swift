@@ -20,6 +20,7 @@ public protocol ShowLiveAnchorViewResponder: NSObject {
     func showToast(message: String)
     // 刷新在线用户视图
     func refreshOnlineUsersView()
+    func exitRoom()
 }
 
 enum ShowLiveAudioQuality {
@@ -98,23 +99,28 @@ class ShowLiveAnchorViewModel: NSObject {
         if roomInfo.roomName == "" {
             roomInfo.roomName = "\(roomInfo.ownerName)的直播间"
         }
-        RoomService.shared.createRoom(sdkAppID: HttpLogicRequest.sdkAppId,
-                                        roomID: roomInfo.roomID,
-                                      roomName: roomInfo.roomName,
-                                      coverUrl: roomInfo.coverUrl,
-                                      roomType: .showLive) { [weak self] in
-            callback?(0, "create Room Success.")
-            guard let `self` = self else { return }
-            // 获取群成员列表
-            IMRoomManager.sharedManager().getGroupMemberList(roomID: self.roomInfo.roomID) { [weak self] (code, message, memberList) in
-                if code == 0, let userList = memberList {
-                    self?.onlineUsers = userList
-                    self?.viewResponder?.refreshOnlineUsersView()
+        IMRoomManager.sharedManager().createRoom(roomId: roomInfo.roomID, roomName: roomInfo.roomName) { [weak self] (code, message) in
+            guard let self = self else { return }
+            if code == 0 {
+                RoomService.shared.createRoom(sdkAppID: HttpLogicRequest.sdkAppId,
+                                              roomID: self.roomInfo.roomID,
+                                              roomName: self.roomInfo.roomName,
+                                              coverUrl: self.roomInfo.coverUrl,
+                                              roomType: .showLive) { [weak self] in
+                    guard let self = self else { return }
+                    callback?(0, "create Room Success.")
+                    // 获取群成员列表
+                    IMRoomManager.sharedManager().getGroupMemberList(roomID: self.roomInfo.roomID) { [weak self] (code, message, memberList) in
+                        if code == 0, let userList = memberList {
+                            self?.onlineUsers = userList
+                            self?.viewResponder?.refreshOnlineUsersView()
+                        }
+                    }
+                } failed: { code, msg in
+                    callback?(code, msg)
                 }
-            }
-        } failed: { code, msg in
-            if let callBack = callback {
-                callBack(code, msg)
+            } else {
+                callback?(code, message ?? "")
             }
         }
     }
@@ -138,6 +144,7 @@ extension ShowLiveAnchorViewModel {
     private func registerNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(onUserEnterLiveRoom(_:)), name: .IMGroupUserEnterLiveRoom, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onUserLeaveLiveRoom(_:)), name: .IMGroupUserLeaveLiveRoom, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onGroupDestroy(_:)), name: .IMGroupDismissed, object: nil)
     }
     
     @objc
@@ -166,5 +173,19 @@ extension ShowLiveAnchorViewModel {
         }
         onlineUsers.removeAll(where: {$0.userId == leaveUser.userId})
         viewResponder?.refreshOnlineUsersView()
+    }
+    
+    @objc
+    private func onGroupDestroy(_ notification: Notification) {
+        guard let leaveInfo = notification.userInfo as? [String: Any], let groupID = leaveInfo["groupID"] as? String, groupID == self.groupId else {
+            return
+        }
+        viewResponder?.exitRoom()
+#if RTCube_APPSTORE
+        let selector = NSSelectorFromString("showAlertUserLiveTimeOut")
+        if UIViewController.responds(to: selector) {
+            UIViewController.perform(selector)
+        }
+#endif
     }
 }

@@ -23,6 +23,9 @@ public extension Notification.Name {
     /// 监听IM群组用户离开房间
     /// - Note : userInfo: ["groupID":"群组id", "member":ShowLiveUserInfo]
     static let IMGroupUserLeaveLiveRoom = Notification.Name("MLVB.IMGroup.UserLeaveLiveRoomNotification")
+    /// 监听IM群组解散
+    /// - Note : userInfo: ["groupID":"群组id"]
+    static let IMGroupDismissed = Notification.Name("MLVB.IMGroup.onGroupDismissed")
 }
 
 // MARK: - IMRoomManager
@@ -325,6 +328,13 @@ extension IMRoomManager: V2TIMGroupListener {
         let userInfo = ShowLiveUserInfo(member: memberInfo)
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .IMGroupUserLeaveLiveRoom, object: nil, userInfo: ["groupID" : roomId, "member": userInfo])
+        }
+    }
+    
+    func onGroupDismissed(_ groupID: String!, opUser: V2TIMGroupMemberInfo!) {
+        guard let roomId = groupID else { return }
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .IMGroupDismissed, object: nil, userInfo: ["groupID" : roomId])
         }
     }
 }

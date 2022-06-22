@@ -60,10 +60,10 @@ class MineAboutViewController: UIViewController {
     lazy var dataSource: [MineAboutModel] = {
         var res : [MineAboutModel] = []
         
-        if let sdkVersion = TRTCCloud.getSDKVersion() {
-            let sdk = MineAboutModel(title: .sdkVersionText, value: sdkVersion)
-            res.append(sdk)
-        }
+        let sdkVersion = TRTCCloud.getSDKVersion()
+        let sdk = MineAboutModel(title: .sdkVersionText, value: sdkVersion)
+        res.append(sdk)
+        
         let version = AppUtils.appVersionWithBuild
         let storeVersion = MineAboutModel(title: .storeVersionText, value: version)
         res.append(storeVersion)

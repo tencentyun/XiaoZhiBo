@@ -580,4 +580,10 @@
 
 #define TUICore_TUIAudioEffectViewExtension_AudioEffectView_AudioEffectManager @"TUICore_TUIAudioEffectViewExtension_AudioEffectView_AudioEffectManager"
 
+#pragma mark - TUICore_NetworkConnection_EVENT
+#define TUICore_NetworkConnection_EVENT_CONNECTION_STATE_CHANGED @"eventConnectionStateChanged"
+#define TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECTING @"eventSubKeyConnecting"
+#define TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECT_SUCCESS @"eventSubKeyConnectSuccess"
+#define TUICore_NetworkConnection_EVENT_SUB_KEY_CONNECT_FAILED @"eventSubKeyConnectFailed"
+
 #endif /* THeader_h */
