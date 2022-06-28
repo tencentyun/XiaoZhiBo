@@ -95,34 +95,39 @@ class ShowLiveAnchorViewModel: NSObject {
     }
     
     public func createRoom(callback: ((_ code: Int32, _ msg: String) -> Void)?) {
-        
         if roomInfo.roomName == "" {
             roomInfo.roomName = "\(roomInfo.ownerName)的直播间"
         }
-        IMRoomManager.sharedManager().createRoom(roomId: roomInfo.roomID, roomName: roomInfo.roomName) { [weak self] (code, message) in
-            guard let self = self else { return }
-            if code == 0 {
-                RoomService.shared.createRoom(sdkAppID: HttpLogicRequest.sdkAppId,
-                                              roomID: self.roomInfo.roomID,
-                                              roomName: self.roomInfo.roomName,
-                                              coverUrl: self.roomInfo.coverUrl,
-                                              roomType: .showLive) { [weak self] in
-                    guard let self = self else { return }
-                    callback?(0, "create Room Success.")
-                    // 获取群成员列表
-                    IMRoomManager.sharedManager().getGroupMemberList(roomID: self.roomInfo.roomID) { [weak self] (code, message, memberList) in
-                        if code == 0, let userList = memberList {
-                            self?.onlineUsers = userList
-                            self?.viewResponder?.refreshOnlineUsersView()
-                        }
+        func createRoomService(callBack: ((_ code: Int32, _ msg: String) -> Void)?) {
+            RoomService.shared.createRoom(sdkAppID: HttpLogicRequest.sdkAppId,
+                                          roomID: self.roomInfo.roomID,
+                                          roomName: self.roomInfo.roomName,
+                                          coverUrl: self.roomInfo.coverUrl,
+                                          roomType: .showLive) { [weak self] in
+                guard let self = self else { return }
+                callBack?(0, "create Room Success.")
+                // 获取群成员列表
+                IMRoomManager.sharedManager().getGroupMemberList(roomID: self.roomInfo.roomID) { [weak self] (code, message, memberList) in
+                    if code == 0, let userList = memberList {
+                        self?.onlineUsers = userList
+                        self?.viewResponder?.refreshOnlineUsersView()
                     }
-                } failed: { code, msg in
-                    callback?(code, msg)
                 }
+            } failed: { code, msg in
+                callBack?(code, msg)
+            }
+        }
+#if RTCube_APPSTORE
+        IMRoomManager.sharedManager().createRoom(roomId: roomInfo.roomID, roomName: roomInfo.roomName) { (code, message) in
+            if code == 0 {
+                createRoomService(callBack: callback)
             } else {
                 callback?(code, message ?? "")
             }
         }
+#else
+        createRoomService(callBack: callback)
+#endif
     }
     
     public func getRoomList(callBack: @escaping ([ShowLiveRoomInfo]) -> Void) {
