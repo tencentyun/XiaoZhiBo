@@ -20,7 +20,6 @@ end
 def pod_local(type)
   pod "TXLiteAVSDK_#{type}"
   pod "TUICore", :path => "../TUICore"
-  pod "TUIBeauty", :path => "../TUIBeauty"
   loadLocalTUIComponent('TUIPusher', type)
   loadLocalTUIComponent('TUIPlayer', type)
   
