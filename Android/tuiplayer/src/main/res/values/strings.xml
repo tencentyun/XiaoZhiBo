@@ -13,4 +13,10 @@
     <string name="tuiplayer_stop_link_cmd_send_fail">Failed to stop sending MIC signaling, error code:</string>
     <string name="tuiplayer_url_empty">The URL cannot be empty</string>
     <string name="tuiplayer_stop_link">The anchor stops connecting the microphone</string>
+    <string name="tuiplayer_tips_start_camera">Please turn on the camera permission first</string>
+    <string name="tuiplayer_tips_start_audio">Please turn on the microphone permission first</string>
+    <string name="tuiplayer_permission_mic_reason_title">%s applies for access to the microphone</string>
+    <string name="tuiplayer_permission_mic_reason">Needs access to your microphone, and it can be used for functions such as Interactive Video Streaming, Show Live, Video Call, Group Video Call, Multi-person audio and video room, etc.</string>
+    <string name="tuiplayer_permission_camera_reason_title">%s applies for camera permission</string>
+    <string name="tuiplayer_permission_camera_reason">Needs access to your camera, and it can be used for functions such as Interactive Video Streaming, Show Live, Video Call, Group Video Call, Multi-person audio and video room, etc. For beauty filters to work, we will collect the facial information captured by your camera in real time to detect your facial features.</string>
 </resources>

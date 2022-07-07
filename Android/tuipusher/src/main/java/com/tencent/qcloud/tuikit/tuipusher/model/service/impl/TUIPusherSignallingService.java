@@ -55,7 +55,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
 
     @Override
     public void addSignalingListener(final TUIPusherCallback callback) {
-        TXCLog.d(TAG, "addSignalingListener");
+        TXCLog.i(TAG, "addSignalingListener");
         V2TIMManager.getMessageManager();
         V2TIMManager.getSignalingManager().addSignalingListener(mIMSignalingListener);
         callback.onResult(0, "success");
@@ -63,17 +63,17 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
 
     @Override
     public void responseLink(String inviteId, String streamId, boolean result, String reaseon, int timeout) {
-        TXCLog.d(TAG, "responseLink inviteId:" + inviteId + ", streamId:" + streamId + ", result:" + result);
+        TXCLog.i(TAG, "responseLink inviteId:" + inviteId + ", streamId:" + streamId + ", result:" + result);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_RES, streamId, reaseon);
         V2TIMCallback callback = new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "responseLink success");
+                TXCLog.i(TAG, "responseLink success");
             }
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "responseLink fail code:" + code + ", desc: " + desc);
+                TXCLog.i(TAG, "responseLink fail code:" + code + ", desc: " + desc);
             }
         };
         if (result) {
@@ -85,7 +85,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
 
     @Override
     public void stopLink(String roomId, String userId, int timeout) {
-        TXCLog.d(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
+        TXCLog.i(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_REQ, roomId, "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
@@ -98,48 +98,48 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                 mListener.onCommonResult(IM_LINK_STOP_FAIL, "IM STOP PK FAIL");
             }
         });
-        TXCLog.d(TAG, "inviteId:" + inviteID);
+        TXCLog.i(TAG, "inviteId:" + inviteID);
     }
 
     @Override
     public String requestPK(String roomId, String userId, int timeout) {
-        TXCLog.d(TAG, "requestPK roomId:" + roomId + ", userId:" + userId);
+        TXCLog.i(TAG, "requestPK roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_PK_REQ, roomId + "", "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, null);
-        TXCLog.d(TAG, "inviteId:" + inviteID);
+        TXCLog.i(TAG, "inviteId:" + inviteID);
         return inviteID;
     }
 
     @Override
     public void cancelPK(String inviteID, String roomId) {
-        TXCLog.d(TAG, "cancelPK inviteId:" + inviteID + ", roomId:" + roomId);
+        TXCLog.i(TAG, "cancelPK inviteId:" + inviteID + ", roomId:" + roomId);
         String json = SignallingData.createSignallingJsonData(CMD_PK_CANCEL, roomId + "", "");
         V2TIMManager.getSignalingManager().cancel(inviteID, json, new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "cancelPK success");
+                TXCLog.i(TAG, "cancelPK success");
             }
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "cancelPK error: " + ", code:" + code + ", desc:" + desc);
+                TXCLog.i(TAG, "cancelPK error: " + ", code:" + code + ", desc:" + desc);
             }
         });
     }
 
     @Override
     public void responsePK(String inviteId, String streamId, boolean result, String reason, int timeout) {
-        TXCLog.d(TAG, "responsePK inviteId:" + inviteId + ", streamId:" + streamId + ", result:" + result);
+        TXCLog.i(TAG, "responsePK inviteId:" + inviteId + ", streamId:" + streamId + ", result:" + result);
         String json = SignallingData.createSignallingJsonData(CMD_PK_RES, streamId, reason);
         V2TIMCallback callback = new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "responsePK success");
+                TXCLog.i(TAG, "responsePK success");
             }
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "responsePK fail code:" + code + ", desc: " + desc);
+                TXCLog.i(TAG, "responsePK fail code:" + code + ", desc: " + desc);
             }
         };
         if (result) {
@@ -152,7 +152,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
 
     @Override
     public void stopPK(String roomId, String userId, int timeout) {
-        TXCLog.d(TAG, "stopPK roomId:" + roomId + ", userId:" + userId);
+        TXCLog.i(TAG, "stopPK roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_PK_STOP_REQ, "", "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
@@ -165,7 +165,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                 mListener.onCommonResult(IM_PK_STOP_FAIL, "IM STOP PK FAIL");
             }
         });
-        TXCLog.d(TAG, "inviteId:" + inviteID);
+        TXCLog.i(TAG, "inviteId:" + inviteID);
     }
 
     /**
@@ -174,9 +174,9 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
     private final class TUIPusherIMSignalingListener extends V2TIMSignalingListener {
 
         public void onReceiveNewInvitation(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-            TXCLog.d(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
+            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.d(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
 
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
@@ -239,7 +239,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         }
 
         public void onInviteeAccepted(String inviteID, String inviter, String data) {
-            TXCLog.d(TAG, "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + inviter + ", data: " + data);
+            TXCLog.i(TAG, "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + inviter + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
@@ -260,7 +260,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         }
 
         public void onInviteeRejected(String inviteID, String inviter, String data) {
-            TXCLog.d(TAG, "onInviteeRejected inviteID:" + inviteID + ", invitee:" + inviter + ", data: " + data);
+            TXCLog.i(TAG, "onInviteeRejected inviteID:" + inviteID + ", invitee:" + inviter + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
@@ -281,7 +281,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         }
 
         public void onInvitationCancelled(String inviteID, String inviter, String data) {
-            TXCLog.d(TAG, "onInvitationCancelled inviteID:" + inviteID + ", inviter:" + inviter + ", data: " + data);
+            TXCLog.i(TAG, "onInvitationCancelled inviteID:" + inviteID + ", inviter:" + inviter + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
@@ -310,9 +310,9 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         }
 
         public void onInvitationTimeout(String inviteID, List<String> inviteeList) {
-            TXCLog.d(TAG, "onInvitationTimeout inviteID:" + inviteID);
+            TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.d(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
             if (mListener != null) {
                 InvitationResBean bean = new InvitationResBean();
@@ -326,7 +326,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         V2TIMManager.getSignalingManager().removeSignalingListener(mIMSignalingListener);
     }
 

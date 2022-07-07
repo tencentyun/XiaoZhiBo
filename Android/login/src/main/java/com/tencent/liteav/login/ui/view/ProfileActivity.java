@@ -25,8 +25,6 @@ import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.BaseActivity;
-import com.tencent.liteav.login.ui.view.ModifyUserAvatarDialog;
-import com.tencent.rtmp.TXLiveBase;
 
 import java.util.Random;
 import java.util.regex.Matcher;

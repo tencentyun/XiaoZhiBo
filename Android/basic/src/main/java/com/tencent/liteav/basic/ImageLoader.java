@@ -24,10 +24,14 @@ import java.security.MessageDigest;
 import java.util.concurrent.ExecutionException;
 
 public class ImageLoader {
-    private static int radius = 15; //TRTC默认图片圆角为15dp
+    private static int radius = 15;
 
     public static void clear(Context context, ImageView imageView) {
         Glide.with(context).clear(imageView);
+    }
+
+    public static void clear(Context context) {
+        Glide.with(context).pauseRequests();
     }
 
     public static void loadImage(Context context, ImageView imageView, String url) {

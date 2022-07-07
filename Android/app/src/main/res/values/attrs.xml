@@ -7,9 +7,9 @@
         <attr name="right_top_radius" format="dimension" />
         <attr name="right_bottom_radius" format="dimension" />
         <attr name="left_bottom_radius" format="dimension" />
-        <attr name="shape">
-            <enum name="circle" value="0" />
-            <enum name="fillet" value="1" />
-        </attr>
+<!--        <attr name="shape">-->
+<!--            <enum name="circle" value="0" />-->
+<!--            <enum name="fillet" value="1" />-->
+<!--        </attr>-->
     </declare-styleable>
 </resources>

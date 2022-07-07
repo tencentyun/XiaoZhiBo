@@ -14,13 +14,14 @@ import com.tencent.liteav.demo.R;
 
 public class RoundCornerImageView extends AppCompatImageView {
 
-    private float mWidth, mHeight;
-    private int mDefaultRadius = 0;
-    private int mRadius;
-    private int mLeftTopRadius;
-    private int mRightTopRadius;
-    private int mRightBottomRadius;
-    private int mLeftBottomRadius;
+    private float mWidth;
+    private float mHeight;
+    private int   mDefaultRadius = 0;
+    private int   mRadius;
+    private int   mLeftTopRadius;
+    private int   mRightTopRadius;
+    private int   mRightBottomRadius;
+    private int   mLeftBottomRadius;
 
     public RoundCornerImageView(Context context) {
         this(context, null);
@@ -40,10 +41,14 @@ public class RoundCornerImageView extends AppCompatImageView {
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AppRoundCornerImageView);
         mRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_radius, mDefaultRadius);
-        mLeftTopRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_left_top_radius, mDefaultRadius);
-        mRightTopRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_right_top_radius, mDefaultRadius);
-        mRightBottomRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_right_bottom_radius, mDefaultRadius);
-        mLeftBottomRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_left_bottom_radius, mDefaultRadius);
+        mLeftTopRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_left_top_radius,
+                mDefaultRadius);
+        mRightTopRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_right_top_radius,
+                mDefaultRadius);
+        mRightBottomRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_right_bottom_radius,
+                mDefaultRadius);
+        mLeftBottomRadius = array.getDimensionPixelOffset(R.styleable.AppRoundCornerImageView_left_bottom_radius,
+                mDefaultRadius);
 
         if (mDefaultRadius == mLeftTopRadius) {
             mLeftTopRadius = mRadius;

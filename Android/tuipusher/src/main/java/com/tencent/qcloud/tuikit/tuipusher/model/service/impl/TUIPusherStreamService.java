@@ -61,7 +61,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public int startCameraPreview(boolean isFront, TXCloudVideoView videoView) {
-        TXCLog.d(TAG, "startCameraPreview isFront:" + isFront);
+        TXCLog.i(TAG, "startCameraPreview isFront:" + isFront);
         mV2TXLivePusher.setRenderView(videoView);
         int result = mV2TXLivePusher.startCamera(isFront);
         mV2TXLivePusher.startMicrophone();
@@ -73,8 +73,18 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_SRC_TEXTURE_ID, srcFrame.texture.textureId);
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_WIDTH, srcFrame.width);
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_HEIGHT, srcFrame.height);
-                dstFrame.texture.textureId = (int) TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map);
+                if (TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map) != null) {
+                    dstFrame.texture.textureId = (int) TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map);
+                } else {
+                    dstFrame.texture.textureId = srcFrame.texture.textureId;
+                }
                 return 0;
+            }
+
+            @Override
+            public void onGLContextDestroyed() {
+                TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_DESTROY_XMAGIC, null);
+                super.onGLContextDestroyed();
             }
         });
         mIsPreview = true;
@@ -93,7 +103,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public int startPush(String url) {
-        TXCLog.d(TAG, "startPush url:" + url);
+        TXCLog.i(TAG, "startPush url:" + url);
         setFramework();
         return mV2TXLivePusher.startPush(url);
     }
@@ -111,17 +121,17 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public int startPlay(TXCloudVideoView pkVideoView, String roomId, String userId) {
-        TXCLog.d(TAG, "startPlay roomId:" + roomId + "userId:" + userId);
+        TXCLog.i(TAG, "startPlay roomId:" + roomId + "userId:" + userId);
         mV2TXLivePlayer.setRenderView(pkVideoView);
         String playUrl = LinkURLUtils.generatePlayUrl(roomId);
         int ret = mV2TXLivePlayer.startPlay(playUrl);
-        TXCLog.d(TAG, "startPlay: ret" + ret + ", playUrl:" + playUrl);
+        TXCLog.i(TAG, "startPlay: ret" + ret + ", playUrl:" + playUrl);
         return 0;
     }
 
     @Override
     public int stopPlay() {
-        TXCLog.d(TAG, "stopPlay:");
+        TXCLog.i(TAG, "stopPlay:");
         if (mV2TXLivePlayer != null && mV2TXLivePlayer.isPlaying() == 1) {
             mV2TXLivePlayer.stopPlay();
         }
@@ -130,7 +140,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public int setPKMixTranscodingConfig(String myUserId, String myRoomId, String pkUserId, String pkRoomId) {
-        TXCLog.d(TAG, "setPKMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",pkUserId" + pkUserId + ",pkRoomId" + pkRoomId);
+        TXCLog.i(TAG, "setPKMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",pkUserId" + pkUserId + ",pkRoomId" + pkRoomId);
         int ret = -1;
         if (mV2TXLivePusher != null && mV2TXLivePusher.isPushing() == 1) {
             if (TextUtils.isEmpty(myUserId)) {
@@ -139,13 +149,13 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
                 ret = mV2TXLivePusher.setMixTranscodingConfig(createPKConfig(myUserId, myRoomId, pkUserId, pkRoomId));
             }
         }
-        TXCLog.d(TAG, "setPKMixTranscodingConfig ret:" + ret + ", myUserId" + myUserId + ", myRoomId" + myRoomId + ", pkUserId" + pkUserId + ", pkRoomId" + pkRoomId);
+        TXCLog.i(TAG, "setPKMixTranscodingConfig ret:" + ret + ", myUserId" + myUserId + ", myRoomId" + myRoomId + ", pkUserId" + pkUserId + ", pkRoomId" + pkRoomId);
         return 0;
     }
 
     @Override
     public int setLinkMixTranscodingConfig(String myUserId, String myRoomId, String linkUserId, String linkRoomId) {
-        TXCLog.d(TAG, "setLinkMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",linkUserId" + linkUserId + ",linkRoomId" + linkRoomId);
+        TXCLog.i(TAG, "setLinkMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",linkUserId" + linkUserId + ",linkRoomId" + linkRoomId);
         int ret = -1;
         if (mV2TXLivePusher != null && mV2TXLivePusher.isPushing() == 1) {
             if (TextUtils.isEmpty(myUserId)) {
@@ -154,25 +164,25 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
                 ret = mV2TXLivePusher.setMixTranscodingConfig(createLinkConfig(myUserId, myRoomId, linkUserId, linkRoomId));
             }
         }
-        TXCLog.d(TAG, "setLinkMixTranscodingConfig ret:" + ret);
+        TXCLog.i(TAG, "setLinkMixTranscodingConfig ret:" + ret);
         return 0;
     }
 
     @Override
     public int stopPush() {
-        TXCLog.d(TAG, "stopPush");
+        TXCLog.i(TAG, "stopPush");
         return mV2TXLivePusher.stopPush();
     }
 
     @Override
     public void switchCamera(boolean frontCamera) {
-        TXCLog.d(TAG, "switchCamera frontCamera:" + frontCamera);
+        TXCLog.i(TAG, "switchCamera frontCamera:" + frontCamera);
         mV2TXLivePusher.getDeviceManager().switchCamera(frontCamera);
     }
 
     @Override
     public void setMirror(boolean isMirror) {
-        TXCLog.d(TAG, "setMirror isMirror:" + isMirror);
+        TXCLog.i(TAG, "setMirror isMirror:" + isMirror);
         if (isMirror) {
             mV2TXLivePusher.setRenderMirror(V2TXLiveDef.V2TXLiveMirrorType.V2TXLiveMirrorTypeEnable);
         } else {
@@ -204,7 +214,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         if (mV2TXLivePusher == null) {
             return;
         }
@@ -304,20 +314,20 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
     class TUILivePusherObserver extends V2TXLivePusherObserver {
         @Override
         public void onSetMixTranscodingConfig(int code, String msg) {
-            TXCLog.d(TAG, "TUILivePusherObserver onSetMixTranscodingConfig code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onSetMixTranscodingConfig code:" + code + ", msg:" + msg);
         }
 
         public void onError(int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePusherObserver onError code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onError code:" + code + ", msg:" + msg);
         }
 
         public void onWarning(int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePusherObserver onWarning code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onWarning code:" + code + ", msg:" + msg);
         }
 
         @Override
         public void onCaptureFirstVideoFrame() {
-            TXCLog.d(TAG, "TUILivePusherObserver onCaptureFirstVideoFrame");
+            TXCLog.i(TAG, "TUILivePusherObserver onCaptureFirstVideoFrame");
             super.onCaptureFirstVideoFrame();
         }
     }
@@ -325,11 +335,11 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     class TUILivePlayerObserver extends V2TXLivePlayerObserver {
         public void onError(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePlayerObserver onError code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePlayerObserver onError code:" + code + ", msg:" + msg);
         }
 
         public void onWarning(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePlayerObserver onWarning code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePlayerObserver onWarning code:" + code + ", msg:" + msg);
         }
     }
 

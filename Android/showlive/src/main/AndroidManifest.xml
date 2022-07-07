@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tencent.liteav.showlive">
+
+    <application>
+        <activity
+            android:name=".ui.ShowLiveEntranceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShowLiveThemeMain" />
+        <activity
+            android:name=".ui.ShowLiveAnchorActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShowLiveThemeMain"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".ui.ShowLiveAudienceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShowLiveThemeMain"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".ui.floatwindow.FloatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShowLiveThemeMain"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".ui.view.WebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShowLiveThemeMain">
+            <intent-filter>
+                <action android:name="com.tencent.liteav.action.webview" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

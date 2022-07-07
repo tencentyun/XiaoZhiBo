@@ -1,5 +1,8 @@
 package com.tencent.liteav.demo.app;
 
+import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURL;
+import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURLKEY;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,14 +22,10 @@ import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.aboutme.UserInfoFragment;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
 import com.tencent.liteav.demo.discover.DiscoverFragment;
-import com.tencent.liteav.demo.scene.MainFragment;
-import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
+import com.tencent.liteav.showlive.ui.floatwindow.FloatWindow;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.util.ArrayList;
-
-import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURL;
-import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURLKEY;
 
 /**
  * APP主页，主要包含三个Fragment功能
@@ -37,13 +36,13 @@ import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURLKEY;
  */
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
-    private static final String TAG               = MainActivity.class.getName();
-    private static final String TAB_ENTERTAINMENT = "tab_entertainment";
-    private static final String TAB_FIND          = "tab_find";
-    private static final String TAB_MY            = "tab_my";
-    private static final String ENTERTAINMENT     = "entertainment";
-    private static final String TYPE              = "type";
-    private static final String TAB_TAG_ARRAY[]   = {
+    private static final String   TAG               = MainActivity.class.getName();
+    private static final String   TAB_ENTERTAINMENT = "tab_entertainment";
+    private static final String   TAB_FIND          = "tab_find";
+    private static final String   TAB_MY            = "tab_my";
+    private static final String   ENTERTAINMENT     = "entertainment";
+    private static final String   TYPE              = "type";
+    private static final String[] TAB_TAG_ARRAY     = new String[]{
             TAB_ENTERTAINMENT,
             TAB_FIND,
             TAB_MY
@@ -64,7 +63,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_activity_trtc_main);
+        setContentView(R.layout.app_activity_live_video_main);
         initStatusBar();
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             Log.d(TAG, "brought to front");
@@ -114,7 +113,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         updateItemView(TAB_ENTERTAINMENT);
         mTabAdapter.setOnTabChangeListener(new FragmentTabAdapter.OnTabChangeListener() {
             @Override
-            public void OnTabChanged(int index) {
+            public void onTabChanged(int index) {
                 updateItemView(TAB_TAG_ARRAY[index]);
             }
         });
@@ -131,6 +130,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.ll_tab_me:
                 mTabAdapter.setCurrentFragment(2);
+                break;
+            default:
                 break;
         }
     }

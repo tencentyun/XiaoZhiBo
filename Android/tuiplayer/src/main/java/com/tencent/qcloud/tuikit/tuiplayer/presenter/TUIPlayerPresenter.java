@@ -17,25 +17,27 @@ import com.tencent.qcloud.tuikit.tuiplayer.model.service.ITUIPlayerStreamService
 import com.tencent.qcloud.tuikit.tuiplayer.model.service.impl.TUIPlayerSignallingService;
 import com.tencent.qcloud.tuikit.tuiplayer.model.service.impl.TUIPlayerStreamService;
 import com.tencent.qcloud.tuikit.tuiplayer.model.utils.LinkURLUtils;
+import com.tencent.qcloud.tuikit.tuiplayer.view.ITUIPlayerView;
 import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
-public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresenter, ITUIPlayerStreamListener, ITUIPlayerSignallingListener {
+public class TUIPlayerPresenter implements ITUIPlayerPresenter, ITUIPlayerStreamListener, ITUIPlayerSignallingListener {
     private static final String TAG = "TUIPlayerPresent";
 
-    private ITUIPlayerSignallingService       mSignallingService;
-    private ITUIPlayerStreamService           mStreamService;
-    private ITUIPlayerContract.ITUIPlayerView mTUIPlayerView;
-    private Context                           mContext;
-    private String                            mStreamId;
-    private String                            mLinkUserId;
-    private String                            mLinkStreamId;
-    private InvitationReqBean                 mInvitationReqBean;
-    private InvitationResBean                 mInvitationResBean;
-    private String                            mLinkInviteId;
-    private String                            mPlayUrl;
+    private ITUIPlayerSignallingService mSignallingService;
+    private ITUIPlayerStreamService     mStreamService;
+    private ITUIPlayerView              mTUIPlayerView;
+    private Context                     mContext;
+    private String                      mStreamId;
+    private String                      mLinkUserId;
+    private String                      mLinkStreamId;
+    private InvitationReqBean           mInvitationReqBean;
+    private InvitationResBean           mInvitationResBean;
+    private String                      mLinkInviteId;
+    private String                      mPlayUrl;
+    private TUIPlayerPresenterListener  mListener;
 
-    public TUIPlayerPresenter(ITUIPlayerContract.ITUIPlayerView playerView, Context context) {
+    public TUIPlayerPresenter(ITUIPlayerView playerView, Context context) {
         mContext = context;
         mStreamId = TUILogin.getUserId();
         mSignallingService = TUIPlayerSignallingService.getInstance(mContext);
@@ -47,7 +49,7 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     @Override
     public int startPlay(String url, TXCloudVideoView view) {
-        TXCLog.d(TAG, "startPlay url:" + url);
+        TXCLog.i(TAG, "startPlay url:" + url);
         mPlayUrl = url;
         int ret = mStreamService.startPlay(mPlayUrl, view);
         mSignallingService.login();
@@ -59,22 +61,26 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     }
 
+    public void setListener(TUIPlayerPresenterListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void requestLink(String userId) {
-        TXCLog.d(TAG, "requestLink userId:" + userId);
+        TXCLog.i(TAG, "requestLink userId:" + userId);
         mLinkStreamId = userId;
         mLinkUserId = userId;
         mLinkInviteId = mSignallingService.requestLink(userId, userId, 15, new TUIPlayerCallback() {
             @Override
             public void onResult(int code, String message) {
-                TXCLog.d(TAG, "requestLink onResult code:" + code + ",message:" + message);
+                TXCLog.i(TAG, "requestLink onResult code:" + code + ",message:" + message);
                 if (code == 0) {
-                    if (mTUIPlayerView != null) {
-                        mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REQ_SEND_SUCCESS, "");
+                    if (mListener != null) {
+                        mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REQ_SEND_SUCCESS, "");
                     }
                 } else {
-                    if (mTUIPlayerView != null) {
-                        mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REQ_SEND_FAIL, "");
+                    if (mListener != null) {
+                        mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REQ_SEND_FAIL, "");
                     }
                     resetLinkData();
                 }
@@ -84,18 +90,18 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     @Override
     public void cancelLink() {
-        TXCLog.d(TAG, "cancelLink");
+        TXCLog.i(TAG, "cancelLink");
         mSignallingService.cancelLink(mLinkInviteId, mStreamId, new TUIPlayerCallback() {
             @Override
             public void onResult(int code, String message) {
-                TXCLog.d(TAG, "cancelLink onResult code:" + code + ",message:" + message);
+                TXCLog.i(TAG, "cancelLink onResult code:" + code + ",message:" + message);
                 if (code == 0) {
-                    if (mTUIPlayerView != null) {
-                        mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_CANCEL_SUCCESS, "");
+                    if (mListener != null) {
+                        mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_CANCEL_SUCCESS, "");
                     }
                 } else {
-                    if (mTUIPlayerView != null) {
-                        mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_CANCEL_FAIL, "");
+                    if (mListener != null) {
+                        mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_CANCEL_FAIL, "");
                     }
                     resetLinkData();
                 }
@@ -107,12 +113,12 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
     public void startPush(boolean isFront, TXCloudVideoView txCloudVideoView) {
         String pushUrl = LinkURLUtils.generatePushUrl(mStreamId);
         mStreamService.startPush(pushUrl, isFront, txCloudVideoView);
-        TXCLog.d(TAG, "startPush pushUrl:" + pushUrl);
+        TXCLog.i(TAG, "startPush pushUrl:" + pushUrl);
     }
 
     @Override
     public void stopLink(int timeout) {
-        TXCLog.d(TAG, "stopLink");
+        TXCLog.i(TAG, "stopLink");
         mSignallingService.stopLink(mStreamId, mLinkUserId, timeout, new TUIPlayerCallback() {
             @Override
             public void onResult(int code, String message) {
@@ -125,15 +131,15 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
         });
 
         mStreamService.stopPush();
-        if (mTUIPlayerView != null) {
-            mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_STOP, "");
+        if (mListener != null) {
+            mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_STOP, "");
         }
         resetLinkData();
     }
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         mStreamService.destory();
         mSignallingService.destory();
     }
@@ -145,20 +151,20 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     @Override
     public void onResponseJoinAnchor(InvitationResBean bean, LinkResponseState state) {
-        TXCLog.d(TAG, "onResponseJoinAnchor state:" + state);
+        TXCLog.i(TAG, "onResponseJoinAnchor state:" + state);
         switch (state) {
             case ACCEPT:
                 mStreamService.stopPlay();
-                mTUIPlayerView.onResponseJoinAnchor(bean.getData().getData().getStreamID());
+                mListener.onResponseJoinAnchor(bean.getData().getData().getStreamID());
                 break;
 
             case REJECT:
-                mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REJECT, bean.getData().getData().getCmdInfo());
+                mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_REJECT, bean.getData().getData().getCmdInfo());
                 resetLinkData();
                 break;
 
             case TIMEOUT:
-                mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_TIMEOUT, "");
+                mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_TIMEOUT, "");
                 resetLinkData();
                 break;
         }
@@ -166,28 +172,28 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     @Override
     public void onStopJoinAnchor() {
-        TXCLog.d(TAG, "onStopJoinAnchor");
+        TXCLog.i(TAG, "onStopJoinAnchor");
         resetLinkData();
         mStreamService.stopPush();
-        if (mTUIPlayerView != null) {
-            mTUIPlayerView.onToastMessage(mContext.getString(R.string.tuiplayer_stop_link));
-            mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_STOP, "");
+        if (mListener != null) {
+            mListener.onToastMessage(mContext.getString(R.string.tuiplayer_stop_link));
+            mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_STOP, "");
         }
     }
 
     @Override
     public void onPushSuccess() {
-        TXCLog.d(TAG, "onPushSuccess");
-        if (mTUIPlayerView != null) {
-            mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND, "");
+        TXCLog.i(TAG, "onPushSuccess");
+        if (mListener != null) {
+            mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND, "");
         }
         mSignallingService.startLink(mStreamId, mLinkUserId, 5, new TUIPlayerCallback() {
             @Override
             public void onResult(int code, String message) {
                 if (code == 0) {
-                    mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND_SUCCESS, "");
+                    mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND_SUCCESS, "");
                 } else {
-                    mTUIPlayerView.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND_FAIL, "");
+                    mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_PUSH_SEND_FAIL, "");
                 }
             }
         });
@@ -195,9 +201,9 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
 
     @Override
     public void onNotifyPlayStatus(TUIPlayerView.PlayStatus status) {
-        TXCLog.d(TAG, "onNotifyPlayStatus status:" + status);
-        if (mTUIPlayerView != null && TextUtils.isEmpty(mLinkInviteId)) {
-            mTUIPlayerView.onNotifyPlayState(status);
+        TXCLog.i(TAG, "onNotifyPlayStatus status:" + status);
+        if (mListener != null && TextUtils.isEmpty(mLinkInviteId)) {
+            mListener.onNotifyPlayState(status);
         }
     }
 
@@ -225,5 +231,41 @@ public class TUIPlayerPresenter implements ITUIPlayerContract.ITUIPlayerPresente
         mLinkInviteId = "";
         mLinkStreamId = "";
         mLinkUserId = "";
+    }
+
+    public interface TUIPlayerPresenterListener {
+        /**
+         * UI 吐司提示
+         *
+         * @param message
+         */
+        void onToastMessage(String message);
+
+        /**
+         * 响应加入主播
+         */
+        void onResponseJoinAnchor(String streamId);
+
+        /**
+         * UI 状态改变通知
+         *
+         * @param state
+         */
+        void onNotifyState(TUIPlayerView.State state);
+
+        /**
+         * 连麦状态变更
+         *
+         * @param state
+         * @param reason
+         */
+        void onNotifyLinkState(TUIPlayerView.LinkState state, String reason);
+
+        /**
+         * 播放状态变更
+         *
+         * @param status
+         */
+        void onNotifyPlayState(TUIPlayerView.PlayStatus status);
     }
 }

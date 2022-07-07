@@ -34,6 +34,7 @@ public final class TUIConstants {
         public static final String TUI_CALLING = "TUICallingService";
         public static final String TUI_LIVE = "TUILiveService";
         public static final String TUI_BEAUTY = "TUIBeauty";
+        public static final String TUI_OFFLINEPUSH = "TUIOfflinePushService";
     }
 
     /**
@@ -56,7 +57,10 @@ public final class TUIConstants {
         public static final String EVENT_SUB_KEY_START_INIT = "eventSubKeyStartInit";
         // 开始反初始化
         public static final String EVENT_SUB_KEY_START_UNINIT = "eventSubKeyStartUnInit";
-
+        // 登录成功
+        public static final String EVENT_SUB_KEY_USER_LOGIN_SUCCESS = "eventSubKeyUserLoginSuccess";
+        // 登出成功
+        public static final String EVENT_SUB_KEY_USER_LOGOUT_SUCCESS = "eventSubKeyUserLogoutSuccess";
 
         public static final String SELF_ID = "selfId";
         public static final String SELF_SIGNATURE = "selfSignature";
@@ -280,7 +284,17 @@ public final class TUIConstants {
         public static final String PARAM_NAME_SRC_TEXTURE_ID = "srcTextureId";
 
         public static final String METHOD_PROCESS_VIDEO_FRAME = "processVideoFrame";
-        public static final String METHOD_INIT_XMAGIC         = "initXmagic";
+        public static final String METHOD_INIT_XMAGIC         = "setLicense";
+        public static final String METHOD_DESTROY_XMAGIC      = "destroy";
+    }
+    
+    /**
+     * TUIOfflinePush 相关字段
+     */
+    public static final class TUIOfflinePush {
+        public static final String SERVICE_NAME = Service.TUI_OFFLINEPUSH;
+
+        public static final String METHOD_UNREGISTER_PUSH = "unRegiterPush";
     }
 
     public static final class Message {
@@ -288,4 +302,10 @@ public final class TUIConstants {
         public static final String CALLING_TYPE_KEY = "call_type";
     }
 
+    public static final class NetworkConnection {
+        public static final String EVENT_CONNECTION_STATE_CHANGED = "eventConnectionStateChanged";
+        public static final String EVENT_SUB_KEY_CONNECTING       = "eventSubKeyConnecting";
+        public static final String EVENT_SUB_KEY_CONNECT_SUCCESS  = "eventSubKeyConnectSuccess";
+        public static final String EVENT_SUB_KEY_CONNECT_FAILED   = "eventSubKeyConnectFailed";
+    }
 }

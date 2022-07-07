@@ -9,5 +9,5 @@ public abstract class IUIKitCallback<T> {
 
     public abstract void onError(String module, int errCode, String errMsg);
 
-    public void onProgress(Object data) {}
+    public void onProgress(Object data) {};
 }

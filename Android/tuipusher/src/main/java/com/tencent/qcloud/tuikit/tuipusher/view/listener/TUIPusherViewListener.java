@@ -31,7 +31,7 @@ public interface TUIPusherViewListener {
 
     void onPushStarted(TUIPusherView pushView, String url);
 
-    void onPushStoped(TUIPusherView pushView, String url);
+    void onPushStopped(TUIPusherView pushView, String url);
 
     void onPushEvent(TUIPusherView pusherView, TUIPusherEvent event, String message);
 
@@ -50,7 +50,7 @@ public interface TUIPusherViewListener {
      * 对方拒绝 PK请求的 回调
      *
      * @param pusherView
-     * @param reason  1：对方主动拒绝 2：忙线中(pk 或者 连麦)
+     * @param reason     1：对方主动拒绝 2：忙线中(pk 或者 连麦)
      */
     void onRejectPKResponse(TUIPusherView pusherView, int reason);
 

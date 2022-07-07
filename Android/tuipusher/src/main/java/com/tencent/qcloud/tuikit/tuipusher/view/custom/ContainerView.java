@@ -58,12 +58,12 @@ public class ContainerView extends FrameLayout {
             Object object = audioRetMap.get("audioEffectExtension");
             if (object != null && object instanceof View) {
                 setAudioView((View) object);
-                TXCLog.d(TAG, "TUIAudio getExtensionInfo success");
+                TXCLog.i(TAG, "TUIAudio getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIAudio getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIAudio getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIAudio getExtensionInfo null");
+            TXCLog.i(TAG, "TUIAudio getExtensionInfo null");
         }
 
         HashMap<String, Object> beautyParaMap = new HashMap<>();
@@ -74,12 +74,12 @@ public class ContainerView extends FrameLayout {
             Object object = beautyRetMap.get("TUIBeauty");
             if (object != null && object instanceof View) {
                 setBeautyView((View) object);
-                TXCLog.d(TAG, "TUIBeauty getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBeauty getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBeauty getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBeauty getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIBeauty getExtensionInfo null");
+            TXCLog.i(TAG, "TUIBeauty getExtensionInfo null");
         }
 
     }
@@ -94,12 +94,12 @@ public class ContainerView extends FrameLayout {
             Object giftDisplayView = giftRetMap.get("TUIGiftPlayView");
             if (giftDisplayView != null && giftDisplayView instanceof View) {
                 setGiftShowView((View) giftDisplayView);
-                TXCLog.d(TAG, "TUIGift TUIGiftPlayView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIGift TUIGiftPlayView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIGift TUIGiftPlayView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIGift TUIGiftPlayView getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIGift getExtensionInfo null");
+            TXCLog.i(TAG, "TUIGift getExtensionInfo null");
         }
 
         //TODO 弹幕
@@ -111,20 +111,20 @@ public class ContainerView extends FrameLayout {
             Object barrageSendView = barrageRetMap.get("TUIBarrageButton");
             if (barrageSendView != null && barrageSendView instanceof View) {
                 setBarrage((View) barrageSendView);
-                TXCLog.d(TAG, "TUIBarrage barrageSendView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBarrage barrageSendView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBarrage barrageSendView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBarrage barrageSendView getExtensionInfo not find");
             }
 
             Object barrageDisplayView = barrageRetMap.get("TUIBarrageDisplayView");
             if (barrageDisplayView != null && barrageDisplayView instanceof View) {
                 setBarrageShow((View) barrageDisplayView);
-                TXCLog.d(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIBarrage getExtensionInfo null");
+            TXCLog.i(TAG, "TUIBarrage getExtensionInfo null");
         }
     }
 

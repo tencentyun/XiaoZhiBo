@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShowLiveThemeMain" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/showlive_color_white</item>
+    </style>
+
+    <style name="ShowLiveDialogFragment" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@color/showlive_dialog_bg</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <declare-styleable name="ShowLiveRoundCornerImageView">
+        <attr name="radius" format="dimension" />
+        <attr format="color" name="cover_color" />
+        <attr name="left_top_radius" format="dimension" />
+        <attr name="right_top_radius" format="dimension" />
+        <attr name="right_bottom_radius" format="dimension" />
+        <attr name="left_bottom_radius" format="dimension" />
+        <attr name="shape">
+            <enum name="circle" value="0" />
+            <enum name="fillet" value="1" />
+        </attr>
+    </declare-styleable>
+
+
+    <style name="ShowLiveMoreDialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+</resources>

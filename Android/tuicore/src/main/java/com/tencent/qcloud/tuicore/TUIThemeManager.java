@@ -1,14 +1,15 @@
 package com.tencent.qcloud.tuicore;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.webkit.WebView;
@@ -17,7 +18,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.tencent.qcloud.tuicore.interfaces.ITUIThemeChangeable;
 import com.tencent.qcloud.tuicore.util.TUIBuild;
 
 import java.util.ArrayList;
@@ -59,8 +59,8 @@ public class TUIThemeManager {
 
     private int currentTheme = THEME_LIGHT;
     private String currentLanguage = "";
-
-    static void setTheme(Context context) {
+    private Locale defaultLocale = null;
+    public static void setTheme(Context context) {
         getInstance().setThemeInternal(context);
     }
 
@@ -76,11 +76,16 @@ public class TUIThemeManager {
                 ((Application) appContext).registerActivityLifecycleCallbacks(new ThemeAndLanguageCallback());
 
                 // 解决 Android 7 以上 WebView 导致切换语言失败的问题。
+                // 解决 Android 9 以上多进程使用 WebView Crash 的问题。
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    WebView.setDataDirectorySuffix(getProcessName(appContext));
+                }
                 new WebView(appContext).destroy();
             }
 
+            Locale defaultLocale = getLocale(appContext);
             SharedPreferences sharedPreferences = context.getSharedPreferences(SP_THEME_AND_LANGUAGE_NAME, Context.MODE_PRIVATE);
-            currentLanguage = sharedPreferences.getString(SP_KEY_LANGUAGE, "");
+            currentLanguage = sharedPreferences.getString(SP_KEY_LANGUAGE, defaultLocale.getLanguage());
             currentTheme = sharedPreferences.getInt(SP_KEY_THEME, THEME_LIGHT);
 
             // 语言只需要初始化一次
@@ -88,6 +93,20 @@ public class TUIThemeManager {
         }
         // 主题需要更新多次
         applyTheme(appContext);
+    }
+
+    private String getProcessName(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
+            if (processInfo.pid == Process.myPid()) {
+                return processInfo.processName;
+            }
+        }
+        return "";
+    }
+
+    public void setDefaultLocale(Locale defaultLocale) {
+        this.defaultLocale = defaultLocale;
     }
 
     public static void addLightTheme(int resId) {
@@ -167,6 +186,8 @@ public class TUIThemeManager {
             locale = Locale.ENGLISH;
         } else if ("zh".equals(currentLanguage)) {
             locale = Locale.CHINA;
+        } else if (defaultLocale != null) {
+            locale = defaultLocale;
         }
 
         Resources resources = context.getResources();
@@ -259,10 +280,7 @@ public class TUIThemeManager {
 
         @Override
         public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-            // 如果 Activity 支持换肤则设置主题
-            if (activity instanceof ITUIThemeChangeable) {
-                TUIThemeManager.getInstance().applyTheme(activity);
-            }
+            TUIThemeManager.getInstance().applyTheme(activity);
             TUIThemeManager.getInstance().applyLanguage(activity);
         }
 

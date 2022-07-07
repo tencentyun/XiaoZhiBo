@@ -25,7 +25,6 @@ import com.tencent.liteav.basic.AvatarConstant;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.view.LoginStatusLayout;
-import com.tencent.rtmp.TXLiveBase;
 
 import java.util.Random;
 

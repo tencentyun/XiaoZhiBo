@@ -19,10 +19,10 @@ import androidx.fragment.app.Fragment;
 import com.tencent.liteav.demo.R;
 
 public class DiscoverFragment extends Fragment {
-    private static final String TAG = "WebFindFragment";
+    private static final String TAG     = "WebFindFragment";
+    private static final String DEFAULT = "https://comm.qq.com/trtc-app-finding-page/";
 
-    private String    DEFAULT = "https://comm.qq.com/trtc-app-finding-page/";
-    private String    mUrl    = DEFAULT;
+    private String    mUrl = DEFAULT;
     private WebView   mWebView;
     private ImageView mImageBack;
     private View      mRootView;

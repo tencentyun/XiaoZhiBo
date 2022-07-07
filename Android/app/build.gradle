@@ -1,16 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as Integer
-    buildToolsVersion BUILD_TOOLS_VERSION
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.tencent.qcloud.xiaozhibo"
-        minSdkVersion MIN_SDK_VERSION as Integer
-        targetSdkVersion TARGET_SDK_VERSION as Integer
-        versionCode 10
-        versionName "9.5.0.1665"
-
+        versionName "1.0"
+        versionCode 1
+        minSdkVersion 19
+        targetSdkVersion 26
         multiDexEnabled true
     }
 
@@ -20,27 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    packagingOptions {
-        pickFirst '**/libc++_shared.so'
-        doNotStrip "*/armeabi/libYTCommon.so"
-        doNotStrip "*/armeabi-v7a/libYTCommon.so"
-        doNotStrip "*/x86/libYTCommon.so"
-        doNotStrip "*/arm64-v8a/libYTCommon.so"
-    }
 }
 
 dependencies {
-    implementation project(':login')
-    implementation project(':tuicore')
-    implementation project(':tuipusher')
-    implementation project(':tuiplayer')
-    implementation project(':tuibeauty')
-    implementation project(':tuibarrage')
-    implementation project(':tuiaudioeffect')
-    implementation project(':tuigift')
-
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-
-
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api project(":showlive")
+    api project(':debug')
+    api project(':basic')
+    api project(':login')
 }

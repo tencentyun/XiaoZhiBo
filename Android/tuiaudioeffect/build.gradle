@@ -1,14 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as Integer
-    buildToolsVersion BUILD_TOOLS_VERSION
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        versionName VERSION_NAME
-        versionCode VERSION_CODE as Integer
-        minSdkVersion MIN_SDK_VERSION as Integer
-        targetSdkVersion TARGET_SDK_VERSION as Integer
+        minSdkVersion 19
+        targetSdkVersion 26
     }
 
     buildTypes {
@@ -26,5 +24,5 @@ dependencies {
     implementation "com.google.android.material:material:1.0.0"
     implementation "de.hdodenhof:circleimageview:3.1.0"
     api rootProject.ext.liteavSdk
-    api project(':tuicore')
+    api 'com.tencent.liteav.tuikit:tuicore:latest.release'
 }

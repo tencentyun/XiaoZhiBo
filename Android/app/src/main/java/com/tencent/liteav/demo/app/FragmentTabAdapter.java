@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * 主页Activity的三个Fragment适配器类
- *
+ * <p>
  * -负责管理主页、发现页、我的页面三个Fragment
  */
 public class FragmentTabAdapter {
@@ -32,8 +32,9 @@ public class FragmentTabAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (null != onTabChangeListener)
-            onTabChangeListener.OnTabChanged(0);
+        if (null != onTabChangeListener) {
+            onTabChangeListener.onTabChanged(0);
+        }
     }
 
     private void showTab(int idx) {
@@ -78,7 +79,7 @@ public class FragmentTabAdapter {
         ft.commitAllowingStateLoss();
 
         if (null != onTabChangeListener) {
-            onTabChangeListener.OnTabChanged(idx);
+            onTabChangeListener.onTabChanged(idx);
         }
     }
 
@@ -87,6 +88,6 @@ public class FragmentTabAdapter {
     }
 
     public interface OnTabChangeListener {
-        public void OnTabChanged(int index);
+        public void onTabChanged(int index);
     }
 }

@@ -1,44 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.tencent.liteav.demo"
-    android:versionCode="1"
-    android:versionName="1.0">
-
-    <uses-permission android:name="android.permission.REORDER_TASKS" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    package="com.tencent.liteav.demo">
 
     <application
         android:name=".app.DemoApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        android:roundIcon="@drawable/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup,android:icon,android:theme,android:label,android:supportsRtl,android:roundIcon">
+
+
         <activity
             android:name=".app.NavigationActivity"
             android:launchMode="singleTask"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
         <activity
             android:name=".app.SplashActivity"
             android:launchMode="singleTask"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +53,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain">
             <intent-filter>
                 <action android:name="com.tencent.liteav.action.portal" />
@@ -80,13 +62,11 @@
         </activity>
         <activity
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".aboutme.AboutActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
         <activity
             android:name=".discover.WebViewActivity"
@@ -103,70 +83,18 @@
             android:name=".aboutme.LogOffActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
             android:theme="@style/AppThemeMain" />
-        <activity
-            android:name=".scene.showlive.ShowLiveEntranceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain" />
-        <activity
-            android:name=".scene.showlive.ShowLiveAnchorActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".scene.showlive.ShowLiveAudienceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".scene.showlive.floatwindow.FloatActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".scene.shoppinglive.ShoppingLiveEntranceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain" />
-        <activity
-            android:name=".scene.shoppinglive.ShoppingLiveAnchorActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".scene.shoppinglive.ShoppingLiveAudienceActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.tencent.xiaozhibo"
-            android:theme="@style/AppThemeMain"
-            tools:ignore="DuplicateActivity" />
 
         <service
             android:name=".app.KeepAliveService"
             android:enabled="true"
             android:exported="false" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.tencent.liteav.demo.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/photo_paths" />
-        </provider>
     </application>
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

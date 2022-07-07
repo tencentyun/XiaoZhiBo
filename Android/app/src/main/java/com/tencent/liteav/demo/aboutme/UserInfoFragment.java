@@ -25,7 +25,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.app_fragment_my_info, container, false);
         mImageAvatar = (CircleImageView) rootView.findViewById(R.id.iv_avatar);
         mTextNickName = (TextView) rootView.findViewById(R.id.tv_show_name);
@@ -107,6 +108,8 @@ public class UserInfoFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.tv_statement:
                 showStatementDialog();
+                break;
+            default:
                 break;
         }
 

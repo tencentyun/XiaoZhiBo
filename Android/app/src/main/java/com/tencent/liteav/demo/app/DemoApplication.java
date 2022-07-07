@@ -7,9 +7,9 @@ import android.os.StrictMode;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.tencent.liteav.demo.scene.showlive.ShowLiveAudienceActivity;
-import com.tencent.liteav.demo.scene.showlive.floatwindow.IFloatWindowCallback;
 import com.tencent.liteav.login.model.ProfileManager;
+import com.tencent.liteav.showlive.ui.ShowLiveAudienceActivity;
+import com.tencent.liteav.showlive.ui.floatwindow.IFloatWindowCallback;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
