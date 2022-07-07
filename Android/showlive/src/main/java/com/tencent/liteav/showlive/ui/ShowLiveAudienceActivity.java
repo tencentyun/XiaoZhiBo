@@ -195,7 +195,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
                 .findViewByPosition(position).findViewById(R.id.recycler_item_function_view);
         mRoomId = Integer.parseInt(mRoomInfoList.get(position).ownerId);
         mShowAudienceFunctionView.setAnchorInfo(mRoomInfoList.get(position).coverUrl,
-                mRoomInfoList.get(position).roomName, mRoomId);
+                mRoomInfoList.get(position).roomName, mRoomId, mAnchorId);
         mShowAudienceFunctionView.setVisibility(View.VISIBLE);
         mShowAudienceFunctionView.setListener(new ShowAudienceFunctionView.OnFunctionListener() {
             @Override

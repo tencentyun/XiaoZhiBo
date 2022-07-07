@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.tencent.liteav.basic.ImageLoader;
-import com.tencent.liteav.debug.BuildConfig;
+import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.showlive.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -38,7 +38,7 @@ public class ShowAnchorPreviewView extends FrameLayout {
         mTextName = mViewRoot.findViewById(R.id.tv_live_room_name);
         mEditName = mViewRoot.findViewById(R.id.et_live_room_name);
         mImageCover = mViewRoot.findViewById(R.id.img_live_room_cover);
-        mEditName.setFocusableInTouchMode(!BuildConfig.RTCube_APPSTORE);
+        mEditName.setFocusableInTouchMode(!RTCubeUtils.isRTCubeApp(context));
     }
 
     public void setTitle(String text) {
