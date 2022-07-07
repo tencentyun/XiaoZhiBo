@@ -135,6 +135,8 @@
         _flowLayout = [[TUIGiftSideslipLayout alloc] init];
         _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 0);
         _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _flowLayout.itemSize = self.config.itemSize;
+        _flowLayout.rows = self.config.rows;
     }
     return _flowLayout;
 }
