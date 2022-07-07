@@ -21,8 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
+import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
-import com.tencent.liteav.debug.BuildConfig;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.RoomService;
 import com.tencent.liteav.showlive.model.services.room.bean.AudienceInfo;
@@ -33,7 +33,6 @@ import com.tencent.liteav.showlive.ui.dialog.FollowAnchorDialog;
 import com.tencent.liteav.showlive.ui.dialog.HourRankDialog;
 import com.tencent.liteav.showlive.ui.dialog.MoreLiveDialog;
 import com.tencent.liteav.showlive.ui.dialog.OnlineAudienceDialog;
-import com.tencent.liteav.showlive.ui.view.WebViewActivity;
 import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 
 import java.lang.reflect.Method;
@@ -70,6 +69,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
     private String             mAnchorName;
     private String             mAnchorAvatar;
     private OnFunctionListener mOnFunctionListener;
+    private String             mOwnerId;
     private boolean            mIsFollowed = false;
 
     private List<AudienceInfo> mAudienceInfoList = new ArrayList<>();
@@ -108,7 +108,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
         mImageAudience4.setVisibility(GONE);
         mImageClose = mViewRoot.findViewById(R.id.iv_close);
         mBtnReport = mViewRoot.findViewById(R.id.btn_report);
-        mBtnReport.setVisibility(BuildConfig.RTCube_APPSTORE ? View.VISIBLE : View.GONE);
+        mBtnReport.setVisibility(RTCubeUtils.isRTCubeApp(getContext()) ? View.VISIBLE : View.GONE);
     }
 
     private void initAudienceList() {
@@ -208,7 +208,8 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
         mOnFunctionListener = listener;
     }
 
-    public void setAnchorInfo(String avatarUrl, String anchorName, int roomId) {
+    public void setAnchorInfo(String avatarUrl, String anchorName, int roomId, String ownerId) {
+        mOwnerId = ownerId;
         ImageLoader.loadImage(getContext(), mImagesAnchorHead, avatarUrl, R.drawable.showlive_bg_cover);
         mTextAnchorName.setText(anchorName);
         mTextRoomId.setText(getContext().getString(R.string.showlive_room_id) + roomId);
@@ -345,8 +346,8 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
     private void showReportDialog() {
         try {
             Class clz = Class.forName("com.tencent.liteav.demo.report.ReportDialog");
-            Method method = clz.getDeclaredMethod("showReportDialog", Context.class, String.class);
-            method.invoke(null, getContext(), String.valueOf(mRoomId));
+            Method method = clz.getDeclaredMethod("showReportDialog", Context.class, String.class, String.class);
+            method.invoke(null, getContext(), mRoomId, mOwnerId);
         } catch (Exception e) {
             e.printStackTrace();
         }
