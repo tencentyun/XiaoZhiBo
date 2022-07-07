@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func setLicence() {
+        V2TXLivePremier.setObserver(self)
         V2TXLivePremier.setLicence(LICENSEURL, key: LICENSEURLKEY)
     }
     
@@ -148,5 +149,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func openAppStore(appID: String) {
         guard let url = URL(string: "https://itunes.apple.com/us/app/id\(appID)?ls=1&mt=8") else { return }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+}
+
+extension AppDelegate: V2TXLivePremierObserver {
+    
+    func onLicenceLoaded(_ result: Int32, reason: String) {
+        if result != 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let _ = self else { return }
+                self?.window?.makeToast(reason)
+            }
+        }
     }
 }
