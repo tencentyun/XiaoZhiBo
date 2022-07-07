@@ -15,4 +15,10 @@
     <string name="tuipusher_stop_pk_error">Disconnect PK exception</string>
     <string name="tuipusher_user_no_agree_push">User does not agree to start streaming</string>
     <string name="tuipusher_audience_stop_link">The audience stopped connecting the microphone</string>
+    <string name="tuipusher_tips_start_camera">Please turn on the camera permission first</string>
+    <string name="tuipusher_tips_start_audio">Please turn on the microphone permission first</string>
+    <string name="tuipusher_permission_mic_reason_title">%s applies for access to the microphone</string>
+    <string name="tuipusher_permission_mic_reason">Needs access to your microphone, and it can be used for functions such as Interactive Video Streaming, Show Live, Video Call, Group Video Call, Multi-person audio and video room, etc.</string>
+    <string name="tuipusher_permission_camera_reason_title">%s applies for camera permission</string>
+    <string name="tuipusher_permission_camera_reason">Needs access to your camera, and it can be used for functions such as Interactive Video Streaming, Show Live, Video Call, Group Video Call, Multi-person audio and video room, etc. For beauty filters to work, we will collect the facial information captured by your camera in real time to detect your facial features.</string>
 </resources>

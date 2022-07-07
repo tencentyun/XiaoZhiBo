@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
-import com.tencent.rtmp.TXLiveBase;
 
 
 public class RegisterActivity extends BaseActivity {

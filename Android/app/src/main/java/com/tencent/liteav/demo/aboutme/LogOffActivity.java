@@ -18,10 +18,10 @@ import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.app.KeepAliveService;
 import com.tencent.liteav.demo.common.view.ConfirmDialogFragment;
-import com.tencent.liteav.demo.scene.showlive.floatwindow.FloatWindow;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.LoginActivity;
 import com.tencent.liteav.login.ui.LoginWithoutServerActivity;
+import com.tencent.liteav.showlive.ui.floatwindow.FloatWindow;
 
 public class LogOffActivity extends AppCompatActivity {
 

@@ -51,13 +51,12 @@ public class TUIBarrageIMService {
     }
 
     public void sendBarrage(TUIBarrageModel model, final TUIBarrageCallBack.ActionCallback callback) {
-        String data = getCusMsgJsonStr(model);
-        if (TextUtils.isEmpty(data)) {
+        if (TextUtils.isEmpty(model.message)) {
             Log.d(TAG, "sendBarrage data is empty");
             return;
         }
-        Log.d(TAG, "sendBarrage: data = " + data.toString() + " , mGroupId = " + mGroupId);
-        V2TIMManager.getInstance().sendGroupCustomMessage(data.getBytes(), mGroupId, V2TIMMessage.V2TIM_PRIORITY_HIGH,
+        Log.d(TAG, "sendBarrage: data = " + model.message + " , mGroupId = " + mGroupId);
+        V2TIMManager.getInstance().sendGroupTextMessage(model.message, mGroupId, V2TIMMessage.V2TIM_PRIORITY_HIGH,
                 new V2TIMValueCallback<V2TIMMessage>() {
                     @Override
                     public void onSuccess(V2TIMMessage v2TIMMessage) {
@@ -68,10 +67,10 @@ public class TUIBarrageIMService {
                     }
 
                     @Override
-                    public void onError(int code, String desc) {
-                        Log.e(TAG, "sendGroupCustomMessage error " + code + " errorMessage:" + desc);
+                    public void onError(int i, String s) {
+                        Log.e(TAG, "sendGroupCustomMessage error " + i + " errorMessage:" + s);
                         if (callback != null) {
-                            callback.onCallback(code, desc);
+                            callback.onCallback(i, s);
                         }
                     }
                 });
@@ -80,57 +79,36 @@ public class TUIBarrageIMService {
     private class SimpleListener extends V2TIMSimpleMsgListener {
         @Override
         public void onRecvGroupTextMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, String text) {
+            Log.d(TAG, "onRecvGroupCustomMessage: msgID = " + msgID + " , groupID = " + groupID +
+                    " , mGroupId = " + mGroupId + " , sender = " + sender + " , text = " + text);
+            if (groupID == null || !groupID.equals(mGroupId)) {
+                return;
+            }
+            if (TextUtils.isEmpty(text)) {
+                Log.d(TAG, "onRecvGroupCustomMessage customData is empty");
+                return;
+            }
+            HashMap<String, String> userMap = new HashMap<>();
+            userMap.put(TUIBarrageConstants.KEY_USER_ID, sender.getUserID());
+            userMap.put(TUIBarrageConstants.KEY_USER_NAME, sender.getNickName());
+            userMap.put(TUIBarrageConstants.KEY_USER_AVATAR, sender.getFaceUrl());
+            TUIBarrageModel model = new TUIBarrageModel();
+            model.message = text;
+            model.extInfo = userMap;
+
+            if (mPresenter != null) {
+                mPresenter.receiveBarrage(model);
+            }
         }
 
         @Override
         public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, byte[] customData) {
-            Log.d(TAG, "onRecvGroupCustomMessage: msgID = " + msgID + " , groupID = " + groupID +
-                    " , mGroupId = " + mGroupId + " , sender = " + sender + " , customData = " + customData.toString());
-            if (groupID == null || !groupID.equals(mGroupId)) {
-                return;
-            }
-            String customStr = new String(customData);
-            if (TextUtils.isEmpty(customStr)) {
-                Log.d(TAG, "onRecvGroupCustomMessage customData is empty");
-                return;
-            }
 
-            try {
-                Gson gson = new Gson();
-                TUIBarrageJson json = gson.fromJson(customStr, TUIBarrageJson.class);
-                if (!TUIBarrageConstants.VALUE_VERSION.equals(json.getVersion())) {
-                    Log.e(TAG, "protocol version is not match, ignore msg");
-                }
-
-                //如果不是弹幕消息,则不处理
-                if (!TUIBarrageConstants.VALUE_BUSINESS_ID.equals(json.getBusinessID())) {
-                    Log.d(TAG, "onRecvGroupCustomMessage error, this is not barrage msg");
-                    return;
-                }
-
-                TUIBarrageJson.Data data = json.getData();
-                TUIBarrageJson.Data.ExtInfo extInfo = data.getExtInfo();
-
-                HashMap<String, String> userMap = new HashMap<>();
-                userMap.put(TUIBarrageConstants.KEY_USER_ID, extInfo.getUserID());
-                userMap.put(TUIBarrageConstants.KEY_USER_NAME, extInfo.getNickName());
-                userMap.put(TUIBarrageConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
-
-                TUIBarrageModel model = new TUIBarrageModel();
-                model.message = data.getMessage();
-                model.extInfo = userMap;
-
-                if (mPresenter != null) {
-                    mPresenter.receiveBarrage(model);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
     //自定义弹幕发送数据
-    public static String getCusMsgJsonStr(TUIBarrageModel model) {
+    public static String getTextMsgJsonStr(TUIBarrageModel model) {
         if (model == null) {
             return null;
         }

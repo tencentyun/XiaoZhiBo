@@ -23,6 +23,7 @@ import com.tencent.qcloud.tuikit.tuipusher.model.service.ITUIPusherStreamService
 import com.tencent.qcloud.tuikit.tuipusher.model.service.impl.TUIPusherSignallingService;
 import com.tencent.qcloud.tuikit.tuipusher.model.service.impl.TUIPusherStreamService;
 import com.tencent.qcloud.tuikit.tuipusher.model.utils.LinkURLUtils;
+import com.tencent.qcloud.tuikit.tuipusher.view.ITUIPusherView;
 import com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
@@ -44,25 +45,26 @@ import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.PKState.PK_
 import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.PKState.PK_STSRT;
 import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.PKState.PK_TIMEOUT;
 
-public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresenter, ITUIPusherStreamListener, ITUIPusherSignallingListener {
+public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStreamListener, ITUIPusherSignallingListener {
     private static final String TAG = "TUIPusherPresent";
 
-    private ITUIPusherSignallingService       mSignallingService;
-    private ITUIPusherStreamService           mStreamService;
-    private ITUIPusherContract.ITUIPusherView mTUIPusherView;
-    private Context                           mContext;
-    private boolean                           mIsPushing;
-    private String                            mStreamId;
-    private String                            mPKStreamId;
-    private String                            mPKUserId;
-    private String                            mPKInvteId;
-    private String                            mLinkStreamId;
-    private String                            mLinkUserId;
-    private String                            mLinkInviteId;
-    private String                            mPushUrl;
-    private LinkURLUtils.PushType             mPushType = LinkURLUtils.PushType.RTC;
+    private ITUIPusherSignallingService mSignallingService;
+    private ITUIPusherStreamService     mStreamService;
+    private TUIPresenterListener        mListener;
+    private ITUIPusherView              mTUIPusherView;
+    private Context                     mContext;
+    private boolean                     mIsPushing;
+    private String                      mStreamId;
+    private String                      mPKStreamId;
+    private String                      mPKUserId;
+    private String                      mPKInvteId;
+    private String                      mLinkStreamId;
+    private String                      mLinkUserId;
+    private String                      mLinkInviteId;
+    private String                      mPushUrl;
+    private LinkURLUtils.PushType       mPushType;
 
-    public TUIPusherPresenter(ITUIPusherContract.ITUIPusherView pusherView, Context context, LinkURLUtils.PushType pushType) {
+    public TUIPusherPresenter(TUIPusherView pusherView, Context context, LinkURLUtils.PushType pushType) {
         mPushType = pushType;
         mContext = context;
         mSignallingService = new TUIPusherSignallingService(mContext);
@@ -89,11 +91,11 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void startPush(String url) {
-        TXCLog.d(TAG, "startPush url:" + url);
+        TXCLog.i(TAG, "startPush url:" + url);
         mPushUrl = url;
         if (mIsPushing) {
-            if (mTUIPusherView != null) {
-                mTUIPusherView.onToastMessage(mContext.getResources().getString(R.string.tuipusher_pushing_toast));
+            if (mListener != null) {
+                mListener.onToastMessage(mContext.getResources().getString(R.string.tuipusher_pushing_toast));
             }
             return;
         }
@@ -101,17 +103,17 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         mSignallingService.addSignalingListener(new TUIPusherCallback() {
             @Override
             public void onResult(int code, String message) {
-                TXCLog.d(TAG, "createGroup code:" + code + " , message: " + message);
+                TXCLog.i(TAG, "createGroup code:" + code + " , message: " + message);
                 if (code == 0) {
                     int ret = mStreamService.startPush(mPushUrl);
                     if (ret == 0) {
-                        mTUIPusherView.onNotifyState(TUIPusherView.State.PUSH_SUCCESS);
+                        mListener.onNotifyState(TUIPusherView.State.PUSH_SUCCESS);
                     }
-                    TXCLog.d(TAG, "pushUrl:" + mPushUrl + ", ret: " + ret);
+                    TXCLog.i(TAG, "pushUrl:" + mPushUrl + ", ret: " + ret);
                     mIsPushing = true;
                 } else {
-                    if (mTUIPusherView != null) {
-                        mTUIPusherView.onToastMessage(message);
+                    if (mListener != null) {
+                        mListener.onToastMessage(message);
                     }
                 }
             }
@@ -120,12 +122,12 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void stopPush() {
-        TXCLog.d(TAG, "stopPush");
+        TXCLog.i(TAG, "stopPush");
     }
 
     @Override
     public boolean requestPK(String userId) {
-        TXCLog.d(TAG, "requestPK userId:" + userId);
+        TXCLog.i(TAG, "requestPK userId:" + userId);
         mPKInvteId = mSignallingService.requestPK(TUILogin.getUserId(), userId, 15);
         if (TextUtils.isEmpty(mPKInvteId)) {
             return false;
@@ -136,14 +138,14 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void cancelPK() {
-        TXCLog.d(TAG, "cancelPK");
+        TXCLog.i(TAG, "cancelPK");
         mSignallingService.cancelPK(mPKInvteId, mStreamId);
         resetPKData();
     }
 
     @Override
     public void responsePK(boolean agree, String reason, int timeout) {
-        TXCLog.d(TAG, "responsePK agree:" + agree + ", resson:" + reason);
+        TXCLog.i(TAG, "responsePK agree:" + agree + ", resson:" + reason);
         mSignallingService.responsePK(mPKInvteId, mStreamId, agree, reason, timeout);
         if (!agree) {
             resetPKData();
@@ -152,14 +154,14 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void stopPK() {
-        TXCLog.d(TAG, "stopPK");
+        TXCLog.i(TAG, "stopPK");
         mSignallingService.stopPK(mStreamId, mPKUserId, 15);
         resetPKData();
     }
 
     @Override
     public void responseLink(boolean agree, String reason, int timeout) {
-        TXCLog.d(TAG, "responseLink agree:" + agree + ", resson:" + reason);
+        TXCLog.i(TAG, "responseLink agree:" + agree + ", resson:" + reason);
         mSignallingService.responseLink(mLinkInviteId, mStreamId, agree, reason, timeout);
         if (!agree) {
             resetLinkData();
@@ -168,32 +170,32 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         mStreamService.destory();
         mSignallingService.destory();
     }
 
     @Override
     public void startPK(TXCloudVideoView pkVideoView) {
-        TXCLog.d(TAG, "startPK");
+        TXCLog.i(TAG, "startPK");
         int ret = mStreamService.startPlay(pkVideoView, mPKStreamId, TUILogin.getUserId());
         int result = mStreamService.setPKMixTranscodingConfig(TUILogin.getUserId(), mStreamId + "", mPKStreamId, mPKUserId);
         if (result == V2TXLIVE_OK) {
-            mTUIPusherView.onNotifyPKState(PK_STSRT, mPKUserId, "");
+            mListener.onNotifyPKState(PK_STSRT, mPKUserId, "");
         } else {
-            mTUIPusherView.onToastMessage(mContext.getResources().getString(R.string.tuipusher_start_pk_fail));
+            mListener.onToastMessage(mContext.getResources().getString(R.string.tuipusher_start_pk_fail));
         }
     }
 
     @Override
     public void setMirror(boolean isMirror) {
-        TXCLog.d(TAG, "setMirror isMirror:" + isMirror);
+        TXCLog.i(TAG, "setMirror isMirror:" + isMirror);
         mStreamService.setMirror(isMirror);
     }
 
     @Override
     public void setResolution(int resolution) {
-        TXCLog.d(TAG, "setResolution resolution:" + resolution);
+        TXCLog.i(TAG, "setResolution resolution:" + resolution);
         if (mStreamService != null) {
             V2TXLiveDef.V2TXLiveVideoResolution resolutionFlag = V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution640x360;
             if (resolution == 1) {
@@ -211,27 +213,31 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         }
     }
 
+    public void setListener(TUIPresenterListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void switchCamera(boolean isFrontCamera) {
-        TXCLog.d(TAG, "switchCamera isFrontCamera:" + isFrontCamera);
+        TXCLog.i(TAG, "switchCamera isFrontCamera:" + isFrontCamera);
         mStreamService.switchCamera(isFrontCamera);
     }
 
     @Override
     public void startLink(TXCloudVideoView videoView) {
-        TXCLog.d(TAG, "startLink");
+        TXCLog.i(TAG, "startLink");
         mStreamService.startPlay(videoView, mLinkStreamId, TUILogin.getUserId());
         int result = mStreamService.setLinkMixTranscodingConfig(TUILogin.getUserId(), mStreamId + "", mLinkUserId, mLinkUserId);
         if (result == V2TXLIVE_OK) {
-            mTUIPusherView.onNotifyLinkState(LINK_START, mLinkUserId, "");
+            mListener.onNotifyLinkState(LINK_START, mLinkUserId, "");
         } else {
-            mTUIPusherView.onToastMessage(mContext.getResources().getString(R.string.tuipusher_start_link_fail));
+            mListener.onToastMessage(mContext.getResources().getString(R.string.tuipusher_start_link_fail));
         }
     }
 
     @Override
     public void stopLink(int timeout) {
-        TXCLog.d(TAG, "stopLink");
+        TXCLog.i(TAG, "stopLink");
         mSignallingService.stopLink(mStreamId, mLinkUserId, timeout);
         mStreamService.stopPlay();
         mStreamService.setLinkMixTranscodingConfig("", "", "", "");
@@ -240,7 +246,7 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void onCommonResult(int code, String message) {
-        TXCLog.d(TAG, "onCommonResult code :" + code + ", message" + message);
+        TXCLog.i(TAG, "onCommonResult code :" + code + ", message" + message);
         if (code == IM_PK_STOP_SUCCESS) {
             mStreamService.stopPlay();
             mStreamService.setPKMixTranscodingConfig("", "", "", "");
@@ -251,7 +257,7 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void onRequestPK(@NonNull InvitationReqBean bean) {
-        TXCLog.d(TAG, "onRequestPK");
+        TXCLog.i(TAG, "onRequestPK");
         if (!TextUtils.isEmpty(mPKInvteId) && CMD_PK_REQ.equals(bean.getData().getData().getCmd())) {
             //已经收到了未处理的PK请求，抛弃新的请求
             mSignallingService.responsePK(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
@@ -260,25 +266,25 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         mPKInvteId = bean.getInviteID();
         mPKUserId = bean.getInviter();
         mPKStreamId = bean.getData().getData().getStreamID();
-        if (mTUIPusherView != null) {
-            mTUIPusherView.onNotifyPKState(PK_RECEIVE_REQ, mPKUserId, "");
+        if (mListener != null) {
+            mListener.onNotifyPKState(PK_RECEIVE_REQ, mPKUserId, "");
         }
     }
 
     @Override
     public void onStopPK() {
-        TXCLog.d(TAG, "onStopPK");
+        TXCLog.i(TAG, "onStopPK");
         resetPKData();
         mStreamService.stopPlay();
         mStreamService.setPKMixTranscodingConfig("", "", "", "");
-        if (mTUIPusherView != null) {
-            mTUIPusherView.onNotifyPKState(PK_STOP, mPKUserId, "");
+        if (mListener != null) {
+            mListener.onNotifyPKState(PK_STOP, mPKUserId, "");
         }
     }
 
     @Override
     public void onRequestJoinAnchor(InvitationReqBean bean) {
-        TXCLog.d(TAG, "onRequestJoinAnchor");
+        TXCLog.i(TAG, "onRequestJoinAnchor");
         if (!TextUtils.isEmpty(mLinkInviteId) && CMD_JOIN_ANCHOR_REQ.equals(bean.getData().getData().getCmd())) {    //已经收到了未处理的连麦请求，抛弃新的请求
             mSignallingService.responseLink(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
             return;
@@ -286,20 +292,20 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         mLinkInviteId = bean.getInviteID();
         mLinkUserId = bean.getInviter();
         mLinkStreamId = bean.getData().getData().getStreamID();
-        if (mTUIPusherView != null) {
-            mTUIPusherView.onNotifyLinkState(LINK_REQ, mLinkUserId, bean.getData().getData().getCmdInfo());
+        if (mListener != null) {
+            mListener.onNotifyLinkState(LINK_REQ, mLinkUserId, bean.getData().getData().getCmdInfo());
         }
     }
 
     @Override
     public void onResponseLink(InvitationResBean bean, LinkResponseState state) {
-        TXCLog.d(TAG, "onResponseLink loginUserId:" + TUILogin.getUserId() + ", inviter:" + bean.getInviter());
+        TXCLog.i(TAG, "onResponseLink loginUserId:" + TUILogin.getUserId() + ", inviter:" + bean.getInviter());
         if (TUILogin.getUserId().equals(bean.getInviter())) {
             return;
         }
         switch (state) {
             case CANCEL:
-                mTUIPusherView.onNotifyLinkState(LINK_CANCEL, mLinkUserId, "");
+                mListener.onNotifyLinkState(LINK_CANCEL, mLinkUserId, "");
                 resetLinkData();
                 break;
         }
@@ -307,46 +313,46 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void onStartLink(InvitationReqBean bean) {
-        TXCLog.d(TAG, "onStartLink mLinkInviteId:" + bean.getInviteID() + ",mLinkUserId:" + bean.getInviter());
+        TXCLog.i(TAG, "onStartLink mLinkInviteId:" + bean.getInviteID() + ",mLinkUserId:" + bean.getInviter());
         mLinkInviteId = bean.getInviteID();
         mLinkUserId = bean.getInviter();
         mLinkStreamId = bean.getData().getData().getStreamID();
 
-        if (mTUIPusherView != null) {
-            mTUIPusherView.onStartLink();
+        if (mListener != null) {
+            mListener.onStartLink();
         }
     }
 
     @Override
     public void onStopLink(InvitationReqBean bean) {
-        TXCLog.d(TAG, "onStopLink");
+        TXCLog.i(TAG, "onStopLink");
         resetLinkData();
         mStreamService.stopPlay();
         mStreamService.setLinkMixTranscodingConfig("", "", "", "");
-        if (mTUIPusherView != null) {
-            mTUIPusherView.onToastMessage(mContext.getString(R.string.tuipusher_audience_stop_link));
-            mTUIPusherView.onNotifyLinkState(LINK_STOP, mLinkUserId, "");
+        if (mListener != null) {
+            mListener.onToastMessage(mContext.getString(R.string.tuipusher_audience_stop_link));
+            mListener.onNotifyLinkState(LINK_STOP, mLinkUserId, "");
         }
     }
 
     @Override
     public void onTimeOut(String inviteId) {
-        TXCLog.d(TAG, "onTimeOut, inviteId : " + inviteId);
+        TXCLog.i(TAG, "onTimeOut, inviteId : " + inviteId);
         if (TextUtils.isEmpty(inviteId)) {
             return;
         }
         if (!TextUtils.isEmpty(mPKInvteId) && mPKInvteId.equals(inviteId)) {
-            mTUIPusherView.onNotifyPKState(PK_TIMEOUT, mPKUserId, "");
+            mListener.onNotifyPKState(PK_TIMEOUT, mPKUserId, "");
             resetPKData();
         } else if (!TextUtils.isEmpty(mLinkInviteId) && mLinkInviteId.equals(inviteId)) {
-            mTUIPusherView.onNotifyLinkState(LINK_TIMEOUT, mLinkUserId, "");
+            mListener.onNotifyLinkState(LINK_TIMEOUT, mLinkUserId, "");
             resetLinkData();
         }
     }
 
     @Override
     public void onResponsePK(InvitationResBean bean, PKResponseState result) {
-        TXCLog.d(TAG, "onResponsePK loginUserId:" + TUILogin.getUserId() + ", inviter:" + bean.getInviter());
+        TXCLog.i(TAG, "onResponsePK loginUserId:" + TUILogin.getUserId() + ", inviter:" + bean.getInviter());
         if (TUILogin.getUserId().equals(bean.getInviter())) {
             return;
         }
@@ -354,14 +360,14 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         mPKStreamId = bean.getData().getData().getStreamID();
         switch (result) {
             case ACCEPT:
-                mTUIPusherView.onNotifyPKState(PK_ACCAPT, mPKUserId, "");
+                mListener.onNotifyPKState(PK_ACCAPT, mPKUserId, "");
                 break;
             case REJECT:
-                mTUIPusherView.onNotifyPKState(PK_REJECT, mPKUserId, bean.getData().getData().getCmdInfo());
+                mListener.onNotifyPKState(PK_REJECT, mPKUserId, bean.getData().getData().getCmdInfo());
                 resetPKData();
                 break;
             case CANCEL:
-                mTUIPusherView.onNotifyPKState(PK_CANCEL, mPKUserId, "");
+                mListener.onNotifyPKState(PK_CANCEL, mPKUserId, "");
                 resetPKData();
                 break;
         }
@@ -369,7 +375,7 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
 
     @Override
     public void onPushSuccess() {
-        TXCLog.d(TAG, "onPushSuccess");
+        TXCLog.i(TAG, "onPushSuccess");
     }
 
     public TXBeautyManager getTXBeautyManager() {
@@ -396,5 +402,42 @@ public class TUIPusherPresenter implements ITUIPusherContract.ITUIPusherPresente
         mPKInvteId = "";
         mPKStreamId = "";
         mPKUserId = "";
+    }
+
+    public interface TUIPresenterListener {
+        /**
+         * UI 吐司提示
+         *
+         * @param message
+         */
+        void onToastMessage(String message);
+
+        /**
+         * UI 状态改变通知
+         *
+         * @param state
+         */
+        void onNotifyState(TUIPusherView.State state);
+
+        /**
+         * PK 状态改变通知
+         *
+         * @param pkState
+         * @param pkUserId
+         * @param reason
+         */
+        void onNotifyPKState(TUIPusherView.PKState pkState, String pkUserId, String reason);
+
+        /**
+         * 连麦 状态改变通知
+         *
+         * @param linkState
+         */
+        void onNotifyLinkState(TUIPusherView.LinkState linkState, String linkUserId, String reason);
+
+        /**
+         * 开始连麦回调
+         */
+        void onStartLink();
     }
 }

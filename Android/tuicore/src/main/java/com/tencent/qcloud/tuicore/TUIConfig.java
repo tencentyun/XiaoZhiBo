@@ -30,6 +30,8 @@ public class TUIConfig {
     private static String selfSignature = "";
     private static int gender;
 
+    public static final String TUICORE_SETTINGS_SP_NAME = "TUICoreSettings";
+
     private static final String RECORD_DIR_SUFFIX = "/record/";
     private static final String RECORD_DOWNLOAD_DIR_SUFFIX = "/record/download/";
     private static final String VIDEO_DOWNLOAD_DIR_SUFFIX = "/video/download/";
@@ -39,9 +41,16 @@ public class TUIConfig {
     private static final String FILE_DOWNLOAD_DIR_SUFFIX = "/file/download/";
     private static final String CRASH_LOG_DIR_SUFFIX = "/crash/";
 
+    private static boolean initialized = false;
+
+
     public static void init(Context context) {
+        if (initialized) {
+            return;
+        }
         TUIConfig.appContext = context;
         initPath();
+        initialized = true;
     }
 
     public static String getDefaultAppDir() {

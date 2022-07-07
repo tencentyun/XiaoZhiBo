@@ -1,14 +1,12 @@
 include ':app'
-include ':basic'
+include ':showlive'
 include ':debug'
 include ':login'
-project(':login').projectDir = new File(settingsDir, './login')
-
-include ':tuicore'
+include ':basic'
 include ':tuipusher'
 include ':tuiplayer'
-
 include ':tuibeauty'
 include ':tuibarrage'
 include ':tuiaudioeffect'
 include ':tuigift'
+include ':tuicore'

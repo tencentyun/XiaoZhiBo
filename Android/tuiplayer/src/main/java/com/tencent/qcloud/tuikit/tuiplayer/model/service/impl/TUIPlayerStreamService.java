@@ -65,7 +65,7 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
         mV2TXLivePlayer.setRenderFillMode(V2TXLiveDef.V2TXLiveFillMode.V2TXLiveFillModeFill);
         setFramework();
         int playCode = mV2TXLivePlayer.startPlay(playUrl);
-        TXCLog.d(TAG, "setRenderView: ret" + renderCode + "startPlay: ret" + playCode + ", playUrl:" + playUrl);
+        TXCLog.i(TAG, "setRenderView: ret" + renderCode + "startPlay: ret" + playCode + ", playUrl:" + playUrl);
         if (renderCode == V2TXLIVE_OK && playCode == V2TXLIVE_ERROR_FAILED) {
             return V2TXLIVE_OK;
         } else if (renderCode == V2TXLIVE_OK) {
@@ -79,7 +79,7 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
     @Override
     public int stopPlay() {
-        TXCLog.d(TAG, "stopPlay");
+        TXCLog.i(TAG, "stopPlay");
         if (mV2TXLivePlayer != null && mV2TXLivePlayer.isPlaying() == 1) {
             mV2TXLivePlayer.stopPlay();
         }
@@ -99,7 +99,7 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
     @Override
     public int startPush(String url, boolean isFront, TXCloudVideoView videoView) {
-        TXCLog.d(TAG, "startPush url:" + url);
+        TXCLog.i(TAG, "startPush url:" + url);
         mV2TXLivePusher.setRenderView(videoView);
         mV2TXLivePusher.startCamera(isFront);
         mV2TXLivePusher.startPush(url);
@@ -109,7 +109,7 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
     @Override
     public int stopPush() {
-        TXCLog.d(TAG, "stopPush");
+        TXCLog.i(TAG, "stopPush");
         mV2TXLivePlayer.stopPlay();
         mV2TXLivePusher.stopPush();
         return 0;
@@ -117,7 +117,7 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         if (mV2TXLivePusher == null) {
             return;
         }
@@ -154,22 +154,22 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
         @Override
         public void onSetMixTranscodingConfig(int code, String msg) {
-            TXCLog.d(TAG, "TUILivePusherObserver onSetMixTranscodingConfig code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onSetMixTranscodingConfig code:" + code + ", msg:" + msg);
         }
 
         @Override
         public void onError(int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePusherObserver onError code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onError code:" + code + ", msg:" + msg);
         }
 
         @Override
         public void onWarning(int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePusherObserver onWarning code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePusherObserver onWarning code:" + code + ", msg:" + msg);
         }
 
         @Override
         public void onCaptureFirstVideoFrame() {
-            TXCLog.d(TAG, "TUILivePusherObserver onCaptureFirstVideoFrame");
+            TXCLog.i(TAG, "TUILivePusherObserver onCaptureFirstVideoFrame");
             if (mListener != null) {
                 mListener.onPushSuccess();
             }
@@ -179,14 +179,14 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
 
     class TUILivePlayerObserver extends V2TXLivePlayerObserver {
         public void onError(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePlayerObserver onError code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePlayerObserver onError code:" + code + ", msg:" + msg);
             if (code == V2TXLIVE_ERROR_DISCONNECTED) {
                 mListener.onNotifyPlayStatus(STOP_PLAY);
             }
         }
 
         public void onWarning(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
-            TXCLog.d(TAG, "TUILivePlayerObserver onWarning code:" + code + ", msg:" + msg);
+            TXCLog.i(TAG, "TUILivePlayerObserver onWarning code:" + code + ", msg:" + msg);
         }
 
         @Override

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="showlive_small_image_left_margin">20dp</dimen>
+</resources>

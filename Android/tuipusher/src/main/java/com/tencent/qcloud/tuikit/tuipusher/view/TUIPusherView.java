@@ -1,5 +1,11 @@
 package com.tencent.qcloud.tuikit.tuipusher.view;
 
+import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.COUNTDOWN;
+import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.LINK;
+import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PK;
+import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH;
+import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH_SUCCESS;
+
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
@@ -8,8 +14,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.blankj.utilcode.constant.PermissionConstants;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.tuicore.TUIConfig;
 import com.tencent.qcloud.tuicore.TUILogin;
@@ -18,7 +22,7 @@ import com.tencent.qcloud.tuikit.tuipusher.R;
 import com.tencent.qcloud.tuikit.tuipusher.model.TUIPusherConfig;
 import com.tencent.qcloud.tuikit.tuipusher.model.service.impl.TUIPusherSignallingService;
 import com.tencent.qcloud.tuikit.tuipusher.model.utils.LinkURLUtils;
-import com.tencent.qcloud.tuikit.tuipusher.presenter.ITUIPusherContract;
+import com.tencent.qcloud.tuikit.tuipusher.model.utils.PermissionHelper;
 import com.tencent.qcloud.tuikit.tuipusher.presenter.TUIPusherPresenter;
 import com.tencent.qcloud.tuikit.tuipusher.view.custom.ContainerView;
 import com.tencent.qcloud.tuikit.tuipusher.view.custom.CountDownView;
@@ -26,18 +30,11 @@ import com.tencent.qcloud.tuikit.tuipusher.view.custom.StartPushView;
 import com.tencent.qcloud.tuikit.tuipusher.view.listener.TUIPusherViewListener;
 import com.tencent.qcloud.tuikit.tuipusher.view.videoview.TUIVideoView;
 
-import java.util.List;
-
-import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.COUNTDOWN;
-import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.LINK;
-import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PK;
-import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH;
-import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH_SUCCESS;
-
 /**
  * 推流相关逻辑封装，主要包含以下功能
  * <p>
  * - 开始预览{@link TUIPusherView#start(String)}
+ * - 停止推流{@link TUIPusherView#stop()}
  * - 设置镜像{@link TUIPusherView#setMirror(boolean)}
  * - 切换摄像头{@link TUIPusherView#switchCamera(boolean)}
  * - 设置分辨率{@link TUIPusherView#setVideoResolution(TUIPusherVideoResolution)}
@@ -48,7 +45,7 @@ import static com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView.State.PUSH_
  * - 停止连麦{@link TUIPusherView#stopJoinAnchor()}
  * </p>
  */
-public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITUIPusherView {
+public class TUIPusherView extends FrameLayout implements ITUIPusherView {
     private static final String TAG = "TUIPusherView";
 
     private TUIPusherPresenter    mTUIPusherPresenter;
@@ -56,7 +53,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     private TUIVideoView          mTUIVideoView;
     private CountDownView         mCountDownView;
     private StartPushView         mStartPushView;
-    public  ContainerView         mContainerView;
+    private ContainerView         mContainerView;
     private String                mPushUrl;
     private TUIPusherViewListener mListener;
     private boolean               mIsFrontCamera = true;
@@ -88,7 +85,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
 
     private void initContainerView() {
         mContainerView = new ContainerView(getContext());
-        mContainerView.initExtentionView(mTUIPusherPresenter.getTXAudioEffectManager(), mTUIPusherPresenter.getTXBeautyManager());
+        mContainerView.initExtentionView(mTUIPusherPresenter.getTXAudioEffectManager(),
+                mTUIPusherPresenter.getTXBeautyManager());
         addView(mContainerView);
         mContainerView.setVisibility(GONE);
     }
@@ -111,20 +109,39 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         mStartPushView.setListener(new StartPushView.OnStartPushListener() {
             @Override
             public void onClickStartPush() {
-                if (mListener != null) {
-                    mListener.onClickStartPushButton(TUIPusherView.this, mPushUrl, new TUIPusherViewListener.ResponseCallback() {
-                        @Override
-                        public void response(boolean isAgree) {
-                            if (isAgree) {
-                                updateState(COUNTDOWN);
-                            } else {
-                                ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_user_no_agree_push));
+                PermissionHelper.requestPermission(getContext(), PermissionHelper.PERMISSION_MICROPHONE,
+                        new PermissionHelper.PermissionCallback() {
+                            public void onGranted() {
+                                if (mListener != null) {
+                                    mListener.onClickStartPushButton(TUIPusherView.this, mPushUrl,
+                                            new TUIPusherViewListener.ResponseCallback() {
+                                                @Override
+                                                public void response(boolean isAgree) {
+                                                    if (isAgree) {
+                                                        updateState(COUNTDOWN);
+                                                    } else {
+                                                        ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_user_no_agree_push));
+                                                    }
+                                                }
+                                            });
+                                } else {
+                                    updateState(COUNTDOWN);
+                                }
                             }
-                        }
-                    });
-                } else {
-                    updateState(COUNTDOWN);
-                }
+
+                            @Override
+                            public void onDenied() {
+                            }
+
+                            @Override
+                            public void onDialogApproved() {
+                            }
+
+                            @Override
+                            public void onDialogRefused() {
+
+                            }
+                        });
             }
 
             @Override
@@ -154,17 +171,28 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     }
 
     private void startPreview() {
-        PermissionUtils.permission(PermissionConstants.CAMERA, PermissionConstants.MICROPHONE).callback(new PermissionUtils.FullCallback() {
-            @Override
-            public void onGranted(List<String> permissionsGranted) {
-                mTUIPusherPresenter.startPreview(true, mTUIVideoView.getPushVideoView());
-            }
+        PermissionHelper.requestPermission(getContext(),
+                PermissionHelper.PERMISSION_CAMERA, new PermissionHelper.PermissionCallback() {
+                    @Override
+                    public void onGranted() {
+                        mTUIPusherPresenter.startPreview(true, mTUIVideoView.getPushVideoView());
+                    }
 
-            @Override
-            public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
-                ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_tips_start_camera_audio));
-            }
-        }).request();
+                    @Override
+                    public void onDenied() {
+
+                    }
+
+                    @Override
+                    public void onDialogApproved() {
+
+                    }
+
+                    @Override
+                    public void onDialogRefused() {
+
+                    }
+                });
     }
 
     @Override
@@ -173,7 +201,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         if (visibility == VISIBLE) {
             mTUIPusherPresenter.stopVirtualCamera();
         } else if (visibility == INVISIBLE) {
-            mTUIPusherPresenter.startVirtualCamera(BitmapFactory.decodeResource(getResources(), R.drawable.tuipusher_private));
+            mTUIPusherPresenter.startVirtualCamera(BitmapFactory.decodeResource(getResources(),
+                    R.drawable.tuipusher_private));
         }
     }
 
@@ -194,16 +223,16 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
                     mListener.onPushStarted(this, mPushUrl);
                 }
                 break;
-
         }
     }
 
+    @Override
     public void setGroupId(String groupId) {
         mContainerView.setGroupId(groupId);
     }
 
     private void updatePKState(PKState pkState, String userId, String reason) {
-        TXCLog.d(TAG, "updatePKState pkState:" + pkState + ", userId:" + userId);
+        TXCLog.i(TAG, "updatePKState pkState:" + pkState + ", userId:" + userId);
         switch (pkState) {
             case PK_RECEIVE_REQ:
                 if (mListener != null) {
@@ -217,7 +246,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
                             } else {       //拒绝
                                 mState = PUSH_SUCCESS;
                                 mPKState = PKState.IDLE;
-                                mTUIPusherPresenter.responsePK(false, TUIPusherSignallingService.RejectReason.NORMAL.getReason(), 10);
+                                mTUIPusherPresenter.responsePK(false,
+                                        TUIPusherSignallingService.RejectReason.NORMAL.getReason(), 10);
                                 mTUIVideoView.showPKMode(false);
                             }
                         }
@@ -240,7 +270,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
                 mState = PUSH_SUCCESS;
                 mPKState = PKState.IDLE;
                 if (mListener != null) {
-                    mListener.onRejectPKResponse(this, TUIPusherSignallingService.RejectReason.getRejectReasonCode(reason));
+                    mListener.onRejectPKResponse(this,
+                            TUIPusherSignallingService.RejectReason.getRejectReasonCode(reason));
                 }
                 break;
             case PK_TIMEOUT:
@@ -266,7 +297,7 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     }
 
     private void updateLinkState(LinkState linkState, String userId, String reason) {
-        TXCLog.d(TAG, "updateLinkState linkState:" + linkState + ", userId:" + userId);
+        TXCLog.i(TAG, "updateLinkState linkState:" + linkState + ", userId:" + userId);
         switch (linkState) {
             case LINK_REQ:
                 if (mListener != null) {
@@ -278,7 +309,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
                             } else {       //拒绝
                                 mState = PUSH_SUCCESS;
                                 mLinkState = LinkState.IDLE;
-                                mTUIPusherPresenter.responseLink(false, TUIPusherSignallingService.RejectReason.NORMAL.getReason(), 10);
+                                mTUIPusherPresenter.responseLink(false,
+                                        TUIPusherSignallingService.RejectReason.NORMAL.getReason(), 10);
                             }
                         }
                     });
@@ -318,95 +350,25 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
     }
 
     @Override
-    public void onToastMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    public void setTUIPusherViewListener(TUIPusherViewListener listener) {
+        this.mListener = listener;
     }
 
     @Override
-    public void onNotifyState(State state) {
-        TXCLog.d(TAG, "onNotifyState state:" + state);
-        mState = state;
-        updateState(mState);
-    }
-
-    @Override
-    public void onNotifyPKState(PKState pkState, String userId, String reason) {
-        TXCLog.d(TAG, "onNotifyPKState pkState:" + pkState);
-        mPKState = pkState;
-        if ((mState == PUSH_SUCCESS || mState == PK) && mLinkState == LinkState.IDLE) {
-            mState = PK;
-            updatePKState(mPKState, userId, reason);
-        } else {
-            if (mPKState == PKState.PK_RECEIVE_REQ) {
-                mState = PUSH_SUCCESS;
-                mPKState = PKState.IDLE;
-                mTUIPusherPresenter.responsePK(false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
-            }
-            TXCLog.d(TAG, "onNotifyPKState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + userId);
-        }
-
-    }
-
-    @Override
-    public void onNotifyLinkState(LinkState linkState, String userId, String reason) {
-        TXCLog.d(TAG, "onNotifyLinkState linkState:" + linkState);
-        mLinkState = linkState;
-        if ((mState == PUSH_SUCCESS || mState == LINK) && mPKState == PKState.IDLE) {
-            mState = LINK;
-            updateLinkState(mLinkState, userId, reason);
-        } else {
-            if (mLinkState == LinkState.LINK_REQ) {
-                mState = PUSH_SUCCESS;
-                mLinkState = LinkState.IDLE;
-                mTUIPusherPresenter.responseLink(false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
-            }
-            TXCLog.d(TAG, "onNotifyLinkState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + userId);
-        }
-    }
-
-    @Override
-    public void onStartLink() {
-        TXCLog.d(TAG, "onStartLink");
-        mTUIVideoView.showLinkMode(true);
-        mTUIPusherPresenter.startLink(mTUIVideoView.getLinkVideoView());
-    }
-
-    /**
-     * 设置TUIPusherView 事件的回调对象
-     *
-     * @param mListener
-     */
-    public void setTUIPusherViewListener(TUIPusherViewListener mListener) {
-        this.mListener = mListener;
-    }
-
-    /**
-     * 设置镜像模式
-     *
-     * @param isMirror true:开启镜像模式; false:关闭镜像模式
-     */
     public void setMirror(boolean isMirror) {
-        TXCLog.d(TAG, "setMirror isMirror:" + isMirror);
+        TXCLog.i(TAG, "setMirror isMirror:" + isMirror);
         mTUIPusherPresenter.setMirror(isMirror);
     }
 
-    /**
-     * 切换前后摄像头
-     *
-     * @param isFrontCamera true:使用前置摄像头； false:使用后置摄像头
-     */
+    @Override
     public void switchCamera(boolean isFrontCamera) {
-        TXCLog.d(TAG, "switchCamera isFrontCamera:" + isFrontCamera);
+        TXCLog.i(TAG, "switchCamera isFrontCamera:" + isFrontCamera);
         mTUIPusherPresenter.switchCamera(isFrontCamera);
     }
 
-    /**
-     * 设置分辨率
-     *
-     * @param resolution
-     */
+    @Override
     public void setVideoResolution(TUIPusherVideoResolution resolution) {
-        TXCLog.d(TAG, "setVideoResolution resolution:" + resolution);
+        TXCLog.i(TAG, "setVideoResolution resolution:" + resolution);
         int tempResolution = 1;
         switch (resolution) {
             case TUIPUSHER_VIDEO_RES_360:
@@ -425,13 +387,9 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         mTUIPusherPresenter.setResolution(tempResolution);
     }
 
-    /**
-     * 开始摄像头预览
-     *
-     * @param url
-     */
+    @Override
     public void start(String url) {
-        TXCLog.d(TAG, "start url:" + url);
+        TXCLog.i(TAG, "start url:" + url);
         if (!TUILogin.isUserLogined()) {
             ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_please_login));
             return;
@@ -444,16 +402,79 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
             ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_url_error));
             return;
         }
+        setTUIPusherPresenterListener();
         initFunctionView();
         mPushUrl = url;
         startPreview();
     }
 
-    /**
-     * 停止直播
-     */
+    private void setTUIPusherPresenterListener() {
+        if (mTUIPusherPresenter == null) {
+            return;
+        }
+        mTUIPusherPresenter.setListener(new TUIPusherPresenter.TUIPresenterListener() {
+            @Override
+            public void onToastMessage(String message) {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNotifyState(State state) {
+                TXCLog.i(TAG, "onNotifyState state:" + state);
+                mState = state;
+                updateState(mState);
+            }
+
+            @Override
+            public void onNotifyPKState(PKState pkState, String pkUserId, String reason) {
+                TXCLog.i(TAG, "onNotifyPKState pkState:" + pkState);
+                mPKState = pkState;
+                if ((mState == PUSH_SUCCESS || mState == PK) && mLinkState == LinkState.IDLE) {
+                    mState = PK;
+                    updatePKState(mPKState, pkUserId, reason);
+                } else {
+                    if (mPKState == PKState.PK_RECEIVE_REQ) {
+                        mState = PUSH_SUCCESS;
+                        mPKState = PKState.IDLE;
+                        mTUIPusherPresenter.responsePK(false,
+                                TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
+                    }
+                    TXCLog.i(TAG,
+                            "onNotifyPKState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + pkUserId);
+                }
+            }
+
+            @Override
+            public void onNotifyLinkState(LinkState linkState, String linkUserId, String reason) {
+                TXCLog.i(TAG, "onNotifyLinkState linkState:" + linkState);
+                mLinkState = linkState;
+                if ((mState == PUSH_SUCCESS || mState == LINK) && mPKState == PKState.IDLE) {
+                    mState = LINK;
+                    updateLinkState(mLinkState, linkUserId, reason);
+                } else {
+                    if (mLinkState == LinkState.LINK_REQ) {
+                        mState = PUSH_SUCCESS;
+                        mLinkState = LinkState.IDLE;
+                        mTUIPusherPresenter.responseLink(false,
+                                TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
+                    }
+                    TXCLog.i(TAG,
+                            "onNotifyLinkState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + linkUserId);
+                }
+            }
+
+            @Override
+            public void onStartLink() {
+                TXCLog.i(TAG, "onStartLink");
+                mTUIVideoView.showLinkMode(true);
+                mTUIPusherPresenter.startLink(mTUIVideoView.getLinkVideoView());
+            }
+        });
+    }
+
+    @Override
     public void stop() {
-        TXCLog.d(TAG, "stop");
+        TXCLog.i(TAG, "stop");
         TUIPusherConfig.getInstance().destory();
         if (mState == State.PK) {
             mTUIPusherPresenter.stopPK();
@@ -463,14 +484,9 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
         }
     }
 
-    /**
-     * 发送 PK 请求
-     *
-     * @param userID
-     * @return
-     */
+    @Override
     public synchronized boolean sendPKRequest(String userID) {
-        TXCLog.d(TAG, "sendPKRequest userID:" + userID);
+        TXCLog.i(TAG, "sendPKRequest userID:" + userID);
         if (mState == PUSH_SUCCESS && mPKState == PKState.IDLE && mLinkState == LinkState.IDLE) {
             mState = State.PK;
             mPKState = PKState.PK_REQ;
@@ -481,37 +497,35 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherContract.ITU
                 return false;
             }
         } else {
-            TXCLog.d(TAG, "sendPKRequest fail, mState:" + mState + ", mPKState： " + mPKState + ", mLinkState：" + mLinkState);
+            TXCLog.i(TAG,
+                    "sendPKRequest fail, mState:" + mState + ", mPKState： " + mPKState + ", mLinkState：" + mLinkState);
             return false;
         }
     }
 
-    /**
-     * 取消 PK 请求
-     */
+
+    @Override
     public synchronized void cancelPKRequest() {
-        TXCLog.d(TAG, "cancelPKRequest");
+        TXCLog.i(TAG, "cancelPKRequest");
         mState = PUSH_SUCCESS;
         mPKState = PKState.IDLE;
         mTUIPusherPresenter.cancelPK();
     }
 
-    /**
-     * 发送 停止PK 请求
-     */
+
+    @Override
     public void stopPK() {
-        TXCLog.d(TAG, "stopPK");
+        TXCLog.i(TAG, "stopPK");
         mState = PUSH_SUCCESS;
         mPKState = PKState.IDLE;
         mTUIPusherPresenter.stopPK();
         mTUIVideoView.showPKMode(false);
     }
 
-    /**
-     * 发送 停止连麦 请求
-     */
+
+    @Override
     public void stopJoinAnchor() {
-        TXCLog.d(TAG, "stopJoinAnchor");
+        TXCLog.i(TAG, "stopJoinAnchor");
         mState = PUSH_SUCCESS;
         mLinkState = LinkState.IDLE;
         mTUIPusherPresenter.stopLink(15);

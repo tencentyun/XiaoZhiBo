@@ -1,12 +1,4 @@
 <resources>
-    <!-- Application theme. -->
-    <style name="AppTheme">
-        <!--<item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/colorAccent</item>-->
-        <!--<item name="android:windowBackground">@color/colorActivityBackground</item>-->
-    </style>
-
     <style name="AppThemeMain" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColor">@color/app_color_white</item>
     </style>
@@ -34,4 +26,5 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
 </resources>

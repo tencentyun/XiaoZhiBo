@@ -45,7 +45,7 @@ public interface TUIPlayerViewListener {
      * @param playView
      * @param url
      */
-    void onPlayStoped(TUIPlayerView playView, String url);
+    void onPlayStopped(TUIPlayerView playView, String url);
 
     /**
      * 事件发生时调用

@@ -67,12 +67,12 @@ public class StartPushView extends FrameLayout {
             Object object = beautyRetMap.get("TUIBeauty");
             if (object != null && object instanceof View) {
                 setBeautyView((View) object);
-                TXCLog.d(TAG, "TUIBeauty getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBeauty getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBeauty getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBeauty getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIBeauty getExtensionInfo null");
+            TXCLog.i(TAG, "TUIBeauty getExtensionInfo null");
         }
     }
 

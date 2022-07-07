@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="showlive_color_white">#FFFFFF</color>
+    <color name="showlive_color_black">#000000</color>
+    <color name="showlive_transparent">#00000000</color>
+    <color name="showlive_color_main_text">#333333</color>
+    <color name="showlive_color_input_normal">#BBBBBB</color>
+    <color name="showlive_color_tab_select">#006EFF</color>
+    <color name="showlive_transparent_half">#0F000000</color>
+    <color name="showlive_dialog_bg">#66000000</color>
+    <color name="showlive_color_line">#EEEEEE</color>
+    <color name="showlive_color_input_no_match">#FA585E</color>
+    <color name="showlive_ranking_text_first">#FF465D</color>
+    <color name="showlive_ranking_text_second">#FF8607</color>
+    <color name="showlive_ranking_text_third">#FCAF41</color>
+    <color name="showlive_color_tab_normal">#999999</color>
+</resources>

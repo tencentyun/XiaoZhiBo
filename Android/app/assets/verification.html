@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+<script>
+
+    var appId = '2079625916';
+    if (sessionStorage.sdkAppId) {
+        appId = sessionStorage.sdkAppId;
+    }
+    if (window.sdkAppId) {
+        appId = window.sdkAppId;
+    }
+
+function callVerifyJS(appid) {
+var id = appid + '';
+console.log("appid -> ", id);
+var captcha = new TencentCaptcha(id, function (res) {
+    if (res) {
+        if (res.ret === 0) {
+            window.imageVerificationJsBridge.verifySuccess(res.ticket, res.randstr);
+        } else {
+            window.imageVerificationJsBridge.verifyError(res.ret, "user canceled");
+        }
+    } else {
+        window.imageVerificationJsBridge.verifyError(-1, "unknow error");
+    }
+}, {
+    ready: function (data) {
+    },
+    needFeedBack: true,
+    enableDarkMode: true,
+});
+captcha.show();
+}
+
+
+
+
+
+
+</script>
+<body>
+</body>
+</html>

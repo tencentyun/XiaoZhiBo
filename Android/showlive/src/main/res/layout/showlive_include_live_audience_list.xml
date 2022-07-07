@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_audience_1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/showlive_bg_cover" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_audience_2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/showlive_bg_cover" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_audience_3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/showlive_bg_cover" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_audience_4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/showlive_bg_cover" />
+
+    <TextView
+        android:id="@+id/iv_audience_amount"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:text="0"
+        android:background="@drawable/showlive_bg_audience_number_text"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+</LinearLayout>

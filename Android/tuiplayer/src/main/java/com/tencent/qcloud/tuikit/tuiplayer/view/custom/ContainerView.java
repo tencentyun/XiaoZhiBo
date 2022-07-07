@@ -79,28 +79,28 @@ public class ContainerView extends FrameLayout {
             Object giftSendView = giftRetMap.get("TUIExtensionView");
             if (giftSendView != null && giftSendView instanceof View) {
                 setGiftView((View) giftSendView);
-                TXCLog.d(TAG, "TUIGift TUIExtensionView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIGift TUIExtensionView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIGift TUIExtensionView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIGift TUIExtensionView getExtensionInfo not find");
             }
 
             Object giftDisplayView = giftRetMap.get("TUIGiftPlayView");
             if (giftDisplayView != null && giftDisplayView instanceof View) {
                 setGiftShowView((View) giftDisplayView);
-                TXCLog.d(TAG, "TUIGift TUIGiftPlayView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIGift TUIGiftPlayView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIGift TUIGiftPlayView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIGift TUIGiftPlayView getExtensionInfo not find");
             }
 
             Object likeView = giftRetMap.get("TUILikeButton");
             if (likeView != null && likeView instanceof View) {
                 setLikeView((View) likeView);
-                TXCLog.d(TAG, "TUIGift TUILikeButton getExtensionInfo success");
+                TXCLog.i(TAG, "TUIGift TUILikeButton getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIGift TUILikeButton getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIGift TUILikeButton getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIGift getExtensionInfo null");
+            TXCLog.i(TAG, "TUIGift getExtensionInfo null");
         }
 
         //TODO 弹幕
@@ -112,20 +112,20 @@ public class ContainerView extends FrameLayout {
             Object barrageSendView = barrageRetMap.get("TUIBarrageButton");
             if (barrageSendView != null && barrageSendView instanceof View) {
                 setBarrageView((View) barrageSendView);
-                TXCLog.d(TAG, "TUIBarrage barrageSendView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBarrage barrageSendView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBarrage barrageSendView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBarrage barrageSendView getExtensionInfo not find");
             }
 
             Object barrageDisplayView = barrageRetMap.get("TUIBarrageDisplayView");
             if (barrageDisplayView != null && barrageDisplayView instanceof View) {
                 setBarrageShowView((View) barrageDisplayView);
-                TXCLog.d(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo success");
+                TXCLog.i(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo success");
             } else {
-                TXCLog.d(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo not find");
+                TXCLog.i(TAG, "TUIBarrage TUIBarrageDisplayView getExtensionInfo not find");
             }
         } else {
-            TXCLog.d(TAG, "TUIBarrage getExtensionInfo null");
+            TXCLog.i(TAG, "TUIBarrage getExtensionInfo null");
         }
     }
 

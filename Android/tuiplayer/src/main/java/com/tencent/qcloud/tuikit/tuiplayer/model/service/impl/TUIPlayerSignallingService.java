@@ -65,7 +65,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
     @Override
     public void login() {
-        TXCLog.d(TAG, "login");
+        TXCLog.i(TAG, "login");
         V2TIMManager.getMessageManager();
         V2TIMManager.getSignalingManager().addSignalingListener(mIMSignalingListener);
     }
@@ -73,12 +73,12 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
     @Override
     public String requestLink(String roomId, String userId, int timeout, final TUIPlayerCallback callback) {
-        TXCLog.d(TAG, "requestLink roomId:" + roomId + ", userId: " + userId);
+        TXCLog.i(TAG, "requestLink roomId:" + roomId + ", userId: " + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_REQ, roomId + "", "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "requestLink onSuccess");
+                TXCLog.i(TAG, "requestLink onSuccess");
                 if (callback != null) {
                     callback.onResult(TUIPlayerCallback.SUCCESS_CODE, TUIPlayerCallback.SUCCESS_MESSAGE);
                 }
@@ -86,24 +86,24 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "requestLink onError code:" + code + ", desc:" + desc);
+                TXCLog.i(TAG, "requestLink onError code:" + code + ", desc:" + desc);
                 if (callback != null) {
                     callback.onResult(code, desc);
                 }
             }
         });
-        TXCLog.d(TAG, "inviteId:" + inviteID);
+        TXCLog.i(TAG, "inviteId:" + inviteID);
         return inviteID;
     }
 
     @Override
     public void cancelLink(String inviteID, String roomId, final TUIPlayerCallback callback) {
-        TXCLog.d(TAG, "cancelLink inviteId:" + inviteID);
+        TXCLog.i(TAG, "cancelLink inviteId:" + inviteID);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_CANCEL, roomId, "");
         V2TIMManager.getSignalingManager().cancel(inviteID, json, new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "cancelLink success");
+                TXCLog.i(TAG, "cancelLink success");
                 if (callback != null) {
                     callback.onResult(TUIPlayerCallback.SUCCESS_CODE, TUIPlayerCallback.SUCCESS_MESSAGE);
                 }
@@ -111,7 +111,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "cancelLink error: " + ", code:" + code + ", desc:" + desc);
+                TXCLog.i(TAG, "cancelLink error: " + ", code:" + code + ", desc:" + desc);
                 if (callback != null) {
                     callback.onResult(code, desc);
                 }
@@ -121,12 +121,12 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
     @Override
     public void startLink(String roomId, String userId, int timeout, final TUIPlayerCallback callback) {
-        TXCLog.d(TAG, "startLink roomId:" + roomId + ", userId:" + userId);
+        TXCLog.i(TAG, "startLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_START, roomId + "", "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
             public void onSuccess() {
-                TXCLog.d(TAG, "startLink onSuccess");
+                TXCLog.i(TAG, "startLink onSuccess");
                 if (callback != null) {
                     callback.onResult(TUIPlayerCallback.SUCCESS_CODE, TUIPlayerCallback.SUCCESS_MESSAGE);
                 }
@@ -134,18 +134,18 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
             @Override
             public void onError(int code, String desc) {
-                TXCLog.d(TAG, "startLink error: " + ", code:" + code + ", desc:" + desc);
+                TXCLog.i(TAG, "startLink error: " + ", code:" + code + ", desc:" + desc);
                 if (callback != null) {
                     callback.onResult(code, desc);
                 }
             }
         });
-        TXCLog.d(TAG, "inviteId:" + inviteID + ", json:" + json);
+        TXCLog.i(TAG, "inviteId:" + inviteID + ", json:" + json);
     }
 
     @Override
     public void stopLink(String roomId, String userId, int timeout, TUIPlayerCallback callback) {
-        TXCLog.d(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
+        TXCLog.i(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_REQ, roomId, "");
         String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
@@ -158,27 +158,27 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
                 mListener.onCommonResult(IM_LINK_STOP_FAIL, "IM STOP PK FAIL");
             }
         });
-        TXCLog.d(TAG, "inviteId:" + inviteID);
+        TXCLog.i(TAG, "inviteId:" + inviteID);
     }
 
     private class TUIPlayerIMSimpleMsgListener extends V2TIMSimpleMsgListener {
 
         public void onRecvC2CTextMessage(String msgID, V2TIMUserInfo sender, String text) {
-            TXCLog.d(TAG, "onRecvC2CTextMessage");
+            TXCLog.i(TAG, "onRecvC2CTextMessage");
         }
 
         public void onRecvC2CCustomMessage(String msgID, V2TIMUserInfo sender, byte[] customData) {
-            TXCLog.d(TAG, "onRecvC2CCustomMessage");
+            TXCLog.i(TAG, "onRecvC2CCustomMessage");
         }
 
         @Override
         public void onRecvGroupTextMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, String text) {
-            TXCLog.d(TAG, "onRecvGroupTextMessage");
+            TXCLog.i(TAG, "onRecvGroupTextMessage");
         }
 
         @Override
         public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, byte[] customData) {
-            TXCLog.d(TAG, "onRecvGroupCustomMessage");
+            TXCLog.i(TAG, "onRecvGroupCustomMessage");
         }
     }
 
@@ -186,7 +186,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     private class TUIPlayerIMGroupListener extends V2TIMGroupListener {
         @Override
         public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
-            TXCLog.d(TAG, "onMemberEnter");
+            TXCLog.i(TAG, "onMemberEnter");
 
         }
 
@@ -218,9 +218,9 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
          * 收到邀请
          */
         public void onReceiveNewInvitation(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-            TXCLog.d(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
+            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.d(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
 
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
@@ -250,7 +250,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
          * 被邀请者接受邀请
          */
         public void onInviteeAccepted(String inviteID, String invitee, String data) {
-            TXCLog.d(TAG, "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + invitee + ", data: " + data);
+            TXCLog.i(TAG, "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + invitee + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
@@ -274,7 +274,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
          * 被邀请者拒绝邀请
          */
         public void onInviteeRejected(String inviteID, String invitee, String data) {
-            TXCLog.d(TAG, "onInviteeRejected inviteID:" + inviteID + ", invitee:" + invitee + ", data: " + data);
+            TXCLog.i(TAG, "onInviteeRejected inviteID:" + inviteID + ", invitee:" + invitee + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
@@ -299,16 +299,16 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
          * 邀请被取消
          */
         public void onInvitationCancelled(String inviteID, String inviter, String data) {
-            TXCLog.d(TAG, "onInvitationCancelled inviteID:" + inviteID + ", inviter:" + inviter + ", data: " + data);
+            TXCLog.i(TAG, "onInvitationCancelled inviteID:" + inviteID + ", inviter:" + inviter + ", data: " + data);
         }
 
         /**
          * 邀请超时
          */
         public void onInvitationTimeout(String inviteID, List<String> inviteeList) {
-            TXCLog.d(TAG, "onInvitationTimeout inviteID:" + inviteID);
+            TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.d(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
             if (mListener != null) {
                 InvitationResBean bean = new InvitationResBean();
@@ -321,7 +321,7 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
 
     @Override
     public void destory() {
-        TXCLog.d(TAG, "destory");
+        TXCLog.i(TAG, "destory");
         V2TIMManager.getSignalingManager().removeSignalingListener(mIMSignalingListener);
     }
 }

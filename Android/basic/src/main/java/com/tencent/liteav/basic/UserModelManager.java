@@ -54,7 +54,14 @@ public class UserModelManager {
             String json = SPUtils.getInstance(PER_DATA).getString(PER_USER_MODEL);
             mUserModel = GsonUtils.fromJson(json, UserModel.class);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public synchronized void clearUserModel() {
+        try {
+            SPUtils.getInstance(PER_DATA).put(PER_USER_MODEL, "");
+        } catch (Exception e) {
+            Log.d(TAG, "clea user model error:" + e.getMessage());
         }
     }
 
@@ -67,20 +74,10 @@ public class UserModelManager {
 
     private void setUserPublishVideoDate(String date) {
         mUserPubishVideoDate = date;
-        SPUtils.getInstance(PER_DATA).put(PER_USER_DATE, mUserPubishVideoDate);
-    }
-
-    // 首次TRTC打开摄像头提示"Demo特别配置了无限期云端存储"
-    public boolean needShowSecurityTips() {
-        String profileDate = getUserPublishVideoDate();
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd");
-        String day = formatter.format(date);
-        if (!day.equals(profileDate)) {
-            setUserPublishVideoDate(day);
-            return true;
+        try {
+            SPUtils.getInstance(PER_DATA).put(PER_USER_DATE, mUserPubishVideoDate);
+        } catch (Exception e) {
         }
-        return false;
     }
 
     public void setUsageModel(boolean haveBackstage) {
@@ -97,5 +94,17 @@ public class UserModelManager {
             mHaveBackstage = SPUtils.getInstance(USAGE_MODEL).getBoolean(HAVE_BACKSTAGE, true);
         }
         return mHaveBackstage;
+    }
+
+    public boolean needShowSecurityTips() {
+        String profileDate = getUserPublishVideoDate();
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd");
+        String day = formatter.format(date);
+        if (!day.equals(profileDate)) {
+            setUserPublishVideoDate(day);
+            return true;
+        }
+        return false;
     }
 }

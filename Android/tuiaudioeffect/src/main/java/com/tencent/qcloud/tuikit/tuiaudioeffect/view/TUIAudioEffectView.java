@@ -243,7 +243,7 @@ public class TUIAudioEffectView extends Dialog {
         reverbAdapter.setSelectPosition(0);
         mViewVoiceReverb.setAdapter(reverbAdapter);
 
-        final List<BGMItemEntity> songItemEntityList = mPresenter.getSongData();
+        final List<com.tencent.qcloud.tuikit.tuiaudioeffect.model.BGMItemEntity> songItemEntityList = mPresenter.getSongData();
         MusicSelectView.RecyclerViewAdapter songAdapter = new MusicSelectView.RecyclerViewAdapter(songItemEntityList, new MusicSelectView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
