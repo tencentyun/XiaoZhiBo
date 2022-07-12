@@ -22,12 +22,6 @@
 ## 效果图示
 ![](./screenshot.png)
 
-## Demo 体验
-
-| iOS                                                          | Android                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](https://qcloudimg.tencent-cloud.cn/raw/8a04fff07d72c6dee5962e54ecd06f84.png) | ![](https://qcloudimg.tencent-cloud.cn/raw/46024d890dfa4ec099ee4c1ed1a7af12.png) |
-
 ## 文档资源
 
 - 腾讯云官网文档，请点击[快速跑通小直播App](https://cloud.tencent.com/document/product/454/38625)；
