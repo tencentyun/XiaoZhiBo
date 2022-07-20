@@ -19,12 +19,11 @@ import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.debug.GenerateGlobalConfig;
 import com.tencent.liteav.login.R;
 import com.tencent.qcloud.tuicore.TUILogin;
+import com.tencent.qcloud.tuicore.util.MD5Utils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,6 @@ public class ProfileManager {
     private static final String PER_SDK_APP_ID   = "per_sdk_app_id";
     private static final String PER_FIRST_OPEN   = "per_user_first_open";
     private static final String BASE_URL         = GenerateGlobalConfig.SERVERLESSURL;
-    private static final String EG_URL           = "https://service-3vscss6c-xxxxxxxxxxx.gz.apigw.tencentcs.com";
     private static final int    MSG_KEEP_ALIVE   = 1001;
     private static final int    INTERVAL_TIME    = 10000; //10s
 
@@ -96,7 +94,7 @@ public class ProfileManager {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(new HttpLogInterceptor());
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(TextUtils.isEmpty(BASE_URL) ? EG_URL : BASE_URL)
+                .baseUrl(BASE_URL)
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -409,7 +407,7 @@ public class ProfileManager {
         }
 
         // 登录后台自定义规则：signature=md5(username-tag-ts-nonce-secret)，其中secret=md5(username-password)
-        String salt = getMD5String(String.format("%s-%s", username, password));
+        String salt = MD5Utils.getMD5String(String.format("%s-%s", username, password));
         Map<String, String> data = new LinkedHashMap<>();
         data.put("username", username);
         data.put("salt", salt);
@@ -447,8 +445,8 @@ public class ProfileManager {
         String tag = "xiaozhibo";
         String ts = String.valueOf(System.currentTimeMillis());
         String nonce = "";
-        String signature = getMD5String(String.format("%s-%s-%s-%s-%s", username, tag, ts, nonce,
-                getMD5String(String.format("%s-%s", username, password))));
+        String signature = MD5Utils.getMD5String(String.format("%s-%s-%s-%s-%s", username, tag, ts, nonce,
+                MD5Utils.getMD5String(String.format("%s-%s", username, password))));
 
         Map<String, String> data = new LinkedHashMap<>();
         data.put("username", username);
@@ -1025,47 +1023,6 @@ public class ProfileManager {
         void onSuccess(String appId);
 
         void onFailed(int code, String msg);
-    }
-
-    private final static String[] hexDigits = {"0", "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-
-    private static MessageDigest messageDigest = null;
-
-    static {
-        try {
-            messageDigest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String getMD5String(String sourceStr) {
-        return getMD5String(sourceStr.getBytes());
-    }
-
-    public static String getMD5String(byte[] bytes) {
-        messageDigest.update(bytes);
-        return bytesToHex(messageDigest.digest());
-    }
-
-    public static String bytesToHex(byte bytes[]) {
-        return bytesToHex(bytes, 0, bytes.length);
-
-    }
-
-    public static String bytesToHex(byte bytes[], int start, int end) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = start; i < start + end; i++) {
-            sb.append(byteToHex(bytes[i]));
-        }
-        return sb.toString();
-
-    }
-
-    public static String byteToHex(byte bt) {
-        return hexDigits[(bt & 0xf0) >> 4] + "" + hexDigits[bt & 0xf];
-
     }
 
 }
