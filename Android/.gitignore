@@ -1,4 +1,3 @@
-
 *.iml
 *.gradle/
 /local.properties
@@ -10,3 +9,11 @@ build/
 .cxx
 *.codecc/
 /build.yml
+tuicore
+TUIComponent/TUICalling/tuicalling
+TUIComponent/TUIPusher/tuipusher
+TUIComponent/TUIPlayer/tuiplayer
+TUIWidget/TUIBeauty/tuibeauty
+TUIWidget/TUIBarrage/tuibarrage
+TUIWidget/TUIAudioEffect/tuiaudioeffect
+TUIWidget/TUIGift/tuigift
