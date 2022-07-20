@@ -423,10 +423,8 @@ public final class PermissionRequester {
 
             if (instance.mPermissionsRequest != null) {
                 instance.onRequestPermissionsResult(this);
-                if (instance.mPermissionsDenied != null) {
-                    if (!instance.mPermissionsDenied.isEmpty()) {
-                        isDenied = true;
-                    }
+                if (instance.mPermissionsDenied != null && !instance.mPermissionsDenied.isEmpty()) {
+                    isDenied = true;
                 }
             }
         }
