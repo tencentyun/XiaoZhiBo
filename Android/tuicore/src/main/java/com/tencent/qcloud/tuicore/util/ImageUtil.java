@@ -1,7 +1,6 @@
 package com.tencent.qcloud.tuicore.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -415,9 +414,8 @@ public class ImageUtil {
 
 
     public static String getGroupConversationAvatar(String groupId) {
-        SharedPreferences sp = TUIConfig.getAppContext().getSharedPreferences(
-                TUILogin.getSdkAppId() + SP_IMAGE, Context.MODE_PRIVATE);
-        final String savedIcon = sp.getString(groupId, "");
+        SPUtils spUtils = SPUtils.getInstance(TUILogin.getSdkAppId() + SP_IMAGE);
+        final String savedIcon = spUtils.getString(groupId, "");
         if (!TextUtils.isEmpty(savedIcon) && new File(savedIcon).isFile() && new File(savedIcon).exists()) {
             return savedIcon;
         }
@@ -425,14 +423,8 @@ public class ImageUtil {
     }
 
     public static void setGroupConversationAvatar(String conversationId, String url) {
-        SharedPreferences sp = TUIConfig.getAppContext().getSharedPreferences(
-                TUILogin.getSdkAppId() + SP_IMAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(conversationId, url);
-        boolean success = editor.commit();
-        if (!success) {
-            Log.e("ImageUtil", "setGroupConversationAvatar failed , id : " + conversationId + " , url : " + url);
-        }
+        SPUtils spUtils = SPUtils.getInstance(TUILogin.getSdkAppId() + SP_IMAGE);
+        spUtils.put(conversationId, url);
     }
 
 }
