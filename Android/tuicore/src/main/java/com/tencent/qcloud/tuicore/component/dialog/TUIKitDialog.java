@@ -4,7 +4,6 @@ import static com.tencent.qcloud.tuicore.TUIConfig.TUICORE_SETTINGS_SP_NAME;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.method.MovementMethod;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -23,6 +22,7 @@ import androidx.annotation.NonNull;
 import com.tencent.qcloud.tuicore.BuildConfig;
 import com.tencent.qcloud.tuicore.R;
 import com.tencent.qcloud.tuicore.TUIConfig;
+import com.tencent.qcloud.tuicore.util.SPUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -228,14 +228,14 @@ public class TUIKitDialog {
     public static class TUIIMUpdateDialog {
 
         private static final class TUIIMUpdateDialogHolder {
-            private static TUIIMUpdateDialog instance = new TUIIMUpdateDialog();
+            private static final TUIIMUpdateDialog instance = new TUIIMUpdateDialog();
         }
 
         public static final String KEY_NEVER_SHOW = "neverShow";
 
         private boolean isNeverShow;
         private boolean isShowOnlyDebug = false;
-        private SharedPreferences sharedPreferences = null;
+        private String dialogFeatureName;
 
         private WeakReference<TUIKitDialog> tuiKitDialog;
 
@@ -244,8 +244,7 @@ public class TUIKitDialog {
         }
 
         private TUIIMUpdateDialog() {
-            sharedPreferences = TUIConfig.getAppContext().getSharedPreferences(TUICORE_SETTINGS_SP_NAME, Context.MODE_PRIVATE);
-            isNeverShow = sharedPreferences.getBoolean(KEY_NEVER_SHOW, false);
+            isNeverShow = SPUtils.getInstance(TUICORE_SETTINGS_SP_NAME).getBoolean(getDialogFeatureName(), false);
         }
 
         public TUIIMUpdateDialog createDialog(Context context) {
@@ -256,9 +255,7 @@ public class TUIKitDialog {
 
         public void setNeverShow(boolean neverShowAlert) {
             this.isNeverShow = neverShowAlert;
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(KEY_NEVER_SHOW, neverShowAlert);
-            editor.apply();
+            SPUtils.getInstance(TUICORE_SETTINGS_SP_NAME).put(getDialogFeatureName(), neverShowAlert);
         }
 
         public TUIIMUpdateDialog setShowOnlyDebug(boolean isShowOnlyDebug) {
@@ -269,6 +266,13 @@ public class TUIKitDialog {
         public TUIIMUpdateDialog setMovementMethod(MovementMethod movementMethod) {
             if (tuiKitDialog != null && tuiKitDialog.get() != null) {
                 tuiKitDialog.get().mTitleTv.setMovementMethod(movementMethod);
+            }
+            return this;
+        }
+
+        public TUIIMUpdateDialog setHighlightColor(int color) {
+            if (tuiKitDialog != null && tuiKitDialog.get() != null) {
+                tuiKitDialog.get().mTitleTv.setHighlightColor(color);
             }
             return this;
         }
@@ -315,10 +319,20 @@ public class TUIKitDialog {
             return this;
         }
 
+        public TUIIMUpdateDialog setDialogFeatureName(String featureName) {
+            this.dialogFeatureName = featureName;
+            return this;
+        }
+
+        private String getDialogFeatureName() {
+            return dialogFeatureName;
+        }
+
         public void show() {
             if (tuiKitDialog == null || tuiKitDialog.get() == null) {
                 return;
             }
+            isNeverShow = SPUtils.getInstance(TUICORE_SETTINGS_SP_NAME).getBoolean(getDialogFeatureName(), false);
             Dialog dialog = tuiKitDialog.get().dialog;
             if (dialog == null || dialog.isShowing()) {
                 return;

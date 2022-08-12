@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -18,6 +17,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.tencent.qcloud.tuicore.util.SPUtils;
 import com.tencent.qcloud.tuicore.util.TUIBuild;
 
 import java.util.ArrayList;
@@ -84,9 +84,9 @@ public class TUIThemeManager {
             }
 
             Locale defaultLocale = getLocale(appContext);
-            SharedPreferences sharedPreferences = context.getSharedPreferences(SP_THEME_AND_LANGUAGE_NAME, Context.MODE_PRIVATE);
-            currentLanguage = sharedPreferences.getString(SP_KEY_LANGUAGE, defaultLocale.getLanguage());
-            currentTheme = sharedPreferences.getInt(SP_KEY_THEME, THEME_LIGHT);
+            SPUtils spUtils = SPUtils.getInstance(SP_THEME_AND_LANGUAGE_NAME);
+            currentLanguage = spUtils.getString(SP_KEY_LANGUAGE, defaultLocale.getLanguage());
+            currentTheme = spUtils.getInt(SP_KEY_THEME, THEME_LIGHT);
 
             // 语言只需要初始化一次
             applyLanguage(appContext);
@@ -166,11 +166,8 @@ public class TUIThemeManager {
             return;
         }
         currentLanguage = language;
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SP_THEME_AND_LANGUAGE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SP_KEY_LANGUAGE, language);
-        editor.commit();
+        SPUtils spUtils = SPUtils.getInstance(SP_THEME_AND_LANGUAGE_NAME);
+        spUtils.put(SP_KEY_LANGUAGE, language, true);
 
         applyLanguage(context.getApplicationContext());
         applyLanguage(context);
@@ -209,7 +206,7 @@ public class TUIThemeManager {
         return currentLanguage;
     }
 
-    private Locale getLocale(Context context) {
+    public Locale getLocale(Context context) {
         Locale locale;
 
         if (TUIBuild.getVersionInt() < Build.VERSION_CODES.N) {
@@ -230,10 +227,8 @@ public class TUIThemeManager {
         }
         currentTheme = themeId;
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SP_THEME_AND_LANGUAGE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(SP_KEY_THEME, themeId);
-        editor.commit();
+        SPUtils spUtils = SPUtils.getInstance(SP_THEME_AND_LANGUAGE_NAME);
+        spUtils.put(SP_KEY_THEME, themeId, true);
 
         applyTheme(context.getApplicationContext());
         applyTheme(context);

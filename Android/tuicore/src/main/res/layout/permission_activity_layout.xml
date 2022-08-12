@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="#BF000000"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/permission_reason_title"
-        android:textSize="17.28sp"
+        android:textSize="17sp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
@@ -32,5 +32,4 @@
         android:textColor="#BFFFFFFF"
         android:layout_width="240dp"
         android:layout_height="wrap_content" />
-
 </LinearLayout>
