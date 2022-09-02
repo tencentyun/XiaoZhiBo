@@ -1,6 +1,6 @@
 package com.tencent.qcloud.tuikit.tuipusher.model;
 
-import com.blankj.utilcode.util.SPUtils;
+import com.tencent.qcloud.tuicore.util.SPUtils;
 
 /**
  * TUIPusher 的公共配置参数
@@ -10,7 +10,7 @@ public class TUIPusherConfig {
     private static final String SP_NAME             = "tuipusher_sp";
     private static final String SP_KEY_FRONT_CAMERA = "key_front_camera";
 
-    private TUIPusherConfig(){
+    private TUIPusherConfig() {
     }
 
     private static volatile TUIPusherConfig instance;
@@ -26,15 +26,15 @@ public class TUIPusherConfig {
         return instance;
     }
 
-    public void setFrontCamera(boolean flag){
+    public void setFrontCamera(boolean flag) {
         SPUtils.getInstance(SP_NAME).put(SP_KEY_FRONT_CAMERA, flag);
     }
 
-    public boolean isFrontCamera(){
+    public boolean isFrontCamera() {
         return SPUtils.getInstance(SP_NAME).getBoolean(SP_KEY_FRONT_CAMERA, true);
     }
 
-    public void destory(){
+    public void destory() {
         SPUtils.getInstance(SP_NAME).put(SP_KEY_FRONT_CAMERA, true);
     }
 }

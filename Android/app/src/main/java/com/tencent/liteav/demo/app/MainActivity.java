@@ -1,7 +1,7 @@
 package com.tencent.liteav.demo.app;
 
-import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURL;
-import static com.tencent.liteav.debug.GenerateGlobalConfig.LICENSEURLKEY;
+import static com.tencent.liteav.debug.GenerateTestUserSig.LICENSEURL;
+import static com.tencent.liteav.debug.GenerateTestUserSig.LICENSEURLKEY;
 
 import android.content.Intent;
 import android.graphics.Color;

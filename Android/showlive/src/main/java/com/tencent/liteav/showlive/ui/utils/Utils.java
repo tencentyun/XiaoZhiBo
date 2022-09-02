@@ -10,8 +10,8 @@ import android.view.WindowManager;
 public class Utils {
 
     /**
-    *  处理顶部状态栏的隐藏，确保Activity全屏；
-    * */
+     * 处理顶部状态栏的隐藏，确保Activity全屏；
+     */
     public static void initStatusBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
@@ -28,12 +28,17 @@ public class Utils {
 
     /**
      * 时间格式化函数，输入输出实例：100s --> 00:01:40
+     *
      * @param second
      */
     public static String formattedTime(long second) {
-        String hs, ms, ss, formatTime;
+        String hs;
+        String ms;
+        String ss;
 
-        long h, m, s;
+        long h;
+        long m;
+        long s;
         h = second / 3600;
         m = (second % 3600) / 60;
         s = (second % 3600) % 60;
@@ -54,7 +59,6 @@ public class Utils {
         } else {
             ss = "" + s;
         }
-        formatTime = hs + ":" + ms + ":" + ss;
-        return formatTime;
+        return hs + ":" + ms + ":" + ss;
     }
 }
