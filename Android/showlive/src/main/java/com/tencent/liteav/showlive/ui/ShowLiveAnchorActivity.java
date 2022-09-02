@@ -1,7 +1,7 @@
 package com.tencent.liteav.showlive.ui;
 
-import static com.tencent.liteav.debug.GenerateGlobalConfig.XMAGIC_LICENSE_KEY;
-import static com.tencent.liteav.debug.GenerateGlobalConfig.XMAGIC_LICENSE_URL;
+import static com.tencent.liteav.debug.GenerateTestUserSig.XMAGIC_LICENSE_KEY;
+import static com.tencent.liteav.debug.GenerateTestUserSig.XMAGIC_LICENSE_URL;
 import static com.tencent.liteav.showlive.model.services.room.http.impl.HttpRoomManager.TYPE_MLVB_SHOW_LIVE;
 
 import android.content.Context;

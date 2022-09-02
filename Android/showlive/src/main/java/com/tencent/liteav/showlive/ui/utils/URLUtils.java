@@ -1,6 +1,6 @@
 package com.tencent.liteav.showlive.ui.utils;
 
-import com.tencent.liteav.debug.GenerateGlobalConfig;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.qcloud.tuicore.TUILogin;
 
 import java.io.File;
@@ -53,10 +53,10 @@ public class URLUtils {
             playUrl = "trtc://cloud.tencent.com/play/" + streamId + "?sdkappid=" + TUILogin.getSdkAppId() + "&userid="
                     + TUILogin.getUserId() + "&usersig=" + TUILogin.getUserSig();
         } else if (type == PlayType.RTMP) {
-            playUrl = HTTP + GenerateGlobalConfig.PLAY_DOMAIN + File.separator + APP_NAME + File.separator + streamId
+            playUrl = HTTP + GenerateTestUserSig.PLAY_DOMAIN + File.separator + APP_NAME + File.separator + streamId
                     + ".flv";
         } else if (type == PlayType.WEBRTC) {
-            playUrl = WEBRTC + GenerateGlobalConfig.PLAY_DOMAIN + File.separator + APP_NAME + File.separator + streamId;
+            playUrl = WEBRTC + GenerateTestUserSig.PLAY_DOMAIN + File.separator + APP_NAME + File.separator + streamId;
         }
         return playUrl;
     }

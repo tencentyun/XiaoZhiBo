@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.tuicore.TUIConfig;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuiplayer.R;
 import com.tencent.qcloud.tuikit.tuiplayer.model.utils.LinkURLUtils;
 import com.tencent.qcloud.tuikit.tuiplayer.model.utils.PermissionHelper;
@@ -83,7 +83,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
             public void onLink() {
                 if (mState == State.LINK) {
                     if (mLinkState == LinkState.LINK_REQ_SEND) {
-                        ToastUtils.showShort(R.string.tuiplayer_linking_please_wait);
+                        ToastUtil.toastShortMessage(getContext()
+                                .getResources().getString(R.string.tuiplayer_linking_please_wait));
                     } else if (mLinkState == LinkState.LINK_REQ_SEND_SUCCESS) {
                         mTUIPlayerPresenter.cancelLink();
                         mLinkState = LinkState.LINK_CANCEL_SEND;
@@ -96,7 +97,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
                             PermissionHelper.PERMISSION_CAMERA, new PermissionHelper.PermissionCallback() {
                                 @Override
                                 public void onGranted() {
-                                    PermissionHelper.requestPermission(getContext(), PermissionHelper.PERMISSION_MICROPHONE,
+                                    PermissionHelper.requestPermission(getContext(),
+                                            PermissionHelper.PERMISSION_MICROPHONE,
                                             new PermissionHelper.PermissionCallback() {
 
                                                 public void onGranted() {
@@ -139,7 +141,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
 
             case LINK_REQ_SEND_FAIL:
                 mContainerView.setLinkImage(R.drawable.tuiplayer_link_on_icon);
-                ToastUtils.showShort(R.string.tuiplayer_link_request_send_fail);
+                ToastUtil.toastShortMessage(getContext()
+                        .getResources().getString(R.string.tuiplayer_link_request_send_fail));
                 mState = State.PLAY;
                 mLinkState = LinkState.LINK_IDLE;
                 if (mListener != null) {
@@ -164,7 +167,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
                 break;
 
             case LINK_CANCEL_FAIL:
-                ToastUtils.showShort(R.string.tuiplayer_link_cancel_cmd_send_fail);
+                ToastUtil.toastShortMessage(getContext()
+                        .getResources().getString(R.string.tuiplayer_link_cancel_cmd_send_fail));
                 break;
 
             case LINK_ACCAPT:
@@ -189,7 +193,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
                 break;
 
             case LINK_PUSH_SEND_FAIL:
-                ToastUtils.showShort(getContext().getResources().getString(R.string.tuiplayer_push_cmd_send_fail));
+                ToastUtil.toastShortMessage(getContext().getResources()
+                        .getString(R.string.tuiplayer_push_cmd_send_fail));
                 break;
 
             case LINK_STOP:
@@ -203,11 +208,14 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
                 break;
 
             case LINK_TIMEOUT:
-                ToastUtils.showShort(getContext().getResources().getString(R.string.tuiplayer_link_request_timeout));
+                ToastUtil.toastShortMessage(getContext()
+                        .getResources().getString(R.string.tuiplayer_link_request_timeout));
                 mState = State.PLAY;
                 mLinkState = LinkState.LINK_IDLE;
                 mTUIVideoView.showLinkMode(false);
                 mContainerView.setLinkImage(R.drawable.tuiplayer_link_on_icon);
+                break;
+            default:
                 break;
         }
     }
@@ -249,6 +257,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
                             break;
                         case STOP_PLAY:
                             mListener.onPlayStopped(TUIPlayerView.this, mPlayUrl);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -310,7 +320,7 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
     public int startPlay(String url) {
         TXCLog.i(TAG, "start url:" + url);
         if (!LinkURLUtils.checkPlayURL(url)) {
-            ToastUtils.showShort(R.string.tuiplayer_url_empty);
+            ToastUtil.toastShortMessage(getContext().getResources().getString(R.string.tuiplayer_url_empty));
             return V2TXLIVE_ERROR_FAILED;
         }
         mPlayUrl = url;
