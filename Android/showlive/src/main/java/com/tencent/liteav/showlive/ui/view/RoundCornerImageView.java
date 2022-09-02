@@ -13,13 +13,14 @@ import com.tencent.liteav.showlive.R;
 
 public class RoundCornerImageView extends AppCompatImageView {
 
-    private float mWidth, mHeight;
-    private int mDefaultRadius = 0;
-    private int mRadius;
-    private int mLeftTopRadius;
-    private int mRightTopRadius;
-    private int mRightBottomRadius;
-    private int mLeftBottomRadius;
+    private float mWidth;
+    private float mHeight;
+    private int   mDefaultRadius = 0;
+    private int   mRadius;
+    private int   mLeftTopRadius;
+    private int   mRightTopRadius;
+    private int   mRightBottomRadius;
+    private int   mLeftBottomRadius;
 
     public RoundCornerImageView(Context context) {
         this(context, null);
@@ -39,10 +40,14 @@ public class RoundCornerImageView extends AppCompatImageView {
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ShowLiveRoundCornerImageView);
         mRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_radius, mDefaultRadius);
-        mLeftTopRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_left_top_radius, mDefaultRadius);
-        mRightTopRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_right_top_radius, mDefaultRadius);
-        mRightBottomRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_right_bottom_radius, mDefaultRadius);
-        mLeftBottomRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_left_bottom_radius, mDefaultRadius);
+        mLeftTopRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_left_top_radius,
+                mDefaultRadius);
+        mRightTopRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_right_top_radius,
+                mDefaultRadius);
+        mRightBottomRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_right_bottom_radius,
+                mDefaultRadius);
+        mLeftBottomRadius = array.getDimensionPixelOffset(R.styleable.ShowLiveRoundCornerImageView_left_bottom_radius,
+                mDefaultRadius);
 
         if (mDefaultRadius == mLeftTopRadius) {
             mLeftTopRadius = mRadius;

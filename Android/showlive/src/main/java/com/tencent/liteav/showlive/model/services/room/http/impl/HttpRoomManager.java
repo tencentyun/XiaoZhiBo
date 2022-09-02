@@ -1,6 +1,6 @@
 package com.tencent.liteav.showlive.model.services.room.http.impl;
 
-import com.tencent.liteav.debug.GenerateGlobalConfig;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.showlive.model.services.room.bean.RoomInfo;
 import com.tencent.liteav.showlive.model.services.room.bean.http.RoomDetail;
@@ -33,7 +33,7 @@ public class HttpRoomManager implements IHttpRoomManager {
     public static final String TYPE_MLVB_SHOW_LIVE     = "mlvb-show-live";
     public static final String TYPE_MLVB_SHOPPING_LIVE = "mlvb-shopping-live";
 
-    private static final String BASE_URL = GenerateGlobalConfig.SERVERLESSURL;
+    private static final String BASE_URL = GenerateTestUserSig.SERVERLESSURL;
 
 
     private final Retrofit mRetrofit;
