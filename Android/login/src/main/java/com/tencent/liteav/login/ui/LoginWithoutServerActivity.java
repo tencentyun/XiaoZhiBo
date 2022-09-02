@@ -18,7 +18,7 @@ import com.tencent.imsdk.v2.V2TIMSDKConfig;
 import com.tencent.liteav.basic.AvatarConstant;
 import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
-import com.tencent.liteav.debug.GenerateGlobalConfig;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
 import com.tencent.liteav.login.ui.view.ProfileActivity;
@@ -61,7 +61,7 @@ public class LoginWithoutServerActivity extends AppCompatActivity {
         userModel.userName = userId;
         int index = new Random().nextInt(AvatarConstant.USER_AVATAR_ARRAY.length);
         userModel.userAvatar = AvatarConstant.USER_AVATAR_ARRAY[index];
-        userModel.userSig = GenerateGlobalConfig.genTestUserSig(userId);
+        userModel.userSig = GenerateTestUserSig.genTestUserSig(userId);
         UserModelManager.getInstance().setUserModel(userModel);
         V2TIMSDKConfig config = new V2TIMSDKConfig();
         config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_DEBUG);

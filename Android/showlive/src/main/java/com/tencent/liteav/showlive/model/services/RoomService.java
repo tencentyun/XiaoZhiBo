@@ -172,20 +172,21 @@ public class RoomService implements IRoomService {
         if (!UserModelManager.getInstance().haveBackstage()) {
             return;
         }
-        HttpRoomManager.getInstance().getRoomList(HttpRoomManager.TYPE_MLVB_SHOW_LIVE, orderType, new RoomInfoCallback() {
-            @Override
-            public void onCallback(int code, String msg, List<RoomInfo> list) {
-                if (code == 0) {
-                    if (list == null || list.size() <= 0) {
-                        callback.onCallback(0, "success", new ArrayList<RoomInfo>());
-                        return;
+        HttpRoomManager.getInstance().getRoomList(HttpRoomManager.TYPE_MLVB_SHOW_LIVE, orderType,
+                new RoomInfoCallback() {
+                    @Override
+                    public void onCallback(int code, String msg, List<RoomInfo> list) {
+                        if (code == 0) {
+                            if (list == null || list.size() <= 0) {
+                                callback.onCallback(0, "success", new ArrayList<RoomInfo>());
+                                return;
+                            }
+                            callback.onCallback(0, "success", list);
+                        } else {
+                            callback.onCallback(code, msg, list);
+                        }
                     }
-                    callback.onCallback(0, "success", list);
-                } else {
-                    callback.onCallback(code, msg, list);
-                }
-            }
-        });
+                });
     }
 
 

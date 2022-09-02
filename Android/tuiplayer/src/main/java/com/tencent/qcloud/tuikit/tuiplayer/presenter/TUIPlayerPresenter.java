@@ -3,9 +3,9 @@ package com.tencent.qcloud.tuikit.tuiplayer.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.tuicore.TUILogin;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuiplayer.R;
 import com.tencent.qcloud.tuikit.tuiplayer.model.TUIPlayerCallback;
 import com.tencent.qcloud.tuikit.tuiplayer.model.bean.im.InvitationReqBean;
@@ -123,9 +123,11 @@ public class TUIPlayerPresenter implements ITUIPlayerPresenter, ITUIPlayerStream
             @Override
             public void onResult(int code, String message) {
                 if (code == 0) {
-                    ToastUtils.showShort(R.string.tuiplayer_stop_link_cmd_send_success);
+                    ToastUtil.toastShortMessage(mContext.getResources()
+                            .getString(R.string.tuiplayer_stop_link_cmd_send_success));
                 } else {
-                    ToastUtils.showShort(mContext.getResources().getString(R.string.tuiplayer_stop_link_cmd_send_fail) + code);
+                    ToastUtil.toastLongMessage(mContext.getResources()
+                            .getString(R.string.tuiplayer_stop_link_cmd_send_fail) + code);
                 }
             }
         });
@@ -166,6 +168,8 @@ public class TUIPlayerPresenter implements ITUIPlayerPresenter, ITUIPlayerStream
             case TIMEOUT:
                 mListener.onNotifyLinkState(TUIPlayerView.LinkState.LINK_TIMEOUT, "");
                 resetLinkData();
+                break;
+            default:
                 break;
         }
     }

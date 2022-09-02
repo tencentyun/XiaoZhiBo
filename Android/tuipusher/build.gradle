@@ -30,5 +30,4 @@ dependencies {
     api "com.google.code.gson:gson:2.8.6"
     api rootProject.ext.liteavSdk
     api project(':tuicore')
-    api "com.blankj:utilcode:1.25.9"
 }

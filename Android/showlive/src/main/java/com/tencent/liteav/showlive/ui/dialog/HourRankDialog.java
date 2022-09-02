@@ -31,9 +31,9 @@ public class HourRankDialog extends BottomSheetDialog {
     private Context             mContext;
     private String              mRoomId;
     private HourRankListAdapter mAdapter;
-    private RecyclerView   mRecyclerHourRank;
-    private List<RoomInfo> mRoomInfoList;
-    private ImageView      mImageAnchorAvatar;
+    private RecyclerView        mRecyclerHourRank;
+    private List<RoomInfo>      mRoomInfoList;
+    private ImageView           mImageAnchorAvatar;
     private TextView            mTextAnchorRanking;
     private TextView            mTextAnchorName;
     private TextView            mTextAnchorValue;
