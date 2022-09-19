@@ -98,7 +98,6 @@ public class ShowLiveLayoutManager extends LinearLayoutManager
         if (0 == position) {
             if (mOnViewPagerListener != null) {
                 mOnViewPagerListener.onPageSelected(getPosition(view), false);
-                mCurrentPosition = position;
             }
 
         }

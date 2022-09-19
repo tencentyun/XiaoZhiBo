@@ -64,8 +64,8 @@ public class TUIPlayerStreamService implements ITUIPlayerStreamService {
         int renderCode = mV2TXLivePlayer.setRenderView(videoView);
         mV2TXLivePlayer.setRenderFillMode(V2TXLiveDef.V2TXLiveFillMode.V2TXLiveFillModeFill);
         setFramework();
-        int playCode = mV2TXLivePlayer.startPlay(playUrl);
-        TXCLog.i(TAG, "setRenderView: ret" + renderCode + "startPlay: ret" + playCode + ", playUrl:" + playUrl);
+        int playCode = mV2TXLivePlayer.startLivePlay(playUrl);
+        TXCLog.i(TAG, "setRenderView: ret" + renderCode + "startLivePlay: ret" + playCode + ", playUrl:" + playUrl);
         if (renderCode == V2TXLIVE_OK && playCode == V2TXLIVE_ERROR_FAILED) {
             return V2TXLIVE_OK;
         } else if (renderCode == V2TXLIVE_OK) {
