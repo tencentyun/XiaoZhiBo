@@ -8,12 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMLogListener;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSDKConfig;
 import com.tencent.imsdk.v2.V2TIMSDKListener;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.qcloud.tuicore.interfaces.TUICallback;
+import com.tencent.qcloud.tuicore.interfaces.TUILogListener;
+import com.tencent.qcloud.tuicore.interfaces.TUILoginConfig;
 import com.tencent.qcloud.tuicore.interfaces.TUILoginListener;
 import com.tencent.qcloud.tuicore.util.ErrorMessageConverter;
 
@@ -26,7 +29,7 @@ import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 
 
 /**
- * 负责 IM 和 TRTC 的登录逻辑
+ * Login logic for IM and TRTC
  */
 public class TUILogin {
     private static final String TAG = TUILogin.class.getSimpleName();
@@ -103,21 +106,35 @@ public class TUILogin {
     };
 
     /**
-     * IMSDK 登录
+     * IMSDK login
      *
-     * @param context  应用的上下文，一般为对应应用的 ApplicationContext
-     * @param sdkAppId 您在腾讯云注册应用时分配的sdkAppID
-     * @param userId   用户名
-     * @param userSig  从业务服务器获取的 userSig
-     * @param callback  登录回调
+     * @param context   The context of the application, generally is ApplicationContext
+     * @param sdkAppId  Assigned when you register your app with Tencent Cloud
+     * @param userId    User ID
+     * @param userSig   Obtained from the business server
+     * @param callback  login callback
      */
     public static void login(@NonNull Context context, int sdkAppId, String  userId, String userSig, TUICallback callback) {
-        getInstance().internalLogin(context, sdkAppId, userId, userSig, callback);
+        getInstance().internalLogin(context, sdkAppId, userId, userSig, null, callback);
     }
 
     /**
-     * IMSDK 登出
-     * @param callback 登出回调
+     * IMSDK login
+     *
+     * @param context   The context of the application, generally is ApplicationContext
+     * @param sdkAppId  Assigned when you register your app with Tencent Cloud
+     * @param userId    User ID
+     * @param userSig   Obtained from the business server
+     * @param config    log related configs
+     * @param callback  login callback
+     */
+    public static void login(@NonNull Context context, int sdkAppId, String  userId, String userSig, TUILoginConfig config, TUICallback callback) {
+        getInstance().internalLogin(context, sdkAppId, userId, userSig, config, callback);
+    }
+
+    /**
+     * IMSDK logout
+     * @param callback  logout callback
      */
     public static void logout(TUICallback callback) {
         getInstance().internalLogout(callback);
@@ -131,17 +148,33 @@ public class TUILogin {
         getInstance().internalRemoveLoginListener(listener);
     }
 
-    private void internalLogin(Context context, final int sdkAppId, final String  userId, final String userSig, TUICallback callback) {
+    private void internalLogin(Context context, final int sdkAppId, final String  userId, final String userSig, TUILoginConfig config, TUICallback callback) {
         if (this.sdkAppId != 0 && sdkAppId != this.sdkAppId) {
             logout((TUICallback) null);
         }
         this.appContext = context;
         this.sdkAppId = sdkAppId;
         V2TIMManager.getInstance().addIMSDKListener(imSdkListener);
-        // 开始初始化 IMSDK，发送广播
+        // Notify init event
         TUICore.notifyEvent(TUIConstants.TUILogin.EVENT_IMSDK_INIT_STATE_CHANGED, TUIConstants.TUILogin.EVENT_SUB_KEY_START_INIT, null);
-        // 用户操作初始化, 默认已经读过隐私协议
-        boolean initSuccess = V2TIMManager.getInstance().initSDK(context, sdkAppId, null);
+        // User operation initialization, the privacy agreement has been read by default
+
+        V2TIMSDKConfig v2TIMSDKConfig = null;
+        if (config != null) {
+            v2TIMSDKConfig = new V2TIMSDKConfig();
+            v2TIMSDKConfig.setLogLevel(config.getLogLevel());
+            TUILogListener logListener = config.getLogListener();
+            if (logListener != null) {
+                v2TIMSDKConfig.setLogListener(new V2TIMLogListener() {
+                    @Override
+                    public void onLog(int logLevel, String logContent) {
+                        logListener.onLog(logLevel, logContent);
+                    }
+                });
+            }
+        }
+
+        boolean initSuccess = V2TIMManager.getInstance().initSDK(context, sdkAppId, v2TIMSDKConfig);
         if (initSuccess) {
             this.userId = userId;
             this.userSig = userSig;
@@ -171,7 +204,7 @@ public class TUILogin {
     }
 
     private void internalLogout(TUICallback callback) {
-        // 开始反初始化 IMSDK，发送广播
+        // Notify unit event
         TUICore.notifyEvent(TUIConstants.TUILogin.EVENT_IMSDK_INIT_STATE_CHANGED, TUIConstants.TUILogin.EVENT_SUB_KEY_START_UNINIT, null);
         V2TIMManager.getInstance().logout(new V2TIMCallback() {
             @Override
@@ -211,13 +244,14 @@ public class TUILogin {
     }
 
     /**
-     * IMSDK 初始化
+     * IMSDK init
      *
-     * @param context  应用的上下文，一般为对应应用的 ApplicationContext
-     * @param sdkAppId 您在腾讯云注册应用时分配的sdkAppID
-     * @param config  IMSDK 的相关配置项，一般使用默认即可，需特殊配置参考API文档
-     * @param listener  IMSDK 初始化监听器
-     * @return  true：成功；false：失败，如果 context 为空会返回失败
+     * @param context      The context of the application, generally is ApplicationContext
+     * @param sdkAppId     Assigned when you register your app with Tencent Cloud
+     * @param config       The related configuration items of IMSDK, generally use the default, 
+     *                     and need special configuration, please refer to the API documentation
+     * @param listener     Listener of IMSDK init
+     * @return true：init success；false：init failed
      */
     @Deprecated
     public static boolean init(@NonNull Context context, int sdkAppId, @Nullable V2TIMSDKConfig config, @Nullable V2TIMSDKListener listener) {
@@ -277,19 +311,13 @@ public class TUILogin {
                 notifyUserInfoChanged(info);
             }
         });
-        // 开始初始化 IMSDK，发送广播
         TUICore.notifyEvent(TUIConstants.TUILogin.EVENT_IMSDK_INIT_STATE_CHANGED, TUIConstants.TUILogin.EVENT_SUB_KEY_START_INIT, null);
-        // 用户操作初始化, 默认已经读过隐私协议
         return V2TIMManager.getInstance().initSDK(context, sdkAppId, config);
     }
 
-    /**
-     * 反初始化 IMSDK，释放资源
-     */
     @Deprecated
     public static void unInit() {
         getInstance().sdkAppId = 0;
-        // 开始反初始化 IMSDK，发送广播
         TUICore.notifyEvent(TUIConstants.TUILogin.EVENT_IMSDK_INIT_STATE_CHANGED, TUIConstants.TUILogin.EVENT_SUB_KEY_START_UNINIT, null);
 
         V2TIMManager.getInstance().unInitSDK();
@@ -297,11 +325,11 @@ public class TUILogin {
     }
 
     /**
-     * 用户登录
+     * User Login
      *
-     * @param userId   用户名
-     * @param userSig  从业务服务器获取的 userSig
-     * @param callback 登录是否成功的回调
+     * @param userId   User ID
+     * @param userSig  Obtained from the business server
+     * @param callback  login callback
      */
     @Deprecated
     public static void login(@NonNull String userId, @NonNull String userSig, @Nullable V2TIMCallback callback) {
@@ -336,9 +364,9 @@ public class TUILogin {
     }
 
     /**
-     * 用户退出登录
+     * User Logout
      *
-     * @param callback 退出登录是否成功的回调
+     * @param callback  Logout callback
      */
     @Deprecated
     public static void logout(@Nullable V2TIMCallback callback) {
@@ -401,66 +429,34 @@ public class TUILogin {
                 TUIConstants.TUILogin.EVENT_SUB_KEY_USER_INFO_UPDATED, param);
     }
 
-    /**
-     * 获取 sdkAppId，未初始化时 sdkAppId 默认为 0
-     * @return sdkAppId
-     */
     public static int getSdkAppId() {
         return getInstance().sdkAppId;
     }
 
-    /**
-     * 获取 userId，未登录时 userId 默认为 null
-     * @return userId
-     */
     public static String getUserId() {
         return getInstance().userId;
     }
 
-    /**
-     * 获取 userSig，未登录时 userSig 默认为 null
-     * @return userSig
-     */
     public static String getUserSig() {
         return getInstance().userSig;
     }
 
-    /**
-     * 获取当前登录用户昵称
-     * @return 当前登录用户昵称
-     */
     public static String getNickName() {
         return TUIConfig.getSelfNickName();
     }
 
-    /**
-     * 获取当前登录用户头像
-     * @return 当前登录用户头像
-     */
     public static String getFaceUrl() {
         return TUIConfig.getSelfFaceUrl();
     }
 
-    /**
-     * 获取应用上下文，为初始化时传入的 applicationContext
-     * @return appContext
-     */
     public static Context getAppContext() {
         return getInstance().appContext;
     }
 
-    /**
-     * 用户是否已经登录
-     * @return true：用户已经登录； false：用户尚未登录
-     */
     public static boolean isUserLogined() {
         return getInstance().hasLoginSuccess && V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED;
     }
 
-    /**
-     * 获取当前已经登录的用户 id，如果未初始化会返回 null
-     * @return userId
-     */
     public static String getLoginUser() {
         return V2TIMManager.getInstance().getLoginUser();
     }

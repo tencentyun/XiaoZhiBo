@@ -1,19 +1,25 @@
 package com.tencent.qcloud.tuicore.component.popupcard;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.tencent.qcloud.tuicore.R;
+import com.tencent.qcloud.tuicore.util.SoftKeyBoardUtil;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 
 import java.util.regex.Pattern;
@@ -25,7 +31,9 @@ public class PopupInputCard {
     private EditText editText;
     private TextView descriptionTv;
     private Button positiveBtn;
+    private View closeBtn;
     private OnClickListener positiveOnClickListener;
+    private OnTextExceedListener textExceedListener;
 
     private int minLimit = 0;
     private int maxLimit = Integer.MAX_VALUE;
@@ -38,15 +46,18 @@ public class PopupInputCard {
         editText = popupView.findViewById(R.id.popup_card_edit);
         descriptionTv = popupView.findViewById(R.id.popup_card_description);
         positiveBtn = popupView.findViewById(R.id.popup_card_positive_btn);
+        closeBtn = popupView.findViewById(R.id.close_btn);
 
         popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true) {
             @Override
             public void showAtLocation(View anchor, int gravity, int x, int y) {
                 if (activity != null && !activity.isFinishing()) {
                     Window dialogWindow = activity.getWindow();
-                    WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                    lp.alpha = 0.5f;
-                    dialogWindow.setAttributes(lp);
+                    startAnimation(dialogWindow, true);
+                }
+                editText.requestFocus();
+                if (activity.getWindow() != null) {
+                    SoftKeyBoardUtil.showKeyBoard(activity.getWindow());
                 }
                 super.showAtLocation(anchor, gravity, x, y);
             }
@@ -55,9 +66,7 @@ public class PopupInputCard {
             public void dismiss() {
                 if (activity != null && !activity.isFinishing()) {
                     Window dialogWindow = activity.getWindow();
-                    WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                    lp.alpha = 1.0f;
-                    dialogWindow.setAttributes(lp);
+                    startAnimation(dialogWindow, false);
                 }
 
                 super.dismiss();
@@ -66,6 +75,16 @@ public class PopupInputCard {
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(false);
+        popupWindow.setAnimationStyle(R.style.PopupInputCardAnim);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (activity.getWindow() != null) {
+                    SoftKeyBoardUtil.hideKeyBoard(activity.getWindow());
+                }
+            }
+        });
 
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +108,68 @@ public class PopupInputCard {
             }
         });
 
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String string = s.toString().trim();
+                int inputLength = string.length();
+                int byteLength = string.getBytes().length;
+                if (byteLength >= maxLimit) {
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(inputLength)});
+                    if (textExceedListener != null) {
+                        textExceedListener.onTextExceedMax();
+                    }
+                } else {
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLimit)});
+                }
+                editText.setSelection(editText.getText().toString().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(rule)) {
+                    if (!Pattern.matches(rule, s.toString())) {
+                        positiveBtn.setEnabled(false);
+                    } else {
+                        positiveBtn.setEnabled(true);
+                    }
+                }
+            }
+        });
+
+    }
+    private void startAnimation(Window window, boolean isShow) {
+        LinearInterpolator interpolator = new LinearInterpolator();
+        ValueAnimator animator;
+        if (isShow) {
+            animator = ValueAnimator.ofFloat(1.0f, 0.5f);
+        } else {
+            animator = ValueAnimator.ofFloat(0.5f, 1.0f);
+        }
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.alpha = (float) animation.getAnimatedValue();
+                window.setAttributes(lp);
+            }
+        });
+
+        animator.setDuration(200);
+        animator.setInterpolator(interpolator);
+        animator.start();
     }
 
     public void show(View rootView, int gravity) {
@@ -114,6 +195,10 @@ public class PopupInputCard {
 
     public void setOnPositive(OnClickListener clickListener) {
         positiveOnClickListener = clickListener;
+    }
+
+    public void setTextExceedListener(OnTextExceedListener textExceedListener) {
+        this.textExceedListener = textExceedListener;
     }
 
     public void setSingleLine(boolean isSingleLine) {
@@ -143,5 +228,9 @@ public class PopupInputCard {
     @FunctionalInterface
     public interface OnClickListener {
         void onClick(String result);
+    }
+
+    public interface OnTextExceedListener {
+        void onTextExceedMax();
     }
 }

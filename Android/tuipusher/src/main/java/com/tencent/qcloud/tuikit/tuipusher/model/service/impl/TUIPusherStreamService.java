@@ -124,7 +124,7 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         TXCLog.i(TAG, "startPlay roomId:" + roomId + "userId:" + userId);
         mV2TXLivePlayer.setRenderView(pkVideoView);
         String playUrl = LinkURLUtils.generatePlayUrl(roomId);
-        int ret = mV2TXLivePlayer.startPlay(playUrl);
+        int ret = mV2TXLivePlayer.startLivePlay(playUrl);
         TXCLog.i(TAG, "startPlay: ret" + ret + ", playUrl:" + playUrl);
         return 0;
     }

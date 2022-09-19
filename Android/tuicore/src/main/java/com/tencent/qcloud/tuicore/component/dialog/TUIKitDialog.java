@@ -38,23 +38,10 @@ public class TUIKitDialog {
     private ImageView mLineImg;
     private Display mDisplay;
 
-    /**
-     * 是否显示title
-     */
     private boolean showTitle = false;
-    /***
-     * 是否显示确定按钮
-     */
     private boolean showPosBtn = false;
-
-    /**
-     * 是否显示取消按钮
-     */
     private boolean showNegBtn = false;
-
-    /**
-     * dialog  宽度
-     */
+    
     private float dialogWidth = 0.7f;
 
 
@@ -93,7 +80,7 @@ public class TUIKitDialog {
     }
 
     /***
-     * 是否点击返回能够取消
+     * Whether to click back to cancel
      * @param cancel
      * @return
      */
@@ -103,7 +90,7 @@ public class TUIKitDialog {
     }
 
     /**
-     * 设置是否可以取消
+     * Whether the setting can be canceled
      *
      * @param isCancelOutside
      * @return
@@ -113,13 +100,6 @@ public class TUIKitDialog {
         return this;
     }
 
-    /**
-     * 设置确定
-     *
-     * @param text
-     * @param listener
-     * @return
-     */
     public TUIKitDialog setPositiveButton(CharSequence text,
                                           final OnClickListener listener) {
         showPosBtn = true;
@@ -134,17 +114,15 @@ public class TUIKitDialog {
         return this;
     }
 
+    public void setTitleGravity(int gravity) {
+        mTitleTv.setGravity(gravity);
+    }
+
     public TUIKitDialog setPositiveButton(final OnClickListener listener) {
         setPositiveButton(TUIConfig.getAppContext().getString(R.string.sure), listener);
         return this;
     }
 
-    /***
-     * 设置取消
-     * @param text
-     * @param listener
-     * @return
-     */
     public TUIKitDialog setNegativeButton(CharSequence text,
                                           final OnClickListener listener) {
         showNegBtn = true;
@@ -210,6 +188,9 @@ public class TUIKitDialog {
         }
     }
 
+    public boolean isShowing() {
+        return dialog != null && dialog.isShowing();
+    }
 
     /**
      * 设置dialog  宽度
