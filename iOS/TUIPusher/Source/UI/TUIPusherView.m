@@ -448,6 +448,7 @@ typedef enum : NSUInteger {
         UIView *beautyView = beautyViewInfo[TUICore_TUIBeautyExtension_BeautyView_View];
         if (beautyView != nil && [beautyView isKindOfClass:[UIView class]]) {
             self.beautyView = beautyView;
+            [self.presenter enableCustomVideoRender:YES];
         }
     }
     return self.beautyBtn != nil;

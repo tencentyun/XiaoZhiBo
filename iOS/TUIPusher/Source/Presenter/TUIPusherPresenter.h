@@ -104,6 +104,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)startLinkMicWithUser:(NSString *)remoteUserId atView:(UIView *)view;
 - (void)sendStopLinkMic;
 - (void)stopLinkMic;
+
+- (void)enableCustomVideoRender:(BOOL)enable;
 @end
 
 NS_ASSUME_NONNULL_END

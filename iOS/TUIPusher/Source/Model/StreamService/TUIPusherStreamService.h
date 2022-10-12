@@ -96,6 +96,8 @@ NS_SWIFT_NAME(startPush(url:));
 - (BOOL)startLinkMic:(NSString *)streamId view:(UIView *)view;
 
 - (void)stopLinkMic;
+
+- (void)enableCustomVideoRender:(BOOL)enable;
 @end
 
 
