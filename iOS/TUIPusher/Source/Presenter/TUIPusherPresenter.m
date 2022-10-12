@@ -216,7 +216,10 @@
         TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameWidthKey:@(srcFrame.width),
         TUICore_TUIBeautyService_ProcessVideoFrame_SRCFrameHeightKey:@(srcFrame.height)
     }];
-    dstFrame.textureId = dstTextureId.intValue;
+    if (dstTextureId)
+        dstFrame.textureId = dstTextureId.intValue;
+    else
+        dstFrame.textureId = srcFrame.textureId;
 #endif
 }
 
@@ -316,5 +319,9 @@
         [_signalingService setDelegate:self];
     }
     return _signalingService;
+}
+
+- (void)enableCustomVideoRender:(BOOL)enable {
+    [self.streamService enableCustomVideoRender:enable];
 }
 @end

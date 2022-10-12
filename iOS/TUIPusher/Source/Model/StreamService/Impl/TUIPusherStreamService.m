@@ -32,7 +32,6 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     if (self) {
         self.isFrontCamera = YES;
         self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:mode];
-        [self.pusher enableCustomVideoProcess:YES pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
         [self.pusher setObserver:self];
     }
     return self;
@@ -102,7 +101,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     V2TXLiveCode res = [self.player setRenderView:pkView];
     
     NSString *url = [TUIPusherLinkURLUtils generatePlayUrl:streamId];
-    res += [self.player startPlay:url];
+    res += [self.player startLivePlay:url];
     
     V2TXLiveTranscodingConfig *config = [self createPKMixConfig:[TUILogin getUserID] remoteUserId:streamId remoteStreamId:streamId];
     res += [self.pusher setMixTranscodingConfig:config];
@@ -122,7 +121,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     V2TXLiveCode res = [self.player setRenderView:view];
     
     NSString *url = [TUIPusherLinkURLUtils generatePlayUrl:streamId];
-    res += [self.player startPlay:url];
+    res += [self.player startLivePlay:url];
     
     V2TXLiveTranscodingConfig *config = [self createLinkMicMixConfig:[TUILogin getUserID] remoteUserId:streamId remoteStreamId:streamId];
     res += [self.pusher setMixTranscodingConfig:config];
@@ -280,6 +279,10 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
 #pragma mark - V2TXLivePlayerObserver
 - (void)onConnected:(id<V2TXLivePlayer>)player extraInfo:(NSDictionary *)extraInfo {
     
+}
+
+- (void)enableCustomVideoRender:(BOOL)enable {
+    [self.pusher enableCustomVideoProcess:enable pixelFormat:V2TXLivePixelFormatTexture2D bufferType:V2TXLiveBufferTypeTexture];
 }
 
 @end
