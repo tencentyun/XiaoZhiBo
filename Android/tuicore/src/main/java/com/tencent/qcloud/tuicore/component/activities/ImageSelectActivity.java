@@ -271,7 +271,10 @@ public class ImageSelectActivity extends BaseLightActivity {
             if (imageBean.getGroupGridAvatar() != null) {
                 holder.defaultLayout.setVisibility(View.GONE);
                 if (imageView instanceof SynthesizedImageView) {
-                    ((SynthesizedImageView) (imageView)).displayImage(imageBean.getGroupGridAvatar()).load(imageBean.getGroupId());
+                    SynthesizedImageView synthesizedImageView = ((SynthesizedImageView) (imageView));
+                    String imageId = imageBean.getImageId();
+                    synthesizedImageView.setImageId(imageId);
+                    synthesizedImageView.displayImage(imageBean.getGroupGridAvatar()).load(imageId);
                 }
             } else if (imageBean.isDefault()) {
                 holder.defaultLayout.setVisibility(View.VISIBLE);
@@ -378,7 +381,7 @@ public class ImageSelectActivity extends BaseLightActivity {
         String localPath; // for local path
         boolean isDefault = false; // for default display
         List<Object> groupGridAvatar = null; // for group grid avatar
-        String groupId;
+        String imageId;
 
         public ImageBean() {
 
@@ -430,12 +433,12 @@ public class ImageSelectActivity extends BaseLightActivity {
             this.groupGridAvatar = groupGridAvatar;
         }
 
-        public String getGroupId() {
-            return groupId;
+        public String getImageId() {
+            return imageId;
         }
 
-        public void setGroupId(String groupId) {
-            this.groupId = groupId;
+        public void setImageId(String imageId) {
+            this.imageId = imageId;
         }
     }
 }
