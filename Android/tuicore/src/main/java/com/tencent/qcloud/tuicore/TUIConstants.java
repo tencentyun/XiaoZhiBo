@@ -205,12 +205,14 @@ public final class TUIConstants {
         public static final String METHOD_NAME_CALL = "call";
         public static final String METHOD_NAME_RECEIVEAPNSCALLED = "receiveAPNSCalled";
         public static final String METHOD_NAME_ENABLE_FLOAT_WINDOW = "methodEnableFloatWindow";
+        public static final String METHOD_NAME_ENABLE_MULTI_DEVICE = "methodEnableMultiDeviceAbility";
 
         public static final String PARAM_NAME_TYPE = "type";
         public static final String PARAM_NAME_USERIDS = "userIDs";
         public static final String PARAM_NAME_GROUPID = "groupId";
         public static final String PARAM_NAME_CALLMODEL = "call_model_data";
         public static final String PARAM_NAME_ENABLE_FLOAT_WINDOW = "enableFloatWindow";
+        public static final String PARAM_NAME_ENABLE_MULTI_DEVICE = "enableMultiDeviceAbility";
 
         public static final String METHOD_START_CALL = "startCall";
 

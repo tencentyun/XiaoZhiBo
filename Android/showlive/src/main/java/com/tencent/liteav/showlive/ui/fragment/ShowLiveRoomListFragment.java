@@ -40,13 +40,17 @@ import com.tencent.liteav.showlive.ui.view.RoundCornerImageView;
 import com.tencent.liteav.showlive.ui.view.SpaceDecoration;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 秀场直播 - 列表页面
  */
 public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String SP_VERIFY     = "sp_verify";
+    private static final String VERIFY_STATUS = "sp_verify";
 
     private RecyclerView       mRecyclerRoomList;                  //显示当前直播间列表的滑动控件
     private TextView           mTextRoomListEmpty;                 //显示直播间列表为空时的提示消息
@@ -166,8 +170,19 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     }
 
     private void createRoom() {
-        Intent intent = new Intent(getContext(), ShowLiveAnchorActivity.class);
-        startActivity(intent);
+        if (!Locale.CHINA.equals(getResources().getConfiguration().locale)
+                || SPUtils.getInstance(SP_VERIFY).getBoolean(VERIFY_STATUS, false)) {
+            Intent intent = new Intent(getContext(), ShowLiveAnchorActivity.class);
+            startActivity(intent);
+        } else {
+            try {
+                Class clz = Class.forName("com.tencent.liteav.privacy.util.RTCubeAppLegalUtils");
+                Method method = clz.getDeclaredMethod("showRealNameVerifyDialog", Context.class);
+                method.invoke(null, getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void refreshView() {

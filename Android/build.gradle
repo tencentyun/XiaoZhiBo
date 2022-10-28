@@ -5,10 +5,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.5.4'
+
+
     }
 }
 
@@ -28,6 +29,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    liteavSdk = "com.tencent.liteav:LiteAVSDK_Live:latest.release"
+    liteavSdk="com.tencent.liteav:LiteAVSDK_Live:latest.release"
     imSdk = "com.tencent.imsdk:imsdk-plus:latest.release"
 }

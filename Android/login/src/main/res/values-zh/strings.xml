@@ -21,7 +21,7 @@
     <string name="login_toast_set_username">请设置用户名</string>
     <string name="login_toast_register_success_and_logging_in">注册成功</string>
     <string name="login_toast_failed_to_set_username">设置失败: %s</string>
-    <string name="login_welcome_tips">欢迎使用\n腾讯云视立方小直播</string>
+    <string name="login_welcome_tips">欢迎使用\n腾讯云音视频小直播</string>
     <string name="login_confirm">确认</string>
     <string name="login_set_user_avatar">设置头像</string>
     <string name="login_toast_success_to_set_username">设置成功</string>
@@ -29,14 +29,14 @@
     <string name="login_btn_cancel">取消</string>
     <string name="login_send_verify_code">请发送验证码</string>
     <string name="login_protocol_start">我已阅读并同意</string>
-    <string name="login_privacy_protocol_detail">《隐私条例》</string>
+    <string name="login_privacy_protocol_detail">《隐私保护指引》</string>
     <string name="login_user_agreement_detail">《用户协议》</string>
     <string name="login_protocol_and">和</string>
-    <string name="login_privacy_protocol">隐私条例</string>
+    <string name="login_privacy_protocol">隐私保护指引</string>
     <string name="login_user_agreement">用户协议</string>
     <string name="login_protocol_tip">请先同意隐私条款和用户协议</string>
-    <string name="login_protocol_title">欢迎使用腾讯云视立方小直播</string>
-    <string name="login_protocol_tip_start">欢迎您使用腾讯云视立方小直播，我们将通过</string>
+    <string name="login_protocol_title">欢迎使用腾讯云音视频小直播</string>
+    <string name="login_protocol_tip_start">欢迎您使用腾讯云音视频小直播，我们将通过</string>
     <string name="login_protocol_tip_end">帮助您了解我们收集、使用、存储个人信息的情况，此外您还可以了解到您所享有的相关权利和实现途径，如您同意请点击下方按钮开始接受我们的服务</string>
     <string name="login_app_version">MLVB v%s</string>
     <string name="login_welcome_user_name_tips">欢迎新同学\n第一次登录需要设置昵称哦</string>
