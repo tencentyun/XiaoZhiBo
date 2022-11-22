@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
+import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.RoomService;
@@ -170,7 +171,8 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     }
 
     private void createRoom() {
-        if (!Locale.CHINA.equals(getResources().getConfiguration().locale)
+        if (!RTCubeUtils.isRTCubeApp(getContext())
+                || !Locale.CHINA.equals(getResources().getConfiguration().locale)
                 || SPUtils.getInstance(SP_VERIFY).getBoolean(VERIFY_STATUS, false)) {
             Intent intent = new Intent(getContext(), ShowLiveAnchorActivity.class);
             startActivity(intent);
