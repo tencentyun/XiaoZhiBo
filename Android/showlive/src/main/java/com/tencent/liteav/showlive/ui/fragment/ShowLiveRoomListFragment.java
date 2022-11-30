@@ -25,7 +25,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
-import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.RoomService;
@@ -122,7 +121,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
         mTextEnterRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RoomService.getInstance(getContext()).getGroupInfo(mEditRoomId.getText().toString().trim(),
+                RoomService.getInstance().getGroupInfo(mEditRoomId.getText().toString().trim(),
                         new RoomInfoListCallback() {
                             @Override
                             public void onCallback(int code, String msg, List<RoomInfo> list) {
@@ -171,8 +170,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     }
 
     private void createRoom() {
-        if (!RTCubeUtils.isRTCubeApp(getContext())
-                || !Locale.CHINA.equals(getResources().getConfiguration().locale)
+        if (!Locale.CHINA.equals(getResources().getConfiguration().locale)
                 || SPUtils.getInstance(SP_VERIFY).getBoolean(VERIFY_STATUS, false)) {
             Intent intent = new Intent(getContext(), ShowLiveAnchorActivity.class);
             startActivity(intent);
@@ -216,7 +214,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     private void getRoomList() {
         mLayoutSwipeRefresh.setRefreshing(true);
         // 从后台获取房间列表
-        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE,
+        RoomService.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE,
                 HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<RoomInfo> list) {

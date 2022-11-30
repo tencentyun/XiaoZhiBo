@@ -56,7 +56,7 @@ public class HourRankDialog extends BottomSheetDialog {
     }
 
     private void getRoomList() {
-        RoomService.getInstance(mContext).getRoomList(TYPE_MLVB_SHOW_LIVE,
+        RoomService.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE,
                 HttpRoomManager.RoomOrderType.TOTAL_JOINED, new RoomInfoCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<RoomInfo> list) {

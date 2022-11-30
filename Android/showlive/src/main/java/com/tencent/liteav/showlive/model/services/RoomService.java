@@ -1,6 +1,5 @@
 package com.tencent.liteav.showlive.model.services;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.tencent.liteav.basic.UserModelManager;
@@ -20,15 +19,13 @@ import java.util.List;
 public class RoomService implements IRoomService {
     private static final String      TAG = RoomService.class.getSimpleName();
     private static       RoomService mInstance;
-    private              Context     mContext;
 
-    private RoomService(Context context) {
-        mContext = context;
+    private RoomService() {
     }
 
-    public static RoomService getInstance(Context context) {
+    public static RoomService getInstance() {
         if (mInstance == null) {
-            mInstance = new RoomService(context);
+            mInstance = new RoomService();
         }
         return mInstance;
     }

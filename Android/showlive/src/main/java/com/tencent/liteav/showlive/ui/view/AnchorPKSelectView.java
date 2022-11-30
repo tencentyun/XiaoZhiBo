@@ -123,7 +123,7 @@ public class AnchorPKSelectView extends RelativeLayout {
         mTextEnterRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RoomService.getInstance(getContext()).getGroupInfo(mEditRoomId.getText().toString().trim(),
+                RoomService.getInstance().getGroupInfo(mEditRoomId.getText().toString().trim(),
                         new RoomInfoListCallback() {
                             @Override
                             public void onCallback(int code, String msg, List<RoomInfo> list) {
@@ -151,7 +151,7 @@ public class AnchorPKSelectView extends RelativeLayout {
 
     public void refreshView() {
         mPusherTagTv.setText(getResources().getString(R.string.showlive_loading));
-        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE,
+        RoomService.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE,
                 HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<RoomInfo> list) {

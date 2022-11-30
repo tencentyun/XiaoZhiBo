@@ -120,7 +120,7 @@ public class GenerateTestUserSig {
      * <p>
      * 小直播后台提供有登录、房间列表等服务，更多细节见文档：https://cloud.tencent.com/document/product/454/38625
      */
-    public static final String SERVERLESSURL = "";
+    public static final String SERVERLESSURL = "PLACEHOLDER";
 
     /**
      * 配置的播放域名
