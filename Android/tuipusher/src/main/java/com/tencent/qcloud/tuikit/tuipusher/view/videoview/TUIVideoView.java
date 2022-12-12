@@ -74,15 +74,16 @@ public class TUIVideoView extends RelativeLayout {
 
     public void showPKMode(boolean flag) {
         ConstraintSet set = new ConstraintSet();
-        set.clone(mLayoutRoot);
         if (flag) {
             mLinkVideoContainer.setVisibility(GONE);
             mPKVideoContainer.setVisibility(VISIBLE);
+            set.clone(mLayoutRoot);
             set.connect(mPushVideoView.getId(), ConstraintSet.END, mGLVertical.getId(), ConstraintSet.END);
             set.connect(mPushVideoView.getId(), ConstraintSet.BOTTOM, mGLHorizontal75.getId(), ConstraintSet.BOTTOM);
             set.connect(mPushVideoView.getId(), ConstraintSet.TOP, mGLHorizontal25.getId(), ConstraintSet.BOTTOM);
         } else {
             mPKVideoContainer.setVisibility(GONE);
+            set.clone(mLayoutRoot);
             set.connect(mPushVideoView.getId(), ConstraintSet.END, mLayoutRoot.getId(), ConstraintSet.END);
             set.connect(mPushVideoView.getId(), ConstraintSet.BOTTOM, mLayoutRoot.getId(), ConstraintSet.BOTTOM);
             set.connect(mPushVideoView.getId(), ConstraintSet.TOP, mLayoutRoot.getId(), ConstraintSet.TOP);
