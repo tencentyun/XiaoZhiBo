@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="basic_dialog_bg">#66000000</color>
-    <color name="basic_color_white">#FFFFFF</color>
-    <color name="basic_color_line">#EEEEEE</color>
-    <color name="basic_color_tab_select">#006EFF</color>
-    <color name="basic_color_input_no_match">#FA585E</color>
-</resources>
+<resources></resources>

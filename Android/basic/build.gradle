@@ -34,5 +34,6 @@ dependencies {
     api "androidx.recyclerview:recyclerview:1.0.0"
     api "androidx.multidex:multidex:2.0.0"
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    api 'me.dm7.barcodescanner:zxing:1.8.4'
 }
 

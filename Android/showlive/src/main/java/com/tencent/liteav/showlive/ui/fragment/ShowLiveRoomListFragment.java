@@ -122,7 +122,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
         mTextEnterRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RoomService.getInstance(getContext()).getGroupInfo(mEditRoomId.getText().toString().trim(),
+                RoomService.getInstance().getGroupInfo(mEditRoomId.getText().toString().trim(),
                         new RoomInfoListCallback() {
                             @Override
                             public void onCallback(int code, String msg, List<RoomInfo> list) {
@@ -216,7 +216,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
     private void getRoomList() {
         mLayoutSwipeRefresh.setRefreshing(true);
         // 从后台获取房间列表
-        RoomService.getInstance(getContext()).getRoomList(TYPE_MLVB_SHOW_LIVE,
+        RoomService.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE,
                 HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<RoomInfo> list) {

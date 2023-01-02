@@ -42,7 +42,7 @@ public class OnlineAudienceDialog extends BottomSheetDialog {
 
 
     private void getAudienceList() {
-        RoomService.getInstance(getContext()).getRoomAudienceList(mRoomId, new RoomMemberInfoCallback() {
+        RoomService.getInstance().getRoomAudienceList(mRoomId, new RoomMemberInfoCallback() {
             @Override
             public void onCallback(int code, String msg, List<AudienceInfo> list) {
                 if (code == 0) {
