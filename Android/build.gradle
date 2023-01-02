@@ -17,7 +17,6 @@ allprojects {
     repositories {
         flatDir {
             dirs project(':app').file('libs')
-            dirs project(':tuibeauty').file('libs')
         }
         google()
         mavenCentral()
@@ -30,5 +29,6 @@ task clean(type: Delete) {
 
 ext {
     liteavSdk="com.tencent.liteav:LiteAVSDK_Live:latest.release"
-    imSdk = "com.tencent.imsdk:imsdk-plus:latest.release"
+    roomEngineSdk = "com.tencent.tuikit.engine.room.sdk:sdk-release@aar"
+    imSdk = "com.tencent.imsdk:imsdk-customer:6.8.3374"
 }

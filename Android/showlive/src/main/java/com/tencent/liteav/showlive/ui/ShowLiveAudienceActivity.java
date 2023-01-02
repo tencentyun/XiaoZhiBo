@@ -140,7 +140,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
      */
     private void getRoomList() {
         // 从后台获取房间列表
-        RoomService.getInstance(this).getRoomList(TYPE_MLVB_SHOW_LIVE,
+        RoomService.getInstance().getRoomList(TYPE_MLVB_SHOW_LIVE,
                 HttpRoomManager.RoomOrderType.CREATE_UTC, new RoomInfoCallback() {
                     @Override
                     public void onCallback(int code, String msg, List<RoomInfo> list) {
@@ -266,7 +266,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
     }
 
     private void enterRoom() {
-        RoomService.getInstance(this).enterRoom(Integer.parseInt(mCurrentRoomId),
+        RoomService.getInstance().enterRoom(Integer.parseInt(mCurrentRoomId),
                 TYPE_MLVB_SHOW_LIVE, new CommonCallback() {
                     @Override
                     public void onCallback(int code, String msg) {
@@ -284,7 +284,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
         if (!mIsInIMGroup) {
             return;
         }
-        RoomService.getInstance(this).exitRoom(Integer.parseInt(mCurrentRoomId), new CommonCallback() {
+        RoomService.getInstance().exitRoom(Integer.parseInt(mCurrentRoomId), new CommonCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 Log.i(TAG, "exitRoom code:" + code + "msg:" + msg + "roomId:" + mCurrentRoomId);
@@ -305,7 +305,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
     public void finish() {
         mTUIPlayerView.stopPlay();
         if (mIsInIMGroup) {
-            RoomService.getInstance(this).exitRoom(Integer.parseInt(mRoomInfoList.get(mCurrentRoomIndex).ownerId),
+            RoomService.getInstance().exitRoom(Integer.parseInt(mRoomInfoList.get(mCurrentRoomIndex).ownerId),
                     null);
         }
         super.finish();

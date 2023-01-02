@@ -112,7 +112,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
     }
 
     private void initAudienceList() {
-        RoomService.getInstance(getContext()).getRoomAudienceList(mRoomId, new RoomMemberInfoCallback() {
+        RoomService.getInstance().getRoomAudienceList(mRoomId, new RoomMemberInfoCallback() {
             @Override
             public void onCallback(int code, String msg, List<AudienceInfo> list) {
                 mAudienceInfoList = list;
@@ -216,7 +216,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
         mRoomId = roomId + "";
         mAnchorName = anchorName;
         mAnchorAvatar = avatarUrl;
-        RoomService.getInstance(getContext()).checkFriend(mRoomId, new CommonCallback() {
+        RoomService.getInstance().checkFriend(mRoomId, new CommonCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (getContext() == null || ((Activity) getContext()).isFinishing()) {
@@ -299,7 +299,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
     }
 
     private void followTheAnchor() {
-        RoomService.getInstance(getContext()).addFriend(UserModelManager.getInstance().getUserModel().userId,
+        RoomService.getInstance().addFriend(UserModelManager.getInstance().getUserModel().userId,
                 mRoomId, new CommonCallback() {
                     @Override
                     public void onCallback(int code, String msg) {
@@ -322,7 +322,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
     }
 
     private void unFollowTheAnchor() {
-        RoomService.getInstance(getContext()).deleteFromFriendList(mRoomId, new CommonCallback() {
+        RoomService.getInstance().deleteFromFriendList(mRoomId, new CommonCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (getContext() == null || ((Activity) getContext()).isFinishing()) {

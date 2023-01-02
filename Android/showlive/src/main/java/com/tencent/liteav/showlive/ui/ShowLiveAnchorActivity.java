@@ -115,7 +115,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                                     ? TUILogin.getUserId() : TUILogin.getNickName())
                                     + getResources().getString(R.string.showlive_room));
                 }
-                RoomService.getInstance(ShowLiveAnchorActivity.this).createRoom(
+                RoomService.getInstance().createRoom(
                         getRoomId(TUILogin.getUserId()), TYPE_MLVB_SHOW_LIVE,
                         mShowAnchorPreviewView.getRoomName(),
                         TUILogin.getFaceUrl(),
@@ -334,7 +334,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
                 public void onClick() {
                     mDialogClose.dismiss();
                     if (mIsEnterRoom) {
-                        RoomService.getInstance(ShowLiveAnchorActivity.this).destroyRoom(
+                        RoomService.getInstance().destroyRoom(
                                 getRoomId(TUILogin.getUserId()), TYPE_MLVB_SHOW_LIVE, new CommonCallback() {
                                     @Override
                                     public void onCallback(int code, String msg) {
@@ -383,7 +383,7 @@ public class ShowLiveAnchorActivity extends AppCompatActivity {
             mShowAnchorFunctionView.stopRecordAnimation();
         }
         if (mIsEnterRoom) {
-            RoomService.getInstance(ShowLiveAnchorActivity.this).destroyRoom(
+            RoomService.getInstance().destroyRoom(
                     getRoomId(TUILogin.getUserId()),
                     TYPE_MLVB_SHOW_LIVE,
                     new CommonCallback() {
