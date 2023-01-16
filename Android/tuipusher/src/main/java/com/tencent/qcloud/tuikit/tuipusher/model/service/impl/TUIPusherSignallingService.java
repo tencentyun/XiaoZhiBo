@@ -87,17 +87,18 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
     public void stopLink(String roomId, String userId, int timeout) {
         TXCLog.i(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_REQ, roomId, "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
-            @Override
-            public void onSuccess() {
-                mListener.onCommonResult(IM_LINK_STOP_SUCCESS, "IM STOP PK SUCCESS");
-            }
+        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null
+                , timeout, new V2TIMCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mListener.onCommonResult(IM_LINK_STOP_SUCCESS, "IM STOP PK SUCCESS");
+                    }
 
-            @Override
-            public void onError(int code, String desc) {
-                mListener.onCommonResult(IM_LINK_STOP_FAIL, "IM STOP PK FAIL");
-            }
-        });
+                    @Override
+                    public void onError(int code, String desc) {
+                        mListener.onCommonResult(IM_LINK_STOP_FAIL, "IM STOP PK FAIL");
+                    }
+                });
         TXCLog.i(TAG, "inviteId:" + inviteID);
     }
 
@@ -105,7 +106,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
     public String requestPK(String roomId, String userId, int timeout) {
         TXCLog.i(TAG, "requestPK roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_PK_REQ, roomId + "", "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, null);
+        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null
+                , timeout, null);
         TXCLog.i(TAG, "inviteId:" + inviteID);
         return inviteID;
     }
@@ -154,17 +156,18 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
     public void stopPK(String roomId, String userId, int timeout) {
         TXCLog.i(TAG, "stopPK roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_PK_STOP_REQ, "", "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
-            @Override
-            public void onSuccess() {
-                mListener.onCommonResult(IM_PK_STOP_SUCCESS, "IM STOP PK SUCCESS");
-            }
+        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null
+                , timeout, new V2TIMCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mListener.onCommonResult(IM_PK_STOP_SUCCESS, "IM STOP PK SUCCESS");
+                    }
 
-            @Override
-            public void onError(int code, String desc) {
-                mListener.onCommonResult(IM_PK_STOP_FAIL, "IM STOP PK FAIL");
-            }
-        });
+                    @Override
+                    public void onError(int code, String desc) {
+                        mListener.onCommonResult(IM_PK_STOP_FAIL, "IM STOP PK FAIL");
+                    }
+                });
         TXCLog.i(TAG, "inviteId:" + inviteID);
     }
 
@@ -173,10 +176,13 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
      */
     private final class TUIPusherIMSignalingListener extends V2TIMSignalingListener {
 
-        public void onReceiveNewInvitation(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
+        public void onReceiveNewInvitation(String inviteID, String inviter, String groupID
+                , List<String> inviteeList, String data) {
+            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID
+                    + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID
+                        + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
 
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
@@ -184,7 +190,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
 
@@ -199,7 +206,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                     mListener.onRequestPK(bean);
                 }
             } else if (CMD_PK_STOP_REQ.equals(signallingData.getData().getCmd())) {
-                V2TIMManager.getSignalingManager().accept(inviteID, SignallingData.createSignallingJsonData(CMD_PK_STOP_RES, inviter, ""), null);
+                V2TIMManager.getSignalingManager().accept(inviteID, SignallingData
+                        .createSignallingJsonData(CMD_PK_STOP_RES, inviter, ""), null);
                 if (mListener != null) {
                     mListener.onStopPK();
                 }
@@ -222,7 +230,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                     bean.setInviteeList(inviteeList);
                     bean.setData(signallingData);
                     mListener.onStartLink(bean);
-                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_START_RES, inviter, ""), null);
+                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData
+                            .createSignallingJsonData(CMD_JOIN_ANCHOR_START_RES, inviter, ""), null);
                 }
             } else if (CMD_JOIN_ANCHOR_STOP_REQ.equals(signallingData.getData().getCmd())) {
                 if (mListener != null) {
@@ -233,7 +242,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                     bean.setInviteeList(inviteeList);
                     bean.setData(signallingData);
                     mListener.onStopLink(bean);
-                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_RES, inviter, ""), null);
+                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData
+                            .createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_RES, inviter, ""), null);
                 }
             }
         }
@@ -245,7 +255,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
             if (CMD_PK_RES.equals(signallingData.getData().getCmd())) {
@@ -266,7 +277,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
             if (CMD_PK_RES.equals(signallingData.getData().getCmd())) {
@@ -281,13 +293,15 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         }
 
         public void onInvitationCancelled(String inviteID, String inviter, String data) {
-            TXCLog.i(TAG, "onInvitationCancelled inviteID:" + inviteID + ", inviter:" + inviter + ", data: " + data);
+            TXCLog.i(TAG, "onInvitationCancelled inviteID:" + inviteID
+                    + ", inviter:" + inviter + ", data: " + data);
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
             if (signallingData == null || signallingData.getData() == null) {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
             if (CMD_PK_CANCEL.equals(signallingData.getData().getCmd())) {
@@ -312,7 +326,8 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         public void onInvitationTimeout(String inviteID, List<String> inviteeList) {
             TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID
+                        + ", inviteeList: " + new Gson().toJson(inviteeList));
             }
             if (mListener != null) {
                 InvitationResBean bean = new InvitationResBean();
@@ -334,7 +349,7 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
         NORMAL("1"),        //正常拒绝PK
         BUSY("2");          //忙线中(PK或者连麦中)
 
-        RejectReason(String reason){
+        RejectReason(String reason) {
             this.reason = reason;
         }
 
@@ -345,21 +360,21 @@ public class TUIPusherSignallingService implements ITUIPusherSignallingService {
             return reason;
         }
 
-        public static boolean isRejectReason(String reason){
-            if(TextUtils.isEmpty(reason)){
+        public static boolean isRejectReason(String reason) {
+            if (TextUtils.isEmpty(reason)) {
                 return false;
             }
             return NORMAL.getReason().equals(reason) || BUSY.getReason().equals(reason);
         }
 
-        public static int getRejectReasonCode(String reason){
-            if(TextUtils.isEmpty(reason)){
+        public static int getRejectReasonCode(String reason) {
+            if (TextUtils.isEmpty(reason)) {
                 return -1;
             }
-            if(NORMAL.getReason().equals(reason)){
+            if (NORMAL.getReason().equals(reason)) {
                 return 1;
             }
-            if(BUSY.getReason().equals(reason)){
+            if (BUSY.getReason().equals(reason)) {
                 return 2;
             }
             return -1;
