@@ -75,7 +75,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     public String requestLink(String roomId, String userId, int timeout, final TUIPlayerCallback callback) {
         TXCLog.i(TAG, "requestLink roomId:" + roomId + ", userId: " + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_REQ, roomId + "", "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
+        String inviteID = V2TIMManager.getSignalingManager()
+                .invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
             public void onSuccess() {
                 TXCLog.i(TAG, "requestLink onSuccess");
@@ -123,7 +124,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     public void startLink(String roomId, String userId, int timeout, final TUIPlayerCallback callback) {
         TXCLog.i(TAG, "startLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_START, roomId + "", "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
+        String inviteID = V2TIMManager.getSignalingManager()
+                .invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
             public void onSuccess() {
                 TXCLog.i(TAG, "startLink onSuccess");
@@ -147,7 +149,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
     public void stopLink(String roomId, String userId, int timeout, TUIPlayerCallback callback) {
         TXCLog.i(TAG, "stopLink roomId:" + roomId + ", userId:" + userId);
         String json = SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_REQ, roomId, "");
-        String inviteID = V2TIMManager.getSignalingManager().invite(userId, json, true, null, timeout, new V2TIMCallback() {
+        String inviteID = V2TIMManager.getSignalingManager()
+                .invite(userId, json, true, null, timeout, new V2TIMCallback() {
             @Override
             public void onSuccess() {
                 mListener.onCommonResult(IM_LINK_STOP_SUCCESS, "IM STOP PK SUCCESS");
@@ -177,7 +180,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
         }
 
         @Override
-        public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender, byte[] customData) {
+        public void onRecvGroupCustomMessage(String msgID, String groupID, V2TIMGroupMemberInfo sender
+                , byte[] customData) {
             TXCLog.i(TAG, "onRecvGroupCustomMessage");
         }
     }
@@ -217,10 +221,13 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
         /**
          * 收到邀请
          */
-        public void onReceiveNewInvitation(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter + ", groupID: " + groupID + ", data: " + data);
+        public void onReceiveNewInvitation(String inviteID, String inviter, String groupID
+                , List<String> inviteeList, String data) {
+            TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviter:" + inviter
+                    + ", groupID: " + groupID + ", data: " + data);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onReceiveNewInvitation inviteID:" + inviteID + ", inviteeList: "
+                        + new Gson().toJson(inviteeList));
             }
 
             SignallingData signallingData = SignallingData.convert2SignallingData(data);
@@ -228,7 +235,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
 
@@ -241,7 +249,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
                     bean.setInviteeList(inviteeList);
                     bean.setData(signallingData);
                     mListener.onStopJoinAnchor();
-                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData.createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_RES, inviter, ""), null);
+                    V2TIMManager.getSignalingManager().accept(inviteID, SignallingData
+                            .createSignallingJsonData(CMD_JOIN_ANCHOR_STOP_RES, inviter, ""), null);
                 }
             }
         }
@@ -256,7 +265,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
             if (CMD_JOIN_ANCHOR_RES.equals(signallingData.getData().getCmd())) {
@@ -280,7 +290,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
                 return;
             }
 
-            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID()) && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
+            if (!VALUE_PLAYER_BUSINESS_ID.equals(signallingData.getBusinessID())
+                    && !VALUE_PUSHER_BUSINESS_ID.equals(signallingData.getBusinessID())) {
                 return;
             }
 
@@ -308,7 +319,8 @@ public class TUIPlayerSignallingService implements ITUIPlayerSignallingService {
         public void onInvitationTimeout(String inviteID, List<String> inviteeList) {
             TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID);
             if (inviteeList != null && inviteeList.size() > 0) {
-                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: " + new Gson().toJson(inviteeList));
+                TXCLog.i(TAG, "onInvitationTimeout inviteID:" + inviteID + ", inviteeList: "
+                        + new Gson().toJson(inviteeList));
             }
             if (mListener != null) {
                 InvitationResBean bean = new InvitationResBean();

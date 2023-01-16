@@ -26,7 +26,8 @@ public class LinkURLUtils {
      * @return
      */
     public static String generatePushUrl(String streamId) {
-        return TRTC + TRTC_DOMAIN + "/push/" + streamId + "?sdkappid=" + TUILogin.getSdkAppId() + "&userid=" + TUILogin.getUserId() + "&usersig=" + TUILogin.getUserSig();
+        return TRTC + TRTC_DOMAIN + "/push/" + streamId + "?sdkappid=" + TUILogin.getSdkAppId()
+                + "&userid=" + TUILogin.getUserId() + "&usersig=" + TUILogin.getUserSig();
     }
 
     /**
@@ -38,7 +39,8 @@ public class LinkURLUtils {
      */
     public static String generatePlayUrl(String streamId) {
 
-        return TRTC + TRTC_DOMAIN + "/play/" + streamId + "?sdkappid=" + TUILogin.getSdkAppId() + "&userid=" + TUILogin.getUserId() + "&usersig=" + TUILogin.getUserSig();
+        return TRTC + TRTC_DOMAIN + "/play/" + streamId + "?sdkappid=" + TUILogin.getSdkAppId()
+                + "&userid=" + TUILogin.getUserId() + "&usersig=" + TUILogin.getUserSig();
     }
 
     /**
