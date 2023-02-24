@@ -1,12 +1,5 @@
 package com.tencent.qcloud.tuikit.tuiplayer.model.bean.im;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.tencent.liteav.basic.log.TXCLog;
-
-import java.io.Serializable;
-import java.util.Map;
-
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataKey.KEY_BUSINESS_ID;
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataKey.KEY_CMD;
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataKey.KEY_CMD_INFO;
@@ -16,6 +9,13 @@ import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.Sign
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataValue.VALUE_PLATFORM;
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataValue.VALUE_PLAYER_BUSINESS_ID;
 import static com.tencent.qcloud.tuikit.tuiplayer.model.constant.IMProtocol.SignallingDataValue.VALUE_VERSION;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.tencent.liteav.basic.log.TXCLog;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 信令数据实体类
@@ -166,6 +166,7 @@ public class SignallingData implements Serializable {
                 }
             }
         } catch (JsonSyntaxException e) {
+            TXCLog.e(TAG, "JsonSyntaxException:" + json);
         }
         return signallingData;
     }
@@ -194,6 +195,7 @@ public class SignallingData implements Serializable {
                 }
             }
         } catch (JsonSyntaxException e) {
+            TXCLog.e(TAG, "JsonSyntaxException:" + dataMap);
         }
         return dataInfo;
     }

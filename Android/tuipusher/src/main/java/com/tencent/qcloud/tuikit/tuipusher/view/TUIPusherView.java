@@ -120,7 +120,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                                                     if (isAgree) {
                                                         updateState(COUNTDOWN);
                                                     } else {
-                                                        ToastUtil.toastShortMessage(getContext().getString(R.string.tuipusher_user_no_agree_push));
+                                                        ToastUtil.toastShortMessage(getContext()
+                                                                .getString(R.string.tuipusher_user_no_agree_push));
                                                     }
                                                 }
                                             });
@@ -223,6 +224,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                     mListener.onPushStarted(this, mPushUrl);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -293,6 +296,9 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                 if (mListener != null) {
                     mListener.onStopPK(TUIPusherView.this);
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -346,6 +352,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                     mListener.onCancelJoinAnchorRequest(this);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -382,6 +390,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                 break;
             case TUIPUSHER_VIDEO_RES_1080:
                 tempResolution = 4;
+                break;
+            default:
                 break;
         }
         mTUIPusherPresenter.setResolution(tempResolution);
@@ -439,8 +449,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                         mTUIPusherPresenter.responsePK(false,
                                 TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
                     }
-                    TXCLog.i(TAG,
-                            "onNotifyPKState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + pkUserId);
+                    TXCLog.i(TAG, "onNotifyPKState mState:" + mState + ", mPKState:" + mPKState
+                            + ", mLinkState:" + mLinkState + ", userId:" + pkUserId);
                 }
             }
 
@@ -458,8 +468,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                         mTUIPusherPresenter.responseLink(false,
                                 TUIPusherSignallingService.RejectReason.BUSY.getReason(), 10);
                     }
-                    TXCLog.i(TAG,
-                            "onNotifyLinkState mState:" + mState + ", mPKState:" + mPKState + ", mLinkState:" + mLinkState + ", userId:" + linkUserId);
+                    TXCLog.i(TAG, "onNotifyLinkState mState:" + mState + ", mPKState:" + mPKState
+                            + ", mLinkState:" + mLinkState + ", userId:" + linkUserId);
                 }
             }
 
@@ -497,8 +507,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
                 return false;
             }
         } else {
-            TXCLog.i(TAG,
-                    "sendPKRequest fail, mState:" + mState + ", mPKState： " + mPKState + ", mLinkState：" + mLinkState);
+            TXCLog.i(TAG, "sendPKRequest fail, mState:" + mState + ", mPKState： "
+                    + mPKState + ", mLinkState：" + mLinkState);
             return false;
         }
     }

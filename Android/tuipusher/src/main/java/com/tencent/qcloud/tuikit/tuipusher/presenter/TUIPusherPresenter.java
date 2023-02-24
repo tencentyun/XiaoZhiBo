@@ -179,7 +179,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
     public void startPK(TXCloudVideoView pkVideoView) {
         TXCLog.i(TAG, "startPK");
         int ret = mStreamService.startPlay(pkVideoView, mPKStreamId, TUILogin.getUserId());
-        int result = mStreamService.setPKMixTranscodingConfig(TUILogin.getUserId(), mStreamId + "", mPKStreamId, mPKUserId);
+        int result = mStreamService.setPKMixTranscodingConfig(TUILogin.getUserId()
+                , mStreamId + "", mPKStreamId, mPKUserId);
         if (result == V2TXLIVE_OK) {
             mListener.onNotifyPKState(PK_STSRT, mPKUserId, "");
         } else {
@@ -197,7 +198,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
     public void setResolution(int resolution) {
         TXCLog.i(TAG, "setResolution resolution:" + resolution);
         if (mStreamService != null) {
-            V2TXLiveDef.V2TXLiveVideoResolution resolutionFlag = V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution640x360;
+            V2TXLiveDef.V2TXLiveVideoResolution resolutionFlag
+                    = V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution640x360;
             if (resolution == 1) {
                 resolutionFlag = V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution640x360;
             } else if (resolution == 2) {
@@ -227,7 +229,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
     public void startLink(TXCloudVideoView videoView) {
         TXCLog.i(TAG, "startLink");
         mStreamService.startPlay(videoView, mLinkStreamId, TUILogin.getUserId());
-        int result = mStreamService.setLinkMixTranscodingConfig(TUILogin.getUserId(), mStreamId + "", mLinkUserId, mLinkUserId);
+        int result = mStreamService.setLinkMixTranscodingConfig(TUILogin.getUserId()
+                , mStreamId + "", mLinkUserId, mLinkUserId);
         if (result == V2TXLIVE_OK) {
             mListener.onNotifyLinkState(LINK_START, mLinkUserId, "");
         } else {
@@ -260,7 +263,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
         TXCLog.i(TAG, "onRequestPK");
         if (!TextUtils.isEmpty(mPKInvteId) && CMD_PK_REQ.equals(bean.getData().getData().getCmd())) {
             //已经收到了未处理的PK请求，抛弃新的请求
-            mSignallingService.responsePK(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
+            mSignallingService.responsePK(bean.getInviteID(), mStreamId, false
+                    , TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
             return;
         }
         mPKInvteId = bean.getInviteID();
@@ -285,8 +289,10 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
     @Override
     public void onRequestJoinAnchor(InvitationReqBean bean) {
         TXCLog.i(TAG, "onRequestJoinAnchor");
-        if (!TextUtils.isEmpty(mLinkInviteId) && CMD_JOIN_ANCHOR_REQ.equals(bean.getData().getData().getCmd())) {    //已经收到了未处理的连麦请求，抛弃新的请求
-            mSignallingService.responseLink(bean.getInviteID(), mStreamId, false, TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
+        if (!TextUtils.isEmpty(mLinkInviteId) && CMD_JOIN_ANCHOR_REQ.equals(bean.getData().getData().getCmd())) {
+            //已经收到了未处理的连麦请求，抛弃新的请求
+            mSignallingService.responseLink(bean.getInviteID(), mStreamId, false
+                    , TUIPusherSignallingService.RejectReason.BUSY.getReason(), 15);
             return;
         }
         mLinkInviteId = bean.getInviteID();
@@ -307,6 +313,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
             case CANCEL:
                 mListener.onNotifyLinkState(LINK_CANCEL, mLinkUserId, "");
                 resetLinkData();
+                break;
+            default:
                 break;
         }
     }
@@ -369,6 +377,8 @@ public class TUIPusherPresenter implements ITUIPusherPresenter, ITUIPusherStream
             case CANCEL:
                 mListener.onNotifyPKState(PK_CANCEL, mPKUserId, "");
                 resetPKData();
+                break;
+            default:
                 break;
         }
     }

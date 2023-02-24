@@ -1,12 +1,5 @@
 package com.tencent.qcloud.tuikit.tuipusher.model.im;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.tencent.liteav.basic.log.TXCLog;
-
-import java.io.Serializable;
-import java.util.Map;
-
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataKey.KEY_BUSINESS_ID;
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataKey.KEY_CMD;
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataKey.KEY_DATA;
@@ -15,6 +8,13 @@ import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.Sign
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataValue.VALUE_PLATFORM;
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataValue.VALUE_PUSHER_BUSINESS_ID;
 import static com.tencent.qcloud.tuikit.tuipusher.model.constant.IMProtocol.SignallingDataValue.VALUE_VERSION;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.tencent.liteav.basic.log.TXCLog;
+
+import java.io.Serializable;
+import java.util.Map;
 
 public class SignallingData implements Serializable {
     private static final String TAG = "SignallingData";
@@ -152,6 +152,7 @@ public class SignallingData implements Serializable {
                 }
             }
         } catch (JsonSyntaxException e) {
+            TXCLog.i(TAG, "JsonSyntaxException:" + json);
         }
         return signallingData;
     }
@@ -172,6 +173,7 @@ public class SignallingData implements Serializable {
                 }
             }
         } catch (JsonSyntaxException e) {
+            TXCLog.i(TAG, "JsonSyntaxException:" + dataMap);
         }
         return dataInfo;
     }
