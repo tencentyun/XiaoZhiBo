@@ -69,7 +69,8 @@ public class ContainerView extends FrameLayout {
         HashMap<String, Object> beautyParaMap = new HashMap<>();
         beautyParaMap.put("context", getContext());
         beautyParaMap.put("beautyManager", beautyManager);
-        Map<String, Object> beautyRetMap = TUICore.getExtensionInfo("com.tencent.qcloud.tuikit.tuibeauty.view.TUIBeautyButton", beautyParaMap);
+        Map<String, Object> beautyRetMap = TUICore
+                .getExtensionInfo("com.tencent.qcloud.tuikit.tuibeauty.view.TUIBeautyButton", beautyParaMap);
         if (beautyRetMap != null && beautyRetMap.size() > 0) {
             Object object = beautyRetMap.get("TUIBeauty");
             if (object != null && object instanceof View) {
@@ -89,7 +90,8 @@ public class ContainerView extends FrameLayout {
         HashMap<String, Object> giftParaMap = new HashMap<>();
         giftParaMap.put("context", getContext());
         giftParaMap.put("groupId", groupId);
-        Map<String, Object> giftRetMap = TUICore.getExtensionInfo("com.tencent.qcloud.tuikit.tuigift.core.TUIGiftExtension", giftParaMap);
+        Map<String, Object> giftRetMap = TUICore
+                .getExtensionInfo("com.tencent.qcloud.tuikit.tuigift.core.TUIGiftExtension", giftParaMap);
         if (giftRetMap != null && giftRetMap.size() > 0) {
             Object giftDisplayView = giftRetMap.get("TUIGiftPlayView");
             if (giftDisplayView != null && giftDisplayView instanceof View) {
@@ -106,7 +108,8 @@ public class ContainerView extends FrameLayout {
         HashMap<String, Object> barrageParaMap = new HashMap<>();
         barrageParaMap.put("context", getContext());
         barrageParaMap.put("groupId", groupId);
-        Map<String, Object> barrageRetMap = TUICore.getExtensionInfo("com.tencent.qcloud.tuikit.tuibarrage.core.TUIBarrageExtension", barrageParaMap);
+        Map<String, Object> barrageRetMap = TUICore
+                .getExtensionInfo("com.tencent.qcloud.tuikit.tuibarrage.core.TUIBarrageExtension", barrageParaMap);
         if (barrageRetMap != null && barrageRetMap.size() > 0) {
             Object barrageSendView = barrageRetMap.get("TUIBarrageButton");
             if (barrageSendView != null && barrageSendView instanceof View) {
@@ -135,7 +138,8 @@ public class ContainerView extends FrameLayout {
     }
 
     public void setBarrageShow(View view) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mLayoutBarrageShow.addView(view, params);
     }
 
@@ -152,7 +156,8 @@ public class ContainerView extends FrameLayout {
     }
 
     public void setGiftShowView(View view) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mLayoutGiftShow.addView(view, params);
     }
 

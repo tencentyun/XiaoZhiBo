@@ -68,13 +68,16 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         mV2TXLivePusher.enableCustomVideoProcess(true, V2TXLivePixelFormatTexture2D, V2TXLiveBufferTypeTexture);
         mV2TXLivePusher.setObserver(new V2TXLivePusherObserver() {
             @Override
-            public int onProcessVideoFrame(V2TXLiveDef.V2TXLiveVideoFrame srcFrame, V2TXLiveDef.V2TXLiveVideoFrame dstFrame) {
+            public int onProcessVideoFrame(V2TXLiveDef.V2TXLiveVideoFrame srcFrame
+                    , V2TXLiveDef.V2TXLiveVideoFrame dstFrame) {
                 Map<String, Object> map = new HashMap<>();
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_SRC_TEXTURE_ID, srcFrame.texture.textureId);
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_WIDTH, srcFrame.width);
                 map.put(TUIConstants.TUIBeauty.PARAM_NAME_FRAME_HEIGHT, srcFrame.height);
-                if (TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map) != null) {
-                    dstFrame.texture.textureId = (int) TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map);
+                if (TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME
+                        , TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map) != null) {
+                    dstFrame.texture.textureId = (int) TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME
+                            , TUIConstants.TUIBeauty.METHOD_PROCESS_VIDEO_FRAME, map);
                 } else {
                     dstFrame.texture.textureId = srcFrame.texture.textureId;
                 }
@@ -83,7 +86,8 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
             @Override
             public void onGLContextDestroyed() {
-                TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME, TUIConstants.TUIBeauty.METHOD_DESTROY_XMAGIC, null);
+                TUICore.callService(TUIConstants.TUIBeauty.SERVICE_NAME
+                        , TUIConstants.TUIBeauty.METHOD_DESTROY_XMAGIC, null);
                 super.onGLContextDestroyed();
             }
         });
@@ -140,7 +144,8 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
 
     @Override
     public int setPKMixTranscodingConfig(String myUserId, String myRoomId, String pkUserId, String pkRoomId) {
-        TXCLog.i(TAG, "setPKMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",pkUserId" + pkUserId + ",pkRoomId" + pkRoomId);
+        TXCLog.i(TAG, "setPKMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId
+                + ",pkUserId" + pkUserId + ",pkRoomId" + pkRoomId);
         int ret = -1;
         if (mV2TXLivePusher != null && mV2TXLivePusher.isPushing() == 1) {
             if (TextUtils.isEmpty(myUserId)) {
@@ -149,19 +154,22 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
                 ret = mV2TXLivePusher.setMixTranscodingConfig(createPKConfig(myUserId, myRoomId, pkUserId, pkRoomId));
             }
         }
-        TXCLog.i(TAG, "setPKMixTranscodingConfig ret:" + ret + ", myUserId" + myUserId + ", myRoomId" + myRoomId + ", pkUserId" + pkUserId + ", pkRoomId" + pkRoomId);
+        TXCLog.i(TAG, "setPKMixTranscodingConfig ret:" + ret + ", myUserId" + myUserId + ", myRoomId"
+                + myRoomId + ", pkUserId" + pkUserId + ", pkRoomId" + pkRoomId);
         return 0;
     }
 
     @Override
     public int setLinkMixTranscodingConfig(String myUserId, String myRoomId, String linkUserId, String linkRoomId) {
-        TXCLog.i(TAG, "setLinkMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId + ",linkUserId" + linkUserId + ",linkRoomId" + linkRoomId);
+        TXCLog.i(TAG, "setLinkMixTranscodingConfig myUserId:" + myUserId + ",myRoomId" + myRoomId
+                + ",linkUserId" + linkUserId + ",linkRoomId" + linkRoomId);
         int ret = -1;
         if (mV2TXLivePusher != null && mV2TXLivePusher.isPushing() == 1) {
             if (TextUtils.isEmpty(myUserId)) {
                 ret = mV2TXLivePusher.setMixTranscodingConfig(null);
             } else {
-                ret = mV2TXLivePusher.setMixTranscodingConfig(createLinkConfig(myUserId, myRoomId, linkUserId, linkRoomId));
+                ret = mV2TXLivePusher.setMixTranscodingConfig(
+                        createLinkConfig(myUserId, myRoomId, linkUserId, linkRoomId));
             }
         }
         TXCLog.i(TAG, "setLinkMixTranscodingConfig ret:" + ret);
@@ -233,7 +241,8 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         return mV2TXLivePusher;
     }
 
-    private V2TXLiveDef.V2TXLiveTranscodingConfig createPKConfig(String myUserId, String mySreamId, String pkUserId, String pkStreamId) {
+    private V2TXLiveDef.V2TXLiveTranscodingConfig createPKConfig(String myUserId, String mySreamId, String pkUserId
+            , String pkStreamId) {
         V2TXLiveDef.V2TXLiveTranscodingConfig config = new V2TXLiveDef.V2TXLiveTranscodingConfig();
         config.videoWidth = 360;
         config.videoHeight = 640;
@@ -272,7 +281,8 @@ public class TUIPusherStreamService implements ITUIPusherStreamService {
         return config;
     }
 
-    private V2TXLiveDef.V2TXLiveTranscodingConfig createLinkConfig(String myUserId, String myRoomId, String linkUserId, String linkRoomId) {
+    private V2TXLiveDef.V2TXLiveTranscodingConfig createLinkConfig(String myUserId, String myRoomId, String linkUserId
+            , String linkRoomId) {
         V2TXLiveDef.V2TXLiveTranscodingConfig config = new V2TXLiveDef.V2TXLiveTranscodingConfig();
         config.videoWidth = 360;
         config.videoHeight = 640;

@@ -62,7 +62,8 @@ public class StartPushView extends FrameLayout {
         HashMap<String, Object> beautyParaMap = new HashMap<>();
         beautyParaMap.put("context", getContext());
         beautyParaMap.put("beautyManager", beautyManager);
-        Map<String, Object> beautyRetMap = TUICore.getExtensionInfo("com.tencent.qcloud.tuikit.tuibeauty.view.TUIBeautyButton", beautyParaMap);
+        Map<String, Object> beautyRetMap = TUICore
+                .getExtensionInfo("com.tencent.qcloud.tuikit.tuibeauty.view.TUIBeautyButton", beautyParaMap);
         if (beautyRetMap != null && beautyRetMap.size() > 0) {
             Object object = beautyRetMap.get("TUIBeauty");
             if (object != null && object instanceof View) {
