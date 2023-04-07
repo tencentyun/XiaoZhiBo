@@ -8,6 +8,7 @@ import com.tencent.liteav.showlive.model.services.room.callback.ActionCallback;
 import com.tencent.liteav.showlive.model.services.room.callback.RoomDetailCallback;
 import com.tencent.liteav.showlive.model.services.room.callback.RoomInfoCallback;
 import com.tencent.liteav.showlive.model.services.room.http.IHttpRoomManager;
+import com.tencent.liteav.showlive.BuildConfig;
 import com.tencent.qcloud.tuicore.TUILogin;
 
 import java.util.ArrayList;
@@ -95,7 +96,9 @@ public class HttpRoomManager implements IHttpRoomManager {
         param.put("role", roleName);
         param.put("category", type);
         param.put("apaasUserId", ProfileManager.getInstance().getApaasUserId());
-        param.put("type", "TIMER_ROOM");
+        if (!BuildConfig.DEBUG) {
+            param.put("type", "TIMER_ROOM");
+        }
         mEnterRoomCall = mApi.enterRoom(param);
         mEnterRoomCall.enqueue(new Callback<ResponseEntity<Void>>() {
             @Override
