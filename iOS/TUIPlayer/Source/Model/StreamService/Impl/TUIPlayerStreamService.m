@@ -35,7 +35,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     self.originalPlayUrl = url;
     V2TXLiveCode renderCode = [self.player setRenderView:view];
     [self setFramework];
-    V2TXLiveCode playCode = [self.player startPlay:url];
+    V2TXLiveCode playCode = [self.player startLivePlay:url];
     LOGD("【Player】start play: setRenderView[%d] startPlay[%d] %@", renderCode, playCode, url);
     if (renderCode == V2TXLIVE_OK && playCode == V2TXLIVE_OK) {
         return V2TXLIVE_OK;
@@ -89,7 +89,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     V2TXLiveCode res = [self.player stopPlay];
     
     NSString *playUrl = [TUIPlayerLinkURLUtils generatePlayUrl:streamId];
-    res += [self.player startPlay:playUrl];
+    res += [self.player startLivePlay:playUrl];
     
     // set pusher
     res += [self.pusher startCamera:self.isFrontCamera];
@@ -117,7 +117,7 @@ static const int kTC_FRAMEWORK_LIVE   = 4;
     [self.pusher stopPush];
     
     [self.player stopPlay];
-    [self.player startPlay:self.originalPlayUrl];
+    [self.player startLivePlay:self.originalPlayUrl];
 }
 
 #pragma mark - V2TXLivePlayerObserver
