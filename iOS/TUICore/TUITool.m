@@ -812,7 +812,7 @@
             return TUIKitLocalizableString(TUIKitErrorSVRNoSuccessResult); // @"批量操作无成功结果";
         case ERR_TO_USER_INVALID:
             return TUIKitLocalizableString(TUIKitErrorSVRToUserInvalid); // @"IM: 无效接收方";
-        case ERR_REQUEST_TIMEOUT:
+        case ERR_REQUEST_TIME_OUT:
             return TUIKitLocalizableString(TUIKitErrorSVRRequestTimeout); // @"请求超时";
         case ERR_INIT_CORE_FAIL:
             return TUIKitLocalizableString(TUIKitErrorSVRInitCoreFail); // @"INIT CORE模块失败";
