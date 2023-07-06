@@ -353,6 +353,8 @@ public class TUIPlayerView extends FrameLayout implements ITUIPlayerView {
         TXCLog.i(TAG, "stopPlay");
         if (mLinkState == LinkState.LINK_PUSH_SEND_SUCCESS) {
             mTUIPlayerPresenter.stopLink(15);
+        } else if (mLinkState == LinkState.LINK_REQ_SEND_SUCCESS) {
+            mTUIPlayerPresenter.cancelLink();
         }
         mTUIPlayerPresenter.destory();
     }
