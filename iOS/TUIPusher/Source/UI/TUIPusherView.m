@@ -550,12 +550,14 @@ typedef enum : NSUInteger {
 - (void)appDidEnterBackground {
     TXImage *image = [TXImage imageNamed:@"pusher_placeholder" inBundle:TUIPusherBundle() compatibleWithTraitCollection:nil];
     // startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+    [self.presenter closeCamera];
     [self.presenter startVirtualCamera:image];
 }
 
 /// app进入前台-恢复摄像头推流
 - (void)appDidBecomeActive {
     // startVirtualCamera，startCamera，startScreenCapture，同一 Pusher 实例下，仅有一个能上行，三者为覆盖关系。例如先调用 startCamera，后调用 startVirtualCamera。此时表现为暂停摄像头推流，开启图片推流
+    [self.presenter stopVirtualCamera];
     [self.presenter startCamera:self.presenter.isFrontCamera];
 }
 @end
