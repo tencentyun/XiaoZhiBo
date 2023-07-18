@@ -28,21 +28,21 @@ class ShowLiveRoomInfoAlert: ShowLiveAlertViewController {
     private lazy var fansCountLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = UIColor(hex: "#999999")
+        label.textColor = UIColor("#999999")
         label.text = .fansText + " 678"
         return label
     }()
     /// 分割线
     private lazy var lineView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor(hex: "#999999")
+        view.backgroundColor = UIColor("#999999")
         return view
     }()
     /// 关注数量
     private lazy var followCountLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = UIColor(hex: "#999999")
+        label.textColor = UIColor("#999999")
         label.text = .followText + " \(followCount)"
         return label
     }()
@@ -141,7 +141,7 @@ class ShowLiveRoomInfoAlert: ShowLiveAlertViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let gradientColors = [UIColor(hex: "#FF8BB7").cgColor, UIColor(hex: "#FF465D").cgColor]
+        let gradientColors = [UIColor("#FF8BB7").cgColor, UIColor("#FF465D").cgColor]
         let followGradientLayer = followButton.gradient(colors: gradientColors)
         followGradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         followGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)

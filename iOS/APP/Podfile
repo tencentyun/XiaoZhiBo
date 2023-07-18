@@ -13,13 +13,13 @@ end
 # 工具库
 def tool
   pod 'Alamofire'
-  pod 'TXIMSDK_Plus_iOS', '~> 5.7.1435'
+  pod 'TXIMSDK_Plus_iOS'
   pod 'TXCopyrightedMedia', '1.0.3'
+  pod 'TUICore', '7.3.4358'
 end
 
 def pod_local(type)
   pod "TXLiteAVSDK_#{type}"
-  pod "TUICore", :path => "../TUICore"
   pod "TUIBeauty", :path => "../TUIBeauty"
   loadLocalTUIComponent('TUIPusher', type)
   loadLocalTUIComponent('TUIPlayer', type)

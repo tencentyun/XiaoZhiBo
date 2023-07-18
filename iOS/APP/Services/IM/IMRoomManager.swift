@@ -7,6 +7,7 @@
 
 import UIKit
 import ImSDK_Plus
+import TUICore
 
 typealias IMRoomInfoListCallback = (_ code: Int32, _ message: String?, _ roomInfos: [ShowLiveRoomInfo]) -> Void
 typealias IMCommonCallback = (_ code: Int32, _ message: String?) -> Void
@@ -208,7 +209,8 @@ extension IMRoomManager {
     }
     
     public func getGroupMemberList(roomID: String, callback: IMGroupMemberListCallback?) {
-        imManager?.getGroupMemberList(roomID, filter: .GROUP_MEMBER_FILTER_COMMON, nextSeq: 0, succ: { (_, memberDatas) in
+        let filter = V2TIMGroupMemberFilter.GROUP_MEMBER_FILTER_COMMON
+        imManager?.getGroupMemberList(roomID, filter: UInt32(filter.rawValue), nextSeq: 0, succ: { (_, memberDatas) in
             if let memberList = memberDatas {
                 // 去重
                 let results = memberList.enumerated().filter { (index, info) in
