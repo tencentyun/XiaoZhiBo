@@ -12,7 +12,7 @@ class ShowLiveOnlineUserTitleHeaderView: UITableViewHeaderFooterView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.textColor = UIColor(hex: "#999999")
+        label.textColor = UIColor("#999999")
         label.font = UIFont(name: "PingFangSC-Regular", size: 14)
         label.text = "TOP 100"
         return label

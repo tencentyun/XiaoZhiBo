@@ -12,7 +12,7 @@ class ShowLiveOnlineUserTableCell: UITableViewCell {
 
     lazy var orderLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.textColor = UIColor(hex: "#999999")
+        label.textColor = UIColor("#999999")
         label.font = UIFont(name: "PingFangSC-Regular", size: 16)
         label.text = "0"
         return label
@@ -28,7 +28,7 @@ class ShowLiveOnlineUserTableCell: UITableViewCell {
     
     lazy var nameLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.textColor = UIColor(hex: "#333333")
+        label.textColor = UIColor("#333333")
         label.font = UIFont(name: "PingFangSC-Regular", size: 16)
         return label
     }()
@@ -81,13 +81,13 @@ extension ShowLiveOnlineUserTableCell {
     
     func updateUI(order: Int, userInfo: ShowLiveUserInfo) {
         if order == 1 {
-            orderLabel.textColor = UIColor(hex: "#FF465D")
+            orderLabel.textColor = UIColor("#FF465D")
         } else if order == 2 {
-            orderLabel.textColor = UIColor(hex: "#FF8607")
+            orderLabel.textColor = UIColor("#FF8607")
         } else if order == 3 {
-            orderLabel.textColor = UIColor(hex: "#FCAF41")
+            orderLabel.textColor = UIColor("#FCAF41")
         } else {
-            orderLabel.textColor = UIColor(hex: "#999999")
+            orderLabel.textColor = UIColor("#999999")
         }
         orderLabel.text = order.description
         var userAvatar = userInfo.avatar

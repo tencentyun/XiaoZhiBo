@@ -30,7 +30,6 @@ TODO: Add long description of the pod here.
 
   spec.ios.deployment_target = '9.0'
   
-  spec.dependency 'TXIMSDK_Plus_iOS'
   framework_path="../../SDK/TXIMSDK_Plus_iOS.framework"
   spec.pod_target_xcconfig={
       'HEADER_SEARCH_PATHS'=>["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]

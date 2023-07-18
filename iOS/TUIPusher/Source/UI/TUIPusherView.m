@@ -211,7 +211,7 @@ typedef enum : NSUInteger {
     UIButton *startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [startBtn setTitle:@"开始推流" forState:UIControlStateNormal];
     [startBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [startBtn setBackgroundColor:[UIColor colorWithHex:@"006EFF"]];
+    [startBtn setBackgroundColor:[UIColor tui_colorWithHex:@"006EFF"]];
     startBtn.layer.cornerRadius = 25;
     startBtn.clipsToBounds = YES;
     [startBtn addTarget:self action:@selector(startBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -435,15 +435,15 @@ typedef enum : NSUInteger {
         return NO;
     }
     
-    NSDictionary *beautyExtensionInfo = [TUICore getExtensionInfo:TUICore_TUIBeautyExtension_Extension param:@{}];
+    NSDictionary *beautyExtensionInfo = [[TUICore getExtensionList:TUICore_TUIBeautyExtension_Extension param:@{}] firstObject].data;
     if (beautyExtensionInfo != nil && [beautyExtensionInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = beautyExtensionInfo[TUICore_TUIBeautyExtension_Extension_View];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
             self.beautyBtn = btn;
         }
     }
-    NSDictionary *beautyViewInfo = [TUICore getExtensionInfo:TUICore_TUIBeautyExtension_BeautyView
-                                                       param:@{TUICore_TUIBeautyExtension_BeautyView_BeautyManager: beautyManager}];
+    NSDictionary *beautyViewInfo = [[TUICore getExtensionList:TUICore_TUIBeautyExtension_BeautyView
+                                                               param:@{TUICore_TUIBeautyExtension_BeautyView_BeautyManager: beautyManager}] firstObject].data;
     if (beautyViewInfo != nil && [beautyViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *beautyView = beautyViewInfo[TUICore_TUIBeautyExtension_BeautyView_View];
         if (beautyView != nil && [beautyView isKindOfClass:[UIView class]]) {
@@ -464,7 +464,7 @@ typedef enum : NSUInteger {
         return NO;
     }
     
-    NSDictionary *sendBtnInfo =  [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_GetEnterBtn param:nil];
+    NSDictionary *sendBtnInfo = [[TUICore getExtensionList:TUICore_TUIBarrageExtension_GetEnterBtn param:nil] firstObject].data;
     if (sendBtnInfo != nil && [sendBtnInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = sendBtnInfo[TUICore_TUIBarrageExtension_GetEnterBtn];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
@@ -473,7 +473,8 @@ typedef enum : NSUInteger {
     }
     CGFloat width = UIScreen.mainScreen.bounds.size.width;
     CGFloat height = UIScreen.mainScreen.bounds.size.height;
-    NSDictionary *inputViewInfo = [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_GetTUIBarrageSendView param:@{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}];
+    NSDictionary *inputViewInfo = [[TUICore getExtensionList:TUICore_TUIBarrageExtension_GetTUIBarrageSendView param:
+                                        @{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}] firstObject].data;
     if (inputViewInfo != nil && [inputViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *inputView = inputViewInfo[TUICore_TUIBarrageExtension_GetTUIBarrageSendView];
         if (inputView != nil && [inputView isKindOfClass:[UIView class]]) {
@@ -481,7 +482,8 @@ typedef enum : NSUInteger {
         }
     }
     
-    NSDictionary *barrageViewInfo = [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_TUIBarrageDisplayView param:@{@"frame":NSStringFromCGRect(CGRectMake(20, height-300 - 120, width-20*2, 300)),@"groupId":groupId}];
+    NSDictionary *barrageViewInfo = [[TUICore getExtensionList:TUICore_TUIBarrageExtension_TUIBarrageDisplayView param:
+                                          @{@"frame":NSStringFromCGRect(CGRectMake(20, height-300 - 120, width-20*2, 300)),@"groupId":groupId}] firstObject].data;
     if (barrageViewInfo != nil && [barrageViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *barrageView = barrageViewInfo[TUICore_TUIBarrageExtension_TUIBarrageDisplayView];
         if (barrageView != nil && [barrageView isKindOfClass:[UIView class]]) {
@@ -502,7 +504,7 @@ typedef enum : NSUInteger {
         return NO;
     }
     
-    NSDictionary *extensionInfo = (id)[TUICore getExtensionInfo:TUICore_TUIAudioEffectViewExtension_Extension param:@{}];
+    NSDictionary *extensionInfo = (id)[[TUICore getExtensionList:TUICore_TUIAudioEffectViewExtension_Extension param:@{}] firstObject].data;
     if (extensionInfo != nil && [extensionInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = (id)extensionInfo[TUICore_TUIAudioEffectViewExtension_Extension_View];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
@@ -510,7 +512,9 @@ typedef enum : NSUInteger {
         }
     }
     
-    NSDictionary *audioEffectViewInfo = (id)[TUICore getExtensionInfo:TUICore_TUIAudioEffectViewExtension_AudioEffectView param:@{TUICore_TUIAudioEffectViewExtension_AudioEffectView_AudioEffectManager : audioEffectManager}];
+    NSDictionary *audioEffectViewInfo = (id)[[TUICore getExtensionList:TUICore_TUIAudioEffectViewExtension_AudioEffectView param:
+                                                  @{TUICore_TUIAudioEffectViewExtension_AudioEffectView_AudioEffectManager :
+                                                        audioEffectManager}] firstObject].data;
     if (audioEffectViewInfo != nil && [audioEffectViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *audioEffectView = audioEffectViewInfo[TUICore_TUIAudioEffectViewExtension_AudioEffectView_View];
         if (audioEffectView != nil && [audioEffectView isKindOfClass:[UIView class]]) {
@@ -530,7 +534,8 @@ typedef enum : NSUInteger {
     if (groupId == nil || ![groupId isKindOfClass:[NSString class]]) {
         return NO;
     }
-    NSDictionary *giftPlayInfo = (id)[TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetTUIGiftPlayView param:@{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}];
+    NSDictionary *giftPlayInfo = (id)[[TUICore getExtensionList:TUICore_TUIGiftExtension_GetTUIGiftPlayView param:
+                                       @{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}] firstObject].data;
     if (giftPlayInfo != nil && [giftPlayInfo isKindOfClass:[NSDictionary class]]) {
         UIView *giftView = giftPlayInfo[TUICore_TUIGiftExtension_GetTUIGiftPlayView];
         if (giftView != nil && [giftView isKindOfClass:[UIView class]]) {
