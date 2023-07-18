@@ -3,30 +3,29 @@
 //  TUICore
 //
 //  Created by harvy on 2022/1/5.
+//  Copyright © 2023 Tencent. All rights reserved.
 //
 
 #import "TUIThemeManager.h"
 #import "UIColor+TUIHexColor.h"
 
+@interface TUIDarkThemeRootVC : UIViewController
+
+@end
+@implementation TUIDarkThemeRootVC
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+@end
+
 @interface TUIDarkWindow : UIWindow
-@property (nonatomic, readonly, class) TUIDarkWindow *sharedInstance;
+@property(nonatomic, readonly, class) TUIDarkWindow *sharedInstance;
+@property(nonatomic, strong) UIWindow *previousKeyWindow;
 @end
 @implementation TUIDarkWindow
 
 + (void)load {
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(windowDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(windowDidResign:) name:UIWindowDidResignKeyNotification object:nil];
-}
-
-+ (void)windowDidResign:(NSNotification *)noti {
-    if (TUIDarkWindow.sharedInstance != UIApplication.sharedApplication.keyWindow) return;
-    
-    for (UIWindow *window in UIApplication.sharedApplication.windows) {
-        if (window.hidden == YES) continue;
-        if (window == TUIDarkWindow.sharedInstance) continue;
-        if (window == noti.object) continue;
-        [window makeKeyWindow];
-    }
 }
 
 + (void)windowDidBecomeActive {
@@ -37,33 +36,74 @@
             darkWindow.windowScene = (UIWindowScene *)scene;
         }
     }
-    [darkWindow setRootViewController:[UIViewController new]];
-    [darkWindow makeKeyAndVisible];
-    for (UIWindow *window in UIApplication.sharedApplication.windows) {
-        if (window.hidden == NO && window != darkWindow) {
-            [window makeKeyWindow];
-        }
-    }
-    
+    [darkWindow setRootViewController:[TUIDarkThemeRootVC new]];
+    darkWindow.hidden = NO;
     [NSNotificationCenter.defaultCenter removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
+
+- (void)becomeKeyWindow {
+    _previousKeyWindow = [self appKeyWindow];
+    [super becomeKeyWindow];
+}
+
+- (void)resignKeyWindow {
+    [super resignKeyWindow];
+    [_previousKeyWindow makeKeyWindow];
+    _previousKeyWindow = nil;
+}
+
+- (UIWindow *)appKeyWindow {
+    UIWindow *keywindow = UIApplication.sharedApplication.keyWindow;
+    if (keywindow == nil) {
+        if (@available(iOS 13.0, *)) {
+            for (UIWindowScene *scene in UIApplication.sharedApplication.connectedScenes) {
+                if (scene.activationState == UISceneActivationStateForegroundActive) {
+                    UIWindow *tmpWindow = nil;
+                    if (@available(iOS 15.0, *)) {
+                        tmpWindow = scene.keyWindow;
+                    }
+                    if (tmpWindow == nil) {
+                        for (UIWindow *window in scene.windows) {
+                            if (window.windowLevel == UIWindowLevelNormal && window.hidden == NO &&
+                                CGRectEqualToRect(window.bounds, UIScreen.mainScreen.bounds)) {
+                                tmpWindow = window;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (keywindow == nil) {
+        for (UIWindow *window in UIApplication.sharedApplication.windows) {
+            if (window.windowLevel == UIWindowLevelNormal && window.hidden == NO && CGRectEqualToRect(window.bounds, UIScreen.mainScreen.bounds)) {
+                keywindow = window;
+                break;
+            }
+        }
+    }
+    return keywindow;
+}
+
 + (instancetype)sharedInstance {
     static TUIDarkWindow *shareWindow = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shareWindow = [[self alloc] init];
-        shareWindow.frame = UIScreen.mainScreen.bounds;
-        shareWindow.userInteractionEnabled = NO;
-        shareWindow.windowLevel = UIWindowLevelNormal - 1;
-        shareWindow.hidden = YES;
-        shareWindow.opaque = NO;
-        shareWindow.backgroundColor = [UIColor clearColor];
-        shareWindow.layer.backgroundColor = [UIColor clearColor].CGColor;
+      shareWindow = [[self alloc] init];
+      shareWindow.frame = UIScreen.mainScreen.bounds;
+      shareWindow.userInteractionEnabled = YES;
+      shareWindow.windowLevel = UIWindowLevelNormal - 1;
+      shareWindow.hidden = YES;
+      shareWindow.opaque = NO;
+      shareWindow.backgroundColor = [UIColor clearColor];
+      shareWindow.layer.backgroundColor = [UIColor clearColor].CGColor;
     });
     return shareWindow;
 }
-/// 重写系统方法禁止设置该Window的模式状态。
-- (void)setOverrideUserInterfaceStyle:(UIUserInterfaceStyle)overrideUserInterfaceStyle {}
+
+- (void)setOverrideUserInterfaceStyle:(UIUserInterfaceStyle)overrideUserInterfaceStyle {
+}
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [super traitCollectionDidChange:previousTraitCollection];
     if (@available(iOS 13.0, *)) {
@@ -73,84 +113,74 @@
                 [TUIThemeManager.shareManager performSelector:@selector(allListenerExcuteonApplyThemeMethod:module:) withObject:nil withObject:nil];
             }
         }
-        
     }
 }
 @end
 
-
 @implementation TUITheme
 
-// 获取动态颜色
-+ (UIColor *)dynamicColor:(NSString *)colorKey module:(TUIThemeModule)module defaultColor:(NSString *)hex
-{
++ (UIColor *)dynamicColor:(NSString *)colorKey module:(TUIThemeModule)module defaultColor:(NSString *)hex {
     TUITheme *theme = TUICurrentTheme(module);
     TUITheme *darkTheme = TUIDarkTheme(module);
     if (theme) {
-        // 指定了主题
         return [theme dynamicColor:colorKey defaultColor:hex];
     } else {
-        // 不指定主题
-        // 如果配置了黑夜主题，跟随系统适配暗黑，默认返回 defaut
-        // 如果没有配置黑夜主题，使用默认值
         if (@available(iOS 13.0, *)) {
-            return [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
-                switch (traitCollection.userInterfaceStyle) {
-                    case UIUserInterfaceStyleDark:
-                        // 加载暗黑，如果没有配置黑夜主题，使用默认值
-                        return [darkTheme dynamicColor:colorKey defaultColor:hex] ?: [UIColor colorWithHex:hex];
-                    case UIUserInterfaceStyleLight:
-                    case UIUserInterfaceStyleUnspecified:
-                    default:
-                        return [UIColor colorWithHex:hex];
-                }
+            return [UIColor colorWithDynamicProvider:^UIColor *_Nonnull(UITraitCollection *_Nonnull traitCollection) {
+              switch (traitCollection.userInterfaceStyle) {
+                  case UIUserInterfaceStyleDark:
+                      return [darkTheme dynamicColor:colorKey defaultColor:hex];
+                  case UIUserInterfaceStyleLight:
+                  case UIUserInterfaceStyleUnspecified:
+                  default:
+                      return [UIColor tui_colorWithHex:hex];
+              }
             }];
         } else {
-            return [UIColor colorWithHex:hex];
+            return [UIColor tui_colorWithHex:hex];
         }
     }
 }
 
-- (UIColor *)dynamicColor:(NSString *)colorKey defaultColor:(NSString *)hex
-{
-    UIColor *color = [UIColor colorWithHex:hex];
-    if ([self.manifest.allKeys containsObject:colorKey]) {
-        NSString *colorHex = [self.manifest objectForKey:colorKey];
-        if ([colorHex isKindOfClass:NSString.class]) {
-            color = [UIColor colorWithHex:colorHex];
-        }
+- (UIColor *)dynamicColor:(NSString *)colorKey defaultColor:(NSString *)hex {
+    UIColor *color = nil;
+
+    NSString *colorHex = [self.manifest objectForKey:colorKey];
+    if (colorHex && [colorHex isKindOfClass:NSString.class]) {
+        color = [UIColor tui_colorWithHex:colorHex];
+    }
+
+    if (color == nil) {
+        color = [UIColor tui_colorWithHex:hex];
     }
     return color;
 }
 
-+ (UIImage *)dynamicImage:(NSString *)imageKey module:(TUIThemeModule)module defaultImage:(UIImage *)image
-{
++ (UIImage *)dynamicImage:(NSString *)imageKey module:(TUIThemeModule)module defaultImage:(UIImage *)image {
     TUITheme *theme = TUICurrentTheme(module);
     TUITheme *darkTheme = TUIDarkTheme(module);
     if (theme) {
-        // 指定了主题
         return [theme dynamicImage:imageKey defaultImage:image];
     } else {
-        // 未指定主题
         UIImage *lightImage = image;
         UIImage *darkImage = [darkTheme dynamicImage:imageKey defaultImage:image];
         return [self imageWithImageLight:lightImage dark:darkImage];
     }
 }
 
-- (UIImage *)dynamicImage:(NSString *)imageKey defaultImage:(UIImage *)image
-{
-    UIImage *dynamic = image;
-    if ([self.manifest.allKeys containsObject:imageKey]) {
-        NSString *imageName = [self.manifest objectForKey:imageKey];
-        if ([imageName isKindOfClass:NSString.class]) {
-            imageName = [self.resourcePath stringByAppendingPathComponent:imageName];
-            dynamic = [UIImage imageWithContentsOfFile:imageName];
-        }
+- (UIImage *)dynamicImage:(NSString *)imageKey defaultImage:(UIImage *)image {
+    UIImage *dynamic = nil;
+
+    NSString *imageName = [self.manifest objectForKey:imageKey];
+    if ([imageName isKindOfClass:NSString.class]) {
+        imageName = [self.resourcePath stringByAppendingPathComponent:imageName];
+        dynamic = [UIImage imageWithContentsOfFile:imageName];
     }
+
     if (dynamic == nil) {
         dynamic = image;
     }
+
     return dynamic;
 }
 
@@ -158,9 +188,14 @@
     if (@available(iOS 13.0, *)) {
         UITraitCollection *const scaleTraitCollection = [UITraitCollection currentTraitCollection];
         UITraitCollection *const darkUnscaledTraitCollection = [UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleDark];
-        UITraitCollection *const darkScaledTraitCollection = [UITraitCollection traitCollectionWithTraitsFromCollections:@[scaleTraitCollection, darkUnscaledTraitCollection]];
-        UIImage *image = [lightImage imageWithConfiguration:[lightImage.configuration configurationWithTraitCollection:[UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleLight]]];
-        darkImage = [darkImage imageWithConfiguration:[darkImage.configuration configurationWithTraitCollection:[UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleDark]]];
+        UITraitCollection *const darkScaledTraitCollection =
+            [UITraitCollection traitCollectionWithTraitsFromCollections:@[ scaleTraitCollection, darkUnscaledTraitCollection ]];
+        UIImage *image = [lightImage
+            imageWithConfiguration:[lightImage.configuration
+                                       configurationWithTraitCollection:[UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleLight]]];
+        darkImage = [darkImage
+            imageWithConfiguration:[darkImage.configuration
+                                       configurationWithTraitCollection:[UITraitCollection traitCollectionWithUserInterfaceStyle:UIUserInterfaceStyleDark]]];
         [image.imageAsset registerImage:darkImage withTraitCollection:darkScaledTraitCollection];
         return image;
     } else {
@@ -168,47 +203,55 @@
     }
 }
 
-
-
 @end
 
 @interface TUIThemeManager ()
 
-// 各模块的主题资源路径，module:主题路径
-@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSString *> *themeResourcePathCache;
+/**
+ * 各模块的主题资源路径，module:主题路径
+ * The theme resource path of each module, module: theme path
+ */
+@property(nonatomic, strong) NSMutableDictionary<NSNumber *, NSString *> *themeResourcePathCache;
 
-// 当前使用module使用的主题，module: 主题
-@property (nonatomic, strong) NSMutableDictionary<NSNumber *, TUITheme *> *currentThemeCache;
+/**
+ * 当前module使用的主题，module: 主题
+ * The theme currently used by module, module: theme
+ */
+@property(nonatomic, strong) NSMutableDictionary<NSNumber *, TUITheme *> *currentThemeCache;
 
-// 每个module对应的黑夜模式主题, 如果有的话
-@property (nonatomic, strong) NSMutableDictionary<NSNumber *, TUITheme *> *darkThemeCache;
+/**
+ * 每个module对应的黑夜模式主题, 如果有的话
+ * The dark theme for each module, if any
+ */
+@property(nonatomic, strong) NSMutableDictionary<NSNumber *, TUITheme *> *darkThemeCache;
 
-// 所有的监听者
-@property (nonatomic, strong) NSHashTable *listeners;
+@property(nonatomic, strong) NSHashTable *listeners;
 
 - (void)allListenerExcuteonApplyThemeMethod:(TUITheme *)theme module:(TUIThemeModule)module;
 
 @end
 
 @implementation TUIThemeManager
+#ifdef TUIThreadSafe
 dispatch_queue_t _queue;
 dispatch_queue_t _read_write_queue;
-static id _instance;
+#endif
+static id gShareInstance;
 
-+ (instancetype)shareManager
-{
++ (instancetype)shareManager {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[self alloc] init];
+      gShareInstance = [[self alloc] init];
     });
-    return _instance;
+    return gShareInstance;
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
+#ifdef TUIThreadSafe
         _queue = dispatch_queue_create("theme_manager_queue", DISPATCH_QUEUE_SERIAL);
         _read_write_queue = dispatch_queue_create("read_write_secure_queue", DISPATCH_QUEUE_CONCURRENT);
+#endif
         _themeResourcePathCache = [NSMutableDictionary dictionary];
         _currentThemeCache = [NSMutableDictionary dictionary];
         _darkThemeCache = [NSMutableDictionary dictionary];
@@ -217,195 +260,191 @@ static id _instance;
     return self;
 }
 
-- (void)addListener:(id<TUIThemeManagerListener>)listener
-{
-    __weak typeof(self) weakSelf = self;
+- (void)addListener:(id<TUIThemeManagerListener>)listener {
+#ifdef TUIThreadSafe
     dispatch_async(_queue, ^{
-        if (![weakSelf.listeners containsObject:listener]) {
-            [weakSelf.listeners addObject:listener];
-        }
+#endif
+      if (![self.listeners containsObject:listener]) {
+          [self.listeners addObject:listener];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-- (void)removeListener:(id<TUIThemeManagerListener>)listener
-{
-    __weak typeof(self) weakSelf = self;
+- (void)removeListener:(id<TUIThemeManagerListener>)listener {
+#ifdef TUIThreadSafe
     dispatch_async(_queue, ^{
-        if ([weakSelf.listeners containsObject:listener]) {
-            [weakSelf.listeners removeObject:listener];
-        }
+#endif
+      if ([self.listeners containsObject:listener]) {
+          [self.listeners removeObject:listener];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-// 设置主题资源根路径
-- (void)registerThemeResourcePath:(NSString *)path darkThemeID:(NSString *)darkThemeID forModule:(TUIThemeModule)module
-{
+- (void)registerThemeResourcePath:(NSString *)path darkThemeID:(NSString *)darkThemeID forModule:(TUIThemeModule)module {
     if (path.length == 0) {
         return;
     }
-    
-    __weak typeof(self) weakSelf = self;
+
+#ifdef TUIThreadSafe
     dispatch_async(_queue, ^{
-        // 保存主题资源路径
-        [weakSelf.themeResourcePathCache setObject:path forKey:@(module)];
-        
-        // 加载黑夜主题
-        TUITheme *theme = [weakSelf loadTheme:darkThemeID module:module];
-        if (theme) {
-            [weakSelf setDarkTheme:theme forModule:module];
-        }
+#endif
+      [self.themeResourcePathCache setObject:path forKey:@(module)];
+
+      TUITheme *theme = [self loadTheme:darkThemeID module:module];
+      if (theme) {
+          [self setDarkTheme:theme forModule:module];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-- (void)registerThemeResourcePath:(NSString *)path forModule:(TUIThemeModule)module
-{
+- (void)registerThemeResourcePath:(NSString *)path forModule:(TUIThemeModule)module {
     [self registerThemeResourcePath:path darkThemeID:@"dark" forModule:module];
 }
 
-// 获取当前正在使用的主题，线程安全
-- (TUITheme *)currentThemeForModule:(TUIThemeModule)module
-{
+- (TUITheme *)currentThemeForModule:(TUIThemeModule)module {
     __block TUITheme *theme = nil;
-    __weak typeof(self) weakSelf = self;
+#ifdef TUIThreadSafe
     dispatch_sync(_read_write_queue, ^{
-        if ([weakSelf.currentThemeCache.allKeys containsObject:@(module)]) {
-            theme = [weakSelf.currentThemeCache objectForKey:@(module)];
-        }
+#endif
+      theme = [self.currentThemeCache objectForKey:@(module)];
+#ifdef TUIThreadSafe
     });
+#endif
     return theme;
 }
 
-// 设置主题, 线程安全
-- (void)setCurrentTheme:(TUITheme *)theme forModule:(TUIThemeModule)module
-{
-    __weak typeof(self) weakSelf = self;
+- (void)setCurrentTheme:(TUITheme *)theme forModule:(TUIThemeModule)module {
+#ifdef TUIThreadSafe
     dispatch_barrier_async(_read_write_queue, ^{
-        if ([weakSelf.currentThemeCache.allKeys containsObject:@(module)]) {
-            [weakSelf.currentThemeCache removeObjectForKey:@(module)];
-        }
-        if (theme) {
-            [weakSelf.currentThemeCache setObject:theme forKey:@(module)];
-        }
+#endif
+      if ([self.currentThemeCache.allKeys containsObject:@(module)]) {
+          [self.currentThemeCache removeObjectForKey:@(module)];
+      }
+      if (theme) {
+          [self.currentThemeCache setObject:theme forKey:@(module)];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-// 获取每个模块对应的黑夜主题
-- (TUITheme *)darkThemeForModule:(TUIThemeModule)module
-{
+- (TUITheme *)darkThemeForModule:(TUIThemeModule)module {
     __block TUITheme *theme = nil;
-    __weak typeof(self) weakSelf = self;
+#ifdef TUIThreadSafe
     dispatch_sync(_read_write_queue, ^{
-        if ([weakSelf.darkThemeCache.allKeys containsObject:@(module)]) {
-            theme = [weakSelf.darkThemeCache objectForKey:@(module)];
-        }
+#endif
+      if ([self.darkThemeCache.allKeys containsObject:@(module)]) {
+          theme = [self.darkThemeCache objectForKey:@(module)];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
     return theme;
 }
 
-// 设置每个模块对应的黑夜主题, 线程安全
-- (void)setDarkTheme:(TUITheme *)theme forModule:(TUIThemeModule)module
-{
-    __weak typeof(self) weakSelf = self;
+- (void)setDarkTheme:(TUITheme *)theme forModule:(TUIThemeModule)module {
+#ifdef TUIThreadSafe
     dispatch_barrier_async(_read_write_queue, ^{
-        if ([weakSelf.darkThemeCache.allKeys containsObject:@(module)]) {
-            [weakSelf.darkThemeCache removeObjectForKey:@(module)];
-        }
-        if (theme) {
-            [weakSelf.darkThemeCache setObject:theme forKey:@(module)];
-        }
+#endif
+      if ([self.darkThemeCache.allKeys containsObject:@(module)]) {
+          [self.darkThemeCache removeObjectForKey:@(module)];
+      }
+      if (theme) {
+          [self.darkThemeCache setObject:theme forKey:@(module)];
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-// 应用主题
-- (void)applyTheme:(NSString *)themeID forModule:(TUIThemeModule)module
-{
+- (void)applyTheme:(NSString *)themeID forModule:(TUIThemeModule)module {
     if (themeID.length == 0) {
         NSLog(@"[theme][applyTheme] invalid themeID, module:%zd", module);
         return;
     }
-    
-    __weak typeof(self) weakSelf = self;
+#ifdef TUIThreadSafe
     dispatch_async(_queue, ^{
-        BOOL isAll = NO;
-        NSMutableArray *allKeys = [NSMutableArray arrayWithArray:weakSelf.themeResourcePathCache.allKeys];
-        if (module == TUIThemeModuleAll ||
-            ((module & TUIThemeModuleAll) == TUIThemeModuleAll)) {
-            isAll = YES;
-        }
-        
-        if (isAll) {
-            for (NSNumber *moduleObject in allKeys) {
-                TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
-                [weakSelf doApplyTheme:themeID forSingleModule:tmpModue];
-            }
-        } else {
-            for (NSNumber *moduleObject in allKeys) {
-                TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
-                if ((module & tmpModue) == tmpModue) {
-                    [weakSelf doApplyTheme:themeID forSingleModule:tmpModue];
-                }
-            }
-        }
+#endif
+      BOOL isAll = NO;
+      NSMutableArray *allKeys = [NSMutableArray arrayWithArray:self.themeResourcePathCache.allKeys];
+      if (module == TUIThemeModuleAll || ((module & TUIThemeModuleAll) == TUIThemeModuleAll)) {
+          isAll = YES;
+      }
+
+      if (isAll) {
+          for (NSNumber *moduleObject in allKeys) {
+              TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
+              [self doApplyTheme:themeID forSingleModule:tmpModue];
+          }
+      } else {
+          for (NSNumber *moduleObject in allKeys) {
+              TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
+              if ((module & tmpModue) == tmpModue) {
+                  [self doApplyTheme:themeID forSingleModule:tmpModue];
+              }
+          }
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-- (void)unApplyThemeForModule:(TUIThemeModule)module
-{
-    __weak typeof(self) weakSelf = self;
+- (void)unApplyThemeForModule:(TUIThemeModule)module {
+#ifdef TUIThreadSafe
     dispatch_async(_queue, ^{
-        BOOL isAll = NO;
-        NSMutableArray *allKeys = [NSMutableArray arrayWithArray:weakSelf.themeResourcePathCache.allKeys];
-        if (module == TUIThemeModuleAll ||
-            ((module & TUIThemeModuleAll) == TUIThemeModuleAll)) {
-            isAll = YES;
-        }
-        
-        if (isAll) {
-            for (NSNumber *moduleObject in allKeys) {
-                TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
-                [weakSelf setCurrentTheme:nil forModule:tmpModue];
-            }
-            //卸载所有主题，跟随系统变化时也应该触发主题变化通知.
-            [NSNotificationCenter.defaultCenter postNotificationName:TUIDidApplyingThemeChangedNotfication
-                                                                      object:nil
-                                                                    userInfo:nil];
-        } else {
-            for (NSNumber *moduleObject in allKeys) {
-                TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
-                if ((module & tmpModue) == tmpModue) {
-                    [weakSelf setCurrentTheme:nil forModule:tmpModue];
-                }
-            }
-        }
+#endif
+      BOOL isAll = NO;
+      NSMutableArray *allKeys = [NSMutableArray arrayWithArray:self.themeResourcePathCache.allKeys];
+      if (module == TUIThemeModuleAll || ((module & TUIThemeModuleAll) == TUIThemeModuleAll)) {
+          isAll = YES;
+      }
+
+      if (isAll) {
+          for (NSNumber *moduleObject in allKeys) {
+              TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
+              [self setCurrentTheme:nil forModule:tmpModue];
+          }
+
+          [NSNotificationCenter.defaultCenter postNotificationName:TUIDidApplyingThemeChangedNotfication object:nil userInfo:nil];
+      } else {
+          for (NSNumber *moduleObject in allKeys) {
+              TUIThemeModule tmpModue = (TUIThemeModule)[moduleObject integerValue];
+              if ((module & tmpModue) == tmpModue) {
+                  [self setCurrentTheme:nil forModule:tmpModue];
+              }
+          }
+      }
+#ifdef TUIThreadSafe
     });
+#endif
 }
 
-#pragma mark - 非线程安全的内部方法
+#pragma mark - Not thread safe
 
-- (void)doApplyTheme:(NSString *)themeID forSingleModule:(TUIThemeModule)module
-{
+- (void)doApplyTheme:(NSString *)themeID forSingleModule:(TUIThemeModule)module {
     TUITheme *theme = [self loadTheme:themeID module:module];
     if (theme == nil) {
         return;
     }
 
-    // 应用主题
     [self setCurrentTheme:theme forModule:module];
-    
-    // 动态切换主题
+
     [self notifyApplyTheme:theme module:module];
 }
 
-- (TUITheme *)loadTheme:(NSString *)themeID module:(TUIThemeModule)module
-{
-    // 获取当前模块对应的主题资源根路径
+- (TUITheme *)loadTheme:(NSString *)themeID module:(TUIThemeModule)module {
     NSString *themeResourcePath = [self themeResourcePathForModule:module];
     if (themeResourcePath.length == 0) {
         NSLog(@"[theme][applyTheme] theme resurce path not set, themeID:%@, module:%zd", themeID, module);
         return nil;
     }
-    
-    // 获取主题ID对应的资源路径并校验合法性
+
     themeResourcePath = [themeResourcePath stringByAppendingPathComponent:themeID];
     {
         BOOL isDirectory = NO;
@@ -415,7 +454,7 @@ static id _instance;
             return nil;
         }
     }
-    
+
     NSString *manifestPath = [themeResourcePath stringByAppendingPathComponent:@"manifest.plist"];
     {
         BOOL isDirectory = NO;
@@ -425,18 +464,16 @@ static id _instance;
             return nil;
         }
     }
-    
+
     NSString *resourcePath = [themeResourcePath stringByAppendingPathComponent:@"resource"];
     {
         BOOL isDirectory = NO;
         BOOL exist = [NSFileManager.defaultManager fileExistsAtPath:resourcePath isDirectory:&isDirectory];
         if (!exist || !isDirectory) {
             NSLog(@"[theme][applyTheme] invalid resurce, themeID:%@, module:%zd", themeID, module);
-            return nil;
         }
     }
-    
-    // 加载并保存当前的主题配置
+
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
     if (dict == nil) {
         NSLog(@"[theme][applyTheme] manifest is null");
@@ -448,33 +485,27 @@ static id _instance;
     theme.themeDesc = [NSString stringWithFormat:@"theme_%@_%zd", themeID, module];
     theme.resourcePath = resourcePath;
     theme.manifest = dict;
-    
+
     return theme;
 }
 
-- (void)notifyApplyTheme:(TUITheme *)theme module:(TUIThemeModule)module
-{
+- (void)notifyApplyTheme:(TUITheme *)theme module:(TUIThemeModule)module {
     if (theme == nil) {
         return;
     }
-    
+
     if (![NSThread isMainThread]) {
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf notifyApplyTheme:theme module:module];
+          [weakSelf notifyApplyTheme:theme module:module];
         });
         return;
     }
-    
+
     [self allListenerExcuteonApplyThemeMethod:theme module:module];
-    
-    NSDictionary *userInfo = @{
-        TUIDidApplyingThemeChangedNotficationModuleKey:@(module),
-        TUIDidApplyingThemeChangedNotficationThemeKey:theme
-    };
-    [NSNotificationCenter.defaultCenter postNotificationName:TUIDidApplyingThemeChangedNotfication
-                                                      object:nil
-                                                    userInfo:userInfo];
+
+    NSDictionary *userInfo = @{TUIDidApplyingThemeChangedNotficationModuleKey : @(module), TUIDidApplyingThemeChangedNotficationThemeKey : theme};
+    [NSNotificationCenter.defaultCenter postNotificationName:TUIDidApplyingThemeChangedNotfication object:nil userInfo:userInfo];
 }
 
 - (void)allListenerExcuteonApplyThemeMethod:(TUITheme *)theme module:(TUIThemeModule)module {
@@ -485,9 +516,7 @@ static id _instance;
     }
 }
 
-
-- (NSString *)themeResourcePathForModule:(TUIThemeModule)module
-{
+- (NSString *)themeResourcePathForModule:(TUIThemeModule)module {
     if ([self.themeResourcePathCache.allKeys containsObject:@(module)]) {
         return [self.themeResourcePathCache objectForKey:@(module)];
     }

@@ -1,6 +1,10 @@
 
+//  Created by Tencent on 2023/06/09.
+//  Copyright © 2023 Tencent. All rights reserved.
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#define IS_NOT_EMPTY_NSSTRING(__X__) (__X__ && [__X__ isKindOfClass:[NSString class]] && ![__X__ isEqualToString:@""])
 
 typedef void (^TAsyncImageComplete)(NSString *path, UIImage *image);
 
@@ -21,36 +25,42 @@ typedef void (^TAsyncImageComplete)(NSString *path, UIImage *image);
 + (void)makeToastActivity;
 + (void)hideToastActivity;
 
-// 切换主线程
-+(void)dispatchMainAsync:(dispatch_block_t) block;
++ (void)dispatchMainAsync:(dispatch_block_t)block;
 
 // date
 + (NSString *)convertDateToStr:(NSDate *)date;
++ (NSString *)convertDateToHMStr:(NSDate *)date;
 
 // msg code convert
 + (NSString *)convertIMError:(NSInteger)code msg:(NSString *)msg;
 
-// 富媒体
 + (NSString *)genImageName:(NSString *)uuid;
 + (NSString *)genSnapshotName:(NSString *)uuid;
 + (NSString *)genVideoName:(NSString *)uuid;
 + (NSString *)genFileName:(NSString *)uuid;
 + (NSString *)genVoiceName:(NSString *)uuid withExtension:(NSString *)extent;
 + (void)asyncDecodeImage:(NSString *)path complete:(TAsyncImageComplete)complete;
-+ (NSString *)randAvatarUrl;
 
-// 设备
 + (NSString *)deviceModel;
 + (NSString *)deviceVersion;
 + (NSString *)deviceName;
 
-// 跳转浏览器打开
 + (void)openLinkWithURL:(NSURL *)url;
 
-// 套餐包不支持功能弹框
 + (void)showUnsupportAlertOfService:(NSString *)service onVC:(UIViewController *)vc;
-// 套餐包不支持通知
 + (void)postUnsupportNotificationOfService:(NSString *)service;
++ (void)postUnsupportNotificationOfService:(NSString *)service serviceDesc:(NSString *)serviceDesc debugOnly:(BOOL)debugOnly;
 + (void)addUnsupportNotificationInVC:(UIViewController *)vc;
++ (void)addUnsupportNotificationInVC:(UIViewController *)vc debugOnly:(BOOL)debugOnly;
+
++ (void)showValueAddedUnsupportAlertOfService:(NSString *)service serviceDesc:(NSString *)serviceDesc onVC:(UIViewController *)vc;
++ (void)postValueAddedUnsupportNotificationOfService:(NSString *)service;
++ (void)postValueAddedUnsupportNotificationOfService:(NSString *)service serviceDesc:(NSString *)serviceDesc debugOnly:(BOOL)debugOnly;
++ (void)addValueAddedUnsupportNotificationInVC:(UIViewController *)vc;
++ (void)addValueAddedUnsupportNotificationInVC:(UIViewController *)vc debugOnly:(BOOL)debugOnly;
+
++ (void)checkCommercialAbility:(long long)param succ:(void (^)(BOOL enabled))succ fail:(void (^)(int code, NSString *desc))fail;
+
++ (UIWindow *)applicationKeywindow;
 
 @end

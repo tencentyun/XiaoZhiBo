@@ -91,7 +91,7 @@
     CGFloat width = 200;
     
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectZero];
-    bgView.backgroundColor = [UIColor colorWithHex:@"29CC85"];
+    bgView.backgroundColor = [UIColor tui_colorWithHex:@"29CC85"];
     bgView.clipsToBounds = YES;
     bgView.layer.cornerRadius = width * 0.5;
     [self addSubview:bgView];

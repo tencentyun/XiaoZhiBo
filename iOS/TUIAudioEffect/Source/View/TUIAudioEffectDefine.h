@@ -8,15 +8,7 @@
 #ifndef TUIAudioEffectDefine_h
 #define TUIAudioEffectDefine_h
 
-#import "TUIDefine.h"
-#import "Masonry.h"
-
 #import "AudioEffectLocalized.h"
-
-// Categories
-#import "UIColor+TUIHexColor.h"
-#import "UIView+TUIUtil.h"
-
 // Theme
 #import "TUILiveThemeConfig.h"
 // Model
@@ -27,6 +19,6 @@
 #define TUIAudioEffectBundle          TUIAudioEffectBundle()
 #define TUIAEImageNamed(imageName) [UIImage imageNamed:imageName inBundle:TUIAudioEffectBundle compatibleWithTraitCollection:nil]
 
-#define TUIAEMakeColorHexString(hexString) [UIColor colorWithHex:hexString]
+#define TUIAEMakeColorHexString(hexString) [UIColor tui_colorWithHex:hexString]
 
 #endif /* TUIAudioEffectDefine_h */

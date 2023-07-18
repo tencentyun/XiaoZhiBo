@@ -1,0 +1,35 @@
+{
+  "name": "TUICore",
+  "version": "1.0.0",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "license": {
+    "type": "Proprietary",
+    "text": "        copyright 2017 tencent Ltd. All rights reserved.\n"
+  },
+  "homepage": "https://cloud.tencent.com/document/product/269/3794",
+  "documentation_url": "https://cloud.tencent.com/document/product/269/9147",
+  "authors": "tencent video cloud",
+  "summary": "TUICore",
+  "dependencies": {
+    "TXIMSDK_Plus_iOS": [
+
+    ],
+    "ReactiveObjC": [
+
+    ],
+    "SDWebImage": [
+
+    ]
+  },
+  "requires_arc": true,
+  "source": {
+    "git": "https://git.woa.com/lynxzhang/tui-components.git",
+    "tag": "1.0.0"
+  },
+  "source_files": "*.{h,m,mm,c}",
+  "resources": [
+    "Resources/*.bundle"
+  ]
+}

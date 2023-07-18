@@ -1,0 +1,171 @@
+{
+  "name": "TUIPlayer",
+  "version": "1.0.0",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "homepage": "https://cloud.tencent.com/document/product/269/3794",
+  "documentation_url": "https://cloud.tencent.com/document/product/269/9147",
+  "authors": "tencent video cloud",
+  "summary": "TUIPlayer",
+  "xcconfig": {
+    "VALID_ARCHS": "armv7 arm64 x86_64"
+  },
+  "dependencies": {
+    "Masonry": [
+
+    ],
+    "TUICore": [
+
+    ]
+  },
+  "requires_arc": true,
+  "static_framework": true,
+  "source": {
+    "git": "",
+    "tag": "1.0.0"
+  },
+  "pod_target_xcconfig": {
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+  },
+  "user_target_xcconfig": {
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+  },
+  "default_subspecs": "Live",
+  "subspecs": [
+    {
+      "name": "Live",
+      "dependencies": {
+        "TXLiteAVSDK_Live": [
+
+        ]
+      },
+      "pod_target_xcconfig": {
+        "HEADER_SEARCH_PATHS": [
+          "$(PODS_TARGET_SRCROOT)/../../SDK/TXLiteAVSDK_Live.framework/Headers"
+        ]
+      },
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "${SRCROOT}/../SDK/TXLiteAVSDK_Live.framework/Headers/"
+      },
+      "source_files": [
+        "Source/Localized/**/*.{h,m,mm}",
+        "Source/Model/**/*.{h,m,mm,c}",
+        "Source/Server/**/*.{h,m,mm}",
+        "Source/UI/**/*.{h,m,mm}",
+        "Source/PublicHeader/**/*.{h,m,mm}",
+        "Source/Common/**/*.{h,m,mm}",
+        "Source/Presenter/**/*.{h,m,mm}",
+        "Source/TUIPlayerKit_Live/*.{h,m,mm}"
+      ],
+      "ios": {
+        "frameworks": [
+          "AVFoundation",
+          "Accelerate"
+        ]
+      },
+      "libraries": [
+        "c++",
+        "resolv"
+      ],
+      "resource_bundles": {
+        "TUIPlayerKitBundle": [
+          "Resources/Localized/**/*.strings",
+          "Resources/*.xcassets"
+        ]
+      }
+    },
+    {
+      "name": "Professional",
+      "dependencies": {
+        "TXLiteAVSDK_Professional": [
+
+        ]
+      },
+      "pod_target_xcconfig": {
+        "HEADER_SEARCH_PATHS": [
+          "$(PODS_TARGET_SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers"
+        ]
+      },
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "${SRCROOT}/../SDK/TXLiteAVSDK_Professional.framework/Headers/"
+      },
+      "source_files": [
+        "Source/Localized/**/*.{h,m,mm}",
+        "Source/Model/**/*.{h,m,mm,c}",
+        "Source/Server/**/*.{h,m,mm}",
+        "Source/UI/**/*.{h,m,mm}",
+        "Source/PublicHeader/**/*.{h,m,mm}",
+        "Source/Common/**/*.{h,m,mm}",
+        "Source/Presenter/**/*.{h,m,mm}",
+        "Source/TUIPlayerKit_Professional/*.{h,m,mm}"
+      ],
+      "ios": {
+        "frameworks": [
+          "AVFoundation",
+          "Accelerate",
+          "AssetsLibrary"
+        ]
+      },
+      "libraries": [
+        "c++",
+        "resolv",
+        "sqlite3"
+      ],
+      "resource_bundles": {
+        "TUIPlayerKitBundle": [
+          "Resources/Localized/**/*.strings",
+          "Resources/*.xcassets"
+        ]
+      }
+    },
+    {
+      "name": "Enterprise",
+      "dependencies": {
+        "TXLiteAVSDK_Enterprise": [
+
+        ]
+      },
+      "pod_target_xcconfig": {
+        "HEADER_SEARCH_PATHS": [
+          "$(PODS_TARGET_SRCROOT)/../../SDK/TXLiteAVSDK_Enterprise.framework/Headers"
+        ]
+      },
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "${SRCROOT}/../SDK/TXLiteAVSDK_Enterprise.framework/Headers/"
+      },
+      "source_files": [
+        "Source/Localized/**/*.{h,m,mm}",
+        "Source/Model/**/*.{h,m,mm,c}",
+        "Source/Server/**/*.{h,m,mm}",
+        "Source/UI/**/*.{h,m,mm}",
+        "Source/PublicHeader/**/*.{h,m,mm}",
+        "Source/Common/**/*.{h,m,mm}",
+        "Source/Presenter/**/*.{h,m,mm}",
+        "Source/TUIPlayerKit_Enterprise/*.{h,m,mm}"
+      ],
+      "ios": {
+        "frameworks": [
+          "AVFoundation",
+          "Accelerate",
+          "AssetsLibrary"
+        ]
+      },
+      "libraries": [
+        "c++",
+        "resolv",
+        "sqlite3"
+      ],
+      "resource_bundles": {
+        "TUIPlayerKitBundle": [
+          "Resources/Localized/**/*.strings",
+          "Resources/*.xcassets"
+        ]
+      }
+    }
+  ]
+}

@@ -33,7 +33,7 @@ class ShowLiveHotRankingAlert: ShowLiveAlertViewController {
         let view = ShowLiveHotRankingContentView(frame: .zero)
         view.backgroundColor = .white
         view.layer.shadowOpacity = 0.8
-        view.layer.shadowColor = UIColor(hex: "#F7F7F7").cgColor
+        view.layer.shadowColor = UIColor("#F7F7F7").cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -2)
         return view
     }()

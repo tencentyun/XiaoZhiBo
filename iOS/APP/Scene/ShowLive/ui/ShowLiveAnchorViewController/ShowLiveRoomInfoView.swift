@@ -140,7 +140,7 @@ class ShowLiveRoomInfoView: UIView {
             redPointView.layer.cornerRadius = redPointView.bounds.height * 0.5
         }
         // follow背景处理
-        let gradientColors = [UIColor(hex: "#FF8BB7").cgColor, UIColor(hex: "#FF465D").cgColor]
+        let gradientColors = [UIColor("#FF8BB7").cgColor, UIColor("#FF465D").cgColor]
         let followGradientLayer = followButton.gradient(colors: gradientColors)
         followGradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         followGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)

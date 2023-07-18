@@ -94,7 +94,11 @@ static TUIBeautyService *sharedService = nil;
 
 #pragma mark - TUIBeautyService
 - (void)setLicenseUrl:(NSString *)url key:(NSString *)key completion:(void (^)(NSInteger, NSString * _Nonnull))completion {
-    [TELicenseCheck setTELicense:url key:key completion:completion];
+    if (key && [key isKindOfClass: [NSString class]]) {
+        if (key.length != 0) {
+            [TELicenseCheck setTELicense:url key:key completion:completion];
+        }
+    }
 }
 
 - (int)processVideoFrameWithTextureId:(int)textureId textureWidth:(int)textureWidth textureHeight:(int)textureHeight {
@@ -184,12 +188,13 @@ static TUIBeautyService *sharedService = nil;
         }
         
         NSDictionary *assetsDict = @{@"core_name": @"LightCore.bundle",
-                                     @"root_path": [TUIBeautyBundle() resourcePath],
+                                     @"root_path": ([NSBundle mainBundle].bundlePath ?: @""),
                                      @"plugin_3d": @"Light3DPlugin.bundle",
                                      @"plugin_hand": @"LightHandPlugin.bundle",
                                      @"plugin_segment": @"LightSegmentPlugin.bundle",
                                      @"beauty_config": beautyConfigJson};
         _xMagicKit = [[XMagic alloc] initWithRenderSize:_renderSize assetsDict:assetsDict];
+        [_xMagicKit configPropertyWithType:@"beauty" withName:@"beauty.smooth" withData:@"0.0" withExtraInfo:nil];
     }
     return _xMagicKit;
 }

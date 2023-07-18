@@ -124,7 +124,7 @@
         return NO;
     }
     
-    NSDictionary *giftBtnInfo =  [TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetEnterBtn param:nil];
+    NSDictionary *giftBtnInfo = [[TUICore getExtensionList:TUICore_TUIGiftExtension_GetEnterBtn param:nil] firstObject].data;
     if (giftBtnInfo != nil && [giftBtnInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = giftBtnInfo[TUICore_TUIGiftExtension_GetEnterBtn];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
@@ -132,7 +132,7 @@
         }
     }
     
-    NSDictionary *likeBtnInfo = [TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetLikeBtn param:nil];
+    NSDictionary *likeBtnInfo = [[TUICore getExtensionList:TUICore_TUIGiftExtension_GetLikeBtn param:nil] firstObject].data;
     if (likeBtnInfo != nil && [likeBtnInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = likeBtnInfo[TUICore_TUIGiftExtension_GetLikeBtn];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
@@ -140,7 +140,8 @@
         }
     }
     
-    NSDictionary *giftViewInfo = [TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetTUIGiftListPanel param:@{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}];
+    NSDictionary *giftViewInfo = [[TUICore getExtensionList:TUICore_TUIGiftExtension_GetTUIGiftListPanel param:
+                                   @{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}] firstObject].data;
     if (giftViewInfo != nil && [giftViewInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *giftView = giftViewInfo[TUICore_TUIGiftExtension_GetTUIGiftListPanel];
         if (giftView != nil && [giftView isKindOfClass:[UIView class]]) {
@@ -155,7 +156,8 @@
     if (groupId == nil || ![groupId isKindOfClass:[NSString class]]) {
         return NO;
     }
-    NSDictionary *giftPlayInfo = (id)[TUICore getExtensionInfo:TUICore_TUIGiftExtension_GetTUIGiftPlayView param:@{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}];
+    NSDictionary *giftPlayInfo = (id)[[TUICore getExtensionList:TUICore_TUIGiftExtension_GetTUIGiftPlayView param:
+                                       @{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}] firstObject].data;
     if (giftPlayInfo != nil && [giftPlayInfo isKindOfClass:[NSDictionary class]]) {
         UIView *giftView = giftPlayInfo[TUICore_TUIGiftExtension_GetTUIGiftPlayView];
         if (giftView != nil && [giftView isKindOfClass:[UIView class]]) {
@@ -171,7 +173,7 @@
         return NO;
     }
     
-    NSDictionary *sendBtnInfo =  [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_GetEnterBtn param:nil];
+    NSDictionary *sendBtnInfo =  [[TUICore getExtensionList:TUICore_TUIBarrageExtension_GetEnterBtn param:nil] firstObject].data;
     if (sendBtnInfo != nil && [sendBtnInfo isKindOfClass:[NSDictionary class]]) {
         UIButton *btn = sendBtnInfo[TUICore_TUIBarrageExtension_GetEnterBtn];
         if (btn != nil && [btn isKindOfClass:[UIButton class]]) {
@@ -180,7 +182,8 @@
     }
     CGFloat width = UIScreen.mainScreen.bounds.size.width;
     CGFloat height = UIScreen.mainScreen.bounds.size.height;
-    NSDictionary *inputViewInfo = [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_GetTUIBarrageSendView param:@{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}];
+    NSDictionary *inputViewInfo = [[TUICore getExtensionList:TUICore_TUIBarrageExtension_GetTUIBarrageSendView param:
+                                    @{@"frame":NSStringFromCGRect(UIScreen.mainScreen.bounds),@"groupId":groupId}] firstObject].data;
     if (inputViewInfo != nil && [inputViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *inputView = inputViewInfo[TUICore_TUIBarrageExtension_GetTUIBarrageSendView];
         if (inputView != nil && [inputView isKindOfClass:[UIView class]]) {
@@ -188,7 +191,8 @@
         }
     }
     
-    NSDictionary *barrageViewInfo = [TUICore getExtensionInfo:TUICore_TUIBarrageExtension_TUIBarrageDisplayView param:@{@"frame":NSStringFromCGRect(CGRectMake(20, height-300 - 120, width-20*2, 300)),@"groupId":groupId}];
+    NSDictionary *barrageViewInfo = [[TUICore getExtensionList:TUICore_TUIBarrageExtension_TUIBarrageDisplayView param:
+                                      @{@"frame":NSStringFromCGRect(CGRectMake(20, height-300 - 120, width-20*2, 300)),@"groupId":groupId}] firstObject].data;
     if (barrageViewInfo != nil && [barrageViewInfo isKindOfClass:[NSDictionary class]]) {
         UIView *barrageView = barrageViewInfo[TUICore_TUIBarrageExtension_TUIBarrageDisplayView];
         if (barrageView != nil && [barrageView isKindOfClass:[UIView class]]) {
