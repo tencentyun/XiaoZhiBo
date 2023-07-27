@@ -22,6 +22,10 @@ public class RTCubeUtils {
             applicationInfo = null;
         }
         String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+        if (applicationInfo != null) {
+            applicationName = context.getResources().getString(applicationInfo.labelRes);
+        }
+
         return TextUtils.isEmpty(applicationName) ? "" : applicationName;
     }
 
