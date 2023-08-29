@@ -19,7 +19,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
-    api "com.blankj:utilcode:1.30.7"
     api "com.google.code.gson:gson:2.3.1"
     api "de.hdodenhof:circleimageview:3.1.0"
     api "com.github.ctiao:DanmakuFlameMaster:0.3.8"
@@ -35,5 +34,8 @@ dependencies {
     api "androidx.multidex:multidex:2.0.0"
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     api 'me.dm7.barcodescanner:zxing:1.8.4'
+
+    def projects = this.rootProject.getAllprojects().stream().map { project -> project.name }.collect()
+    api projects.contains("tuicore") ? project(':tuicore') : "com.tencent.liteav.tuikit:tuicore:latest.release"
 }
 

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
@@ -45,7 +45,7 @@ public class ModifyUserNameDialog extends BottomSheetDialog {
     private void setProfile() {
         String userName = mEditUserName.getText().toString().trim();
         if (TextUtils.isEmpty(userName) || mUserModel.userId == null) {
-            ToastUtils.showLong(mContext.getString(R.string.app_toast_set_username));
+            ToastUtil.toastLongMessage(mContext.getString(R.string.app_toast_set_username));
             return;
         }
         String reg = "^[a-z0-9A-Z\\u4e00-\\u9fa5\\_]{2,20}$";
@@ -57,14 +57,14 @@ public class ModifyUserNameDialog extends BottomSheetDialog {
         ProfileManager.getInstance().setNickName(userName, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                ToastUtils.showLong(mContext.getString(R.string.app_toast_success_to_set_username));
+                ToastUtil.toastLongMessage(mContext.getString(R.string.app_toast_success_to_set_username));
                 mListener.onSuccess();
                 dismiss();
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showLong(mContext.getString(R.string.app_toast_failed_to_set_username, msg));
+                ToastUtil.toastLongMessage(mContext.getString(R.string.app_toast_failed_to_set_username, msg));
             }
         });
     }

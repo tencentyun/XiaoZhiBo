@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
@@ -39,6 +37,7 @@ import com.tencent.liteav.showlive.ui.common.TCConstants;
 import com.tencent.liteav.showlive.ui.floatwindow.FloatWindow;
 import com.tencent.liteav.showlive.ui.view.RoundCornerImageView;
 import com.tencent.liteav.showlive.ui.view.SpaceDecoration;
+import com.tencent.qcloud.tuicore.util.SPUtils;
 import com.tencent.qcloud.tuicore.util.ToastUtil;
 
 import java.lang.reflect.Method;
@@ -228,7 +227,7 @@ public class ShowLiveRoomListFragment extends Fragment implements SwipeRefreshLa
                             mRoomInfoList.addAll(list);
                             mRoomListViewAdapter.notifyDataSetChanged();
                         } else {
-                            ToastUtils.showLong(getString(R.string.showlive_toast_obtain_list_failed, msg));
+                            ToastUtil.toastLongMessage(getString(R.string.showlive_toast_obtain_list_failed, msg));
                         }
                         mLayoutSwipeRefresh.setRefreshing(false);
                         refreshView();

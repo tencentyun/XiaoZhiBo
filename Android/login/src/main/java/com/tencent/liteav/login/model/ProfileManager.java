@@ -8,8 +8,6 @@ import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSDKConfig;
@@ -335,7 +333,7 @@ public class ProfileManager {
                             callback.onSuccess();
                         } else {
                             callback.onFailed(errorCode, message);
-                            ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username),
+                            ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username),
                                     message);
                         }
                     }
@@ -597,7 +595,7 @@ public class ProfileManager {
                     callback.onSuccess();
                 } else {
                     callback.onFailed(errCode, errMsg);
-                    ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username), errMsg);
+                    ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username), errMsg);
                 }
             }
 
@@ -682,15 +680,15 @@ public class ProfileManager {
     public void setNickName(final String nickname, final ActionCallback callback) {
         IMManager.sharedInstance().setNickname(nickname, new IMManager.Callback() {
             @Override
-            public void onCallback(int errorCode, String message) {
+            public void onCallback(int errorCode, String msg) {
                 if (errorCode == 0) {
                     UserModel userModel = UserModelManager.getInstance().getUserModel();
                     userModel.userName = nickname;
                     UserModelManager.getInstance().setUserModel(userModel);
                     callback.onSuccess();
                 } else {
-                    callback.onFailed(errorCode, message);
-                    ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username), message);
+                    callback.onFailed(errorCode, msg);
+                    ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username), msg);
                 }
             }
         });
@@ -699,15 +697,15 @@ public class ProfileManager {
     public void setAvatar(final String avatar, final ActionCallback callback) {
         IMManager.sharedInstance().setAvatar(avatar, new IMManager.Callback() {
             @Override
-            public void onCallback(int errorCode, String message) {
+            public void onCallback(int errorCode, String msg) {
                 if (errorCode == 0) {
                     UserModel userModel = UserModelManager.getInstance().getUserModel();
                     userModel.userAvatar = avatar;
                     UserModelManager.getInstance().setUserModel(userModel);
                     callback.onSuccess();
                 } else {
-                    callback.onFailed(errorCode, message);
-                    ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username), message);
+                    callback.onFailed(errorCode, msg);
+                    ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username), msg);
                 }
             }
         });
@@ -727,12 +725,12 @@ public class ProfileManager {
             @Override
             public void onFailed(int code, String msg) {
                 callback.onFailed(code, msg);
-                ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username), msg);
+                ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username), msg);
             }
         });
         IMManager.sharedInstance().setNicknameAndAvatar(nickname, avatar, new IMManager.Callback() {
             @Override
-            public void onCallback(int errorCode, String message) {
+            public void onCallback(int errorCode, String msg) {
                 if (errorCode == 0) {
                     UserModel userModel = UserModelManager.getInstance().getUserModel();
                     userModel.userAvatar = avatar;
@@ -740,8 +738,8 @@ public class ProfileManager {
                     UserModelManager.getInstance().setUserModel(userModel);
                     callback.onSuccess();
                 } else {
-                    callback.onFailed(errorCode, message);
-                    ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username), message);
+                    callback.onFailed(errorCode, msg);
+                    ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username), msg);
                 }
             }
         });
