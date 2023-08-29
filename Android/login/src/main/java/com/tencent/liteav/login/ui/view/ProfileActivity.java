@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.tencent.liteav.basic.AvatarConstant;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.basic.UserModelManager;
@@ -141,7 +141,7 @@ public class ProfileActivity extends BaseActivity {
     private void setProfile() {
         String userName = mEditUserName.getText().toString().trim();
         if (TextUtils.isEmpty(userName)) {
-            ToastUtils.showLong(getString(R.string.login_toast_set_username));
+            ToastUtil.toastLongMessage(getString(R.string.login_toast_set_username));
             return;
         }
         String reg = "^[a-z0-9A-Z\\u4e00-\\u9fa5\\_]{2,20}$";
@@ -153,14 +153,14 @@ public class ProfileActivity extends BaseActivity {
         ProfileManager.getInstance().setNicknameAndAvatar(userName, mAvatarUrl, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                ToastUtils.showLong(getString(R.string.login_toast_register_success_and_logging_in));
+                ToastUtil.toastLongMessage(getString(R.string.login_toast_register_success_and_logging_in));
                 startMainActivity();
                 finish();
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showLong(getString(R.string.login_toast_failed_to_set_username, msg));
+                ToastUtil.toastLongMessage(getString(R.string.login_toast_failed_to_set_username, msg));
             }
         });
     }

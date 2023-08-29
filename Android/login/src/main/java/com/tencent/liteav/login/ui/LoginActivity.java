@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.tencent.liteav.basic.AvatarConstant;
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity {
         final String username = mEditUserName.getText().toString().trim();
         String password = mEditPassword.getText().toString().trim();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            ToastUtils.showLong(R.string.login_tips_input_correct_info);
+            ToastUtil.toastLongMessage(R.string.login_tips_input_correct_info);
             return;
         }
         handleLoginStatus(STATUS_LOGGING_IN);
@@ -223,14 +223,14 @@ public class LoginActivity extends BaseActivity {
         ProfileManager.getInstance().setNicknameAndAvatar(userName, avatarUrl, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                ToastUtils.showLong(getString(R.string.login_toast_register_success_and_logging_in));
+                ToastUtil.toastLongMessage(getString(R.string.login_toast_register_success_and_logging_in));
                 startMainActivity();
                 finish();
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showLong(getString(R.string.login_toast_failed_to_set_username, msg));
+                ToastUtil.toastLongMessage(getString(R.string.login_toast_failed_to_set_username, msg));
             }
         });
     }

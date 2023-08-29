@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
@@ -27,8 +26,7 @@ import com.tencent.liteav.showlive.ui.dialog.HourRankDialog;
 import com.tencent.liteav.showlive.ui.dialog.MoreActionDialog;
 import com.tencent.liteav.showlive.ui.dialog.OnlineAudienceDialog;
 import com.tencent.liteav.showlive.ui.utils.Utils;
-import com.tencent.liteav.showlive.ui.view.AnchorPKSelectView;
-import com.tencent.liteav.showlive.ui.view.WebViewActivity;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuipusher.view.TUIPusherView;
 
 import java.util.ArrayList;
@@ -208,7 +206,7 @@ public class ShowAnchorFunctionView extends FrameLayout implements View.OnClickL
     public void onClick(View v) {
         if (v.getId() == R.id.iv_pk) {
             if (isLink()) {
-                ToastUtils.showShort(R.string.showlive_busy_not_pk);
+                ToastUtil.toastShortMessage(getContext().getString(R.string.showlive_busy_not_pk));
                 return;
             }
             switch (mPKState) {

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.tencent.liteav.basic.IntentUtils;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.room.bean.RoomInfo;
 import com.tencent.liteav.showlive.ui.ShowLiveAudienceActivity;
@@ -164,7 +165,7 @@ public class FloatWindow implements IFloatWindowCallback {
                 intent.putExtra(TCConstants.PUSHER_NAME, mRoomInfo.roomName);
                 intent.putExtra(TCConstants.COVER_PIC, mRoomInfo.coverUrl);
                 intent.putExtra(TCConstants.PUSHER_AVATAR, mRoomInfo.coverUrl);
-                mContext.getApplicationContext().startActivity(intent);
+                IntentUtils.safeStartActivity(mContext, intent);
             }
         });
         mImageClose.setOnClickListener(new View.OnClickListener() {

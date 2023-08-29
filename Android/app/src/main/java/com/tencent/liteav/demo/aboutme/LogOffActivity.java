@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.demo.R;
 import com.tencent.liteav.demo.app.KeepAliveService;
@@ -89,7 +89,7 @@ public class LogOffActivity extends AppCompatActivity {
                 if (FloatWindow.mIsShowing) {
                     FloatWindow.getInstance().destroy();
                 }
-                ToastUtils.showShort(getString(R.string.app_logoff_account_ok));
+                ToastUtil.toastShortMessage(getString(R.string.app_logoff_account_ok));
                 if (UserModelManager.getInstance().haveBackstage()) {
                     startLoginActivity();
                 } else {

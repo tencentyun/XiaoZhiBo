@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.RoomService;
@@ -155,7 +154,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
                             }
                             mShowLiveAdapter.notifyDataSetChanged();
                         } else {
-                            ToastUtils.showLong(getString(R.string.showlive_toast_obtain_list_failed, msg));
+                            ToastUtil.toastLongMessage(getString(R.string.showlive_toast_obtain_list_failed, msg));
                         }
                     }
                 });
@@ -274,7 +273,7 @@ public class ShowLiveAudienceActivity extends AppCompatActivity {
                         if (code == 0) {
                             mIsInIMGroup = true;
                         } else {
-                            ToastUtils.showShort(getString(R.string.showlive_join_group_fail));
+                            ToastUtil.toastShortMessage(getString(R.string.showlive_join_group_fail));
                         }
                     }
                 });
