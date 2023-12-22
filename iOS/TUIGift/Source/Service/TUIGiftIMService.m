@@ -163,11 +163,23 @@ NSString *const TUIGIFTIM_SIGNALING_KEY_PLATFORM = @"platform";
         if (![dicData isKindOfClass:[NSDictionary class]] || !dicData.count) {
             return;
         }
+        NSMutableDictionary *muDicData = [NSMutableDictionary dictionaryWithDictionary:dicData];
+        NSDictionary *extInfo = dicData[@"extInfo"];
+        if ([extInfo isKindOfClass:[NSDictionary class]]) {
+            NSString *userID = extInfo[@"userID"];
+            if ([userID isKindOfClass:[NSString class]] &&
+                [userID isEqualToString:info.userID]) {
+                muDicData[@"extInfo"] = @{@"nickName":info.nickName?:@"",
+                                          @"userID":info.userID?:@"",
+                                          @"avatarUrl":info.faceURL?:@"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar1.png"};
+            }
+        }
+        
 		if ([businessID isEqualToString:TUIGIFTIM_DATA_BUSINESSID]) {
-			[self onReceiveGift:dicData];
+			[self onReceiveGift:muDicData];
 		}
         if ([businessID isEqualToString:TUIGIFTIM_DATA_BUSINESSID_LIKE]) {
-            [self onReceiveLike:dicData];
+            [self onReceiveLike:muDicData];
         }
 	}
 }
