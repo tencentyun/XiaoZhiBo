@@ -202,7 +202,7 @@ class ShowLiveAnchorRootView: UIView {
     
     private func bindInteraction() {
         viewModel.viewResponder = self
-        let pushURL = URLUtils.generatePushUrl(TUILogin.getUserID(), type: .RTC)
+        let pushURL = URLUtils.generatePushUrl(TUILogin.getUserID() ?? "", type: .RTC)
         pusherViewStartResult = pusherView.start(pushURL)
         
         pkButton.addTarget(self, action: #selector(pkButtonClick(sender:)), for: .touchUpInside)
