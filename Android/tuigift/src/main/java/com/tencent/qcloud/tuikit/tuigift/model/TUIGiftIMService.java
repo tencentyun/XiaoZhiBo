@@ -75,13 +75,11 @@ public class TUIGiftIMService {
 
                     //礼物信息
                     TUIGiftJson.Data data = json.getData();
-                    //扩展信息
-                    TUIGiftJson.Data.ExtInfo extInfo = data.getExtInfo();
 
                     HashMap<String, String> userMap = new HashMap<>();
-                    userMap.put(TUIGiftConstants.KEY_USER_ID, extInfo.getUserID());
-                    userMap.put(TUIGiftConstants.KEY_USER_NAME, extInfo.getNickName());
-                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
+                    userMap.put(TUIGiftConstants.KEY_USER_ID, sender.getUserID());
+                    userMap.put(TUIGiftConstants.KEY_USER_NAME, sender.getNickName());
+                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, sender.getFaceUrl());
 
                     TUIGiftModel model = new TUIGiftModel();
                     model.giftId = data.getGiftId();
@@ -94,15 +92,10 @@ public class TUIGiftIMService {
                         mPresenter.recvGroupGiftMessage(mGroupId, model);
                     }
                 } else if (TUIGiftConstants.VALUE_BUSINESS_ID_LIKE.equals(json.getBusinessID())) {
-                    //礼物信息
-                    TUIGiftJson.Data data = json.getData();
-                    //扩展信息
-                    TUIGiftJson.Data.ExtInfo extInfo = data.getExtInfo();
-
                     HashMap<String, String> userMap = new HashMap<>();
-                    userMap.put(TUIGiftConstants.KEY_USER_ID, extInfo.getUserID());
-                    userMap.put(TUIGiftConstants.KEY_USER_NAME, extInfo.getNickName());
-                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, extInfo.getAvatarUrl());
+                    userMap.put(TUIGiftConstants.KEY_USER_ID, sender.getUserID());
+                    userMap.put(TUIGiftConstants.KEY_USER_NAME, sender.getNickName());
+                    userMap.put(TUIGiftConstants.KEY_USER_AVATAR, sender.getFaceUrl());
 
                     TUIGiftModel model = new TUIGiftModel();
                     model.extInfo = userMap;
