@@ -11,14 +11,13 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.blankj.utilcode.util.ServiceUtils;
 import com.tencent.liteav.demo.R;
 
 public class KeepAliveService extends Service {
     private static final int NOTIFICATION_ID = 1001;
 
     public static void start(Context context) {
-        if (ServiceUtils.isServiceRunning(KeepAliveService.class)) {
+        if (isServiceRunning(context, KeepAliveService.class.getName())) {
             return;
         }
         Intent starter = new Intent(context, KeepAliveService.class);
@@ -32,6 +31,23 @@ public class KeepAliveService extends Service {
     public static void stop(Context context) {
         Intent intent = new Intent(context, KeepAliveService.class);
         context.stopService(intent);
+    }
+
+    private static boolean isServiceRunning(Context context, String className) {
+        if (context == null || TextUtils.isEmpty(className)) {
+            return false;
+        }
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> info = am.getRunningServices(0x7FFFFFFF);
+        if (info == null || info.size() == 0) {
+            return false;
+        }
+        for (ActivityManager.RunningServiceInfo aInfo : info) {
+            if (className.equals(aInfo.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

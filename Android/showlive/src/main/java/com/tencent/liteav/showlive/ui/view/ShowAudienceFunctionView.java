@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
@@ -33,6 +32,7 @@ import com.tencent.liteav.showlive.ui.dialog.FollowAnchorDialog;
 import com.tencent.liteav.showlive.ui.dialog.HourRankDialog;
 import com.tencent.liteav.showlive.ui.dialog.MoreLiveDialog;
 import com.tencent.liteav.showlive.ui.dialog.OnlineAudienceDialog;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 import com.tencent.qcloud.tuikit.tuiplayer.view.TUIPlayerView;
 
 import java.lang.reflect.Method;
@@ -311,7 +311,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
                                 @Override
                                 public void run() {
                                     mTextFollowAnchor.setVisibility(GONE);
-                                    ToastUtils.showShort(getContext().getResources()
+                                    ToastUtil.toastShortMessage(getContext().getResources()
                                             .getString(R.string.showlive_follow_success));
                                 }
                             });
@@ -333,7 +333,7 @@ public class ShowAudienceFunctionView extends FrameLayout implements View.OnClic
                         @Override
                         public void run() {
                             mTextFollowAnchor.setVisibility(VISIBLE);
-                            ToastUtils.showShort(getContext().getResources()
+                            ToastUtil.toastShortMessage(getContext().getResources()
                                     .getString(R.string.showlive_unfollow_success));
                         }
                     });

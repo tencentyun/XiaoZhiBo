@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.tencent.liteav.login.R;
 import com.tencent.liteav.login.model.ProfileManager;
 
@@ -119,7 +119,7 @@ public class RegisterActivity extends BaseActivity {
         String username = mEditUserName.getText().toString().trim();
         String password = mEditPassword.getText().toString().trim();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            ToastUtils.showLong(R.string.login_tips_input_correct_info);
+            ToastUtil.toastLongMessage(R.string.login_tips_input_correct_info);
             return;
         }
 
@@ -127,7 +127,7 @@ public class RegisterActivity extends BaseActivity {
         profileManager.register(username, password, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                ToastUtils.showShort(R.string.login_toast_register_success_and_logging_in);
+                ToastUtil.toastShortMessage(R.string.login_toast_register_success_and_logging_in);
                 Intent starter = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(starter);
                 finish();
@@ -136,12 +136,12 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onFailed(int code, String msg) {
                 if (code == ERROR_CODE_NEED_REGISTER) {
-                    ToastUtils.showShort(R.string.login_toast_register_success_and_logging_in);
+                    ToastUtil.toastShortMessage(R.string.login_toast_register_success_and_logging_in);
                     Intent starter = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(starter);
                     finish();
                 } else {
-                    ToastUtils.showLong(msg);
+                    ToastUtil.toastLongMessage(msg);
                 }
             }
         });

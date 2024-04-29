@@ -12,14 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.showlive.R;
 import com.tencent.liteav.showlive.model.services.room.http.impl.HttpRoomManager;
 import com.tencent.liteav.showlive.ui.common.TCConstants;
 import com.tencent.liteav.showlive.ui.fragment.ShowLiveRoomListFragment;
 import com.tencent.liteav.showlive.ui.utils.Utils;
+import com.tencent.qcloud.tuicore.util.SPUtils;
+import com.tencent.qcloud.tuicore.util.ToastUtil;
 
 /**
  * 秀场直播 - 入口页面， 主要包含
@@ -97,7 +97,7 @@ public class ShowLiveEntranceActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         boolean switchMode = !useCDNFirst;
                         SPUtils.getInstance().put(TCConstants.USE_CDN_PLAY, switchMode);
-                        ToastUtils.showLong(R.string.showlive_warning_switched_mode);
+                        ToastUtil.toastLongMessage(getString(R.string.showlive_warning_switched_mode));
                     }
                 })
                 .setNegativeButton(R.string.showlive_cancel, new DialogInterface.OnClickListener() {

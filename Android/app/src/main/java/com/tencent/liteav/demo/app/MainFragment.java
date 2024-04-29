@@ -91,7 +91,7 @@ public class MainFragment extends Fragment {
             public void onItemClick(int position) {
                 LiveItemEntity entity = mLiveItemEntityList.get(position);
 //                if (entity.mTargetClass == ShoppingLiveEntranceActivity.class) {
-//                    ToastUtils.showShort(R.string.app_more_function_please_wait);
+//                    ToastUtil.toastShortMessage(R.string.app_more_function_please_wait);
 //                    return;
 //                }
                 Intent intent = new Intent(mContext, entity.mTargetClass);

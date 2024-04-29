@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.tencent.liteav.basic.AvatarConstant;
 import com.tencent.liteav.basic.UserModel;
@@ -63,14 +63,14 @@ public class ModifyUserAvatarDialog extends BottomSheetDialog {
         ProfileManager.getInstance().setAvatar(avatarUrl, new ProfileManager.ActionCallback() {
             @Override
             public void onSuccess() {
-                ToastUtils.showLong(mContext.getString(R.string.login_toast_success_to_set_username));
+                ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_success_to_set_username));
                 mListener.onSuccess();
                 dismiss();
             }
 
             @Override
             public void onFailed(int code, String msg) {
-                ToastUtils.showLong(mContext.getString(R.string.login_toast_failed_to_set_username, msg));
+                ToastUtil.toastLongMessage(mContext.getString(R.string.login_toast_failed_to_set_username, msg));
             }
         });
     }
