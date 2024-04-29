@@ -12,6 +12,9 @@ buildscript {
 
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // 添加神策分析 android-gradle-plugin2 依赖
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.5.3'
     }
 }
 
@@ -31,5 +34,6 @@ task clean(type: Delete) {
 
 ext {
     liteavSdk="com.tencent.liteav:LiteAVSDK_Live:latest.release"
-    imSdk = "com.tencent.imsdk:imsdk-plus:7.1.3925"
+    roomEngineSdk = "com.tencent.liteav.tuikit:tuiroomengine:latest.release"
+    imSdk = "com.tencent.imsdk:imsdk-plus:7.3.4358"
 }
