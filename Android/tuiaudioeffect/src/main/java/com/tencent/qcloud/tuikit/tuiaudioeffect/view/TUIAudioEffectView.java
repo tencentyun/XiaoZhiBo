@@ -297,11 +297,12 @@ public class TUIAudioEffectView extends Dialog {
         mButtonBGMPlay.setVisibility(VISIBLE);
         mButtonBGMPlay.setImageResource(R.drawable.tuiaudioeffect_bgm_pause);
         // 开始播放音乐时，无论是否首次均需重新设置变调和音量，因为音乐id发生了变化
-        mPresenter.setMusicPitch(position, mViewVoicePitch.getPitch());
         mPresenter.setMusicPlayoutVolume(position, mViewMusicVolume.getVolume());
         mPresenter.setMusicPublishVolume(position, mViewMusicVolume.getVolume());
         mPresenter.setMusicObserver(mBGMId, new BGMListener());
         mPresenter.startPlayMusic(position, model.mPath, true);
+        // 音调需要在startPlayMusic之后调用才会生效
+        mPresenter.setMusicPitch(position, mViewVoicePitch.getPitch());
         mGetMusicDurationCallback = new AudioEffectModel.GetMusicDurationCallback() {
             @Override
             public void onSuccess(String path, long duration) {

@@ -488,6 +488,8 @@ public class TUIPusherView extends FrameLayout implements ITUIPusherView {
         TUIPusherConfig.getInstance().destory();
         if (mState == State.PK) {
             mTUIPusherPresenter.stopPK();
+        } else if (mPKState == PKState.PK_REQ) {
+            mTUIPusherPresenter.cancelPK();
         }
         if (mTUIPusherPresenter != null) {
             mTUIPusherPresenter.destory();
